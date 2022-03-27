@@ -48,8 +48,6 @@ https://github.com/cisco/openh264/releases<br>
 
 ## マスコン状況出力
 このアプリケーションは、マスコンの操作状況を動画で出力できます。形式は .avi です。<br>
-シンプルなものと、たろいも氏風があります。<br>
-![2022-02-13_7](https://user-images.githubusercontent.com/77259842/153803111-5ad44bb2-2531-48fb-95b4-8b9732fe59c9.png)
 ![2022-02-14 (3)](https://user-images.githubusercontent.com/77259842/153803208-18692183-b1ae-4251-96dc-ccc4ce8b3c10.png)
 
 ## リアルタイム音声生成
