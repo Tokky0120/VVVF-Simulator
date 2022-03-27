@@ -49,7 +49,6 @@ This application will export video as a `.avi` extension.
 This application can export video of the control stat values.<br>
 The file will be the`.avi` extension. <br>
 We have simple one and Taroimo like one.<br>
-![2022-02-13_7](https://user-images.githubusercontent.com/77259842/153803111-5ad44bb2-2531-48fb-95b4-8b9732fe59c9.png)
 ![2022-02-14 (3)](https://user-images.githubusercontent.com/77259842/153803208-18692183-b1ae-4251-96dc-ccc4ce8b3c10.png)
 
 
