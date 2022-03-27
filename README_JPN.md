@@ -44,7 +44,6 @@ https://github.com/cisco/openh264/releases<br>
 
 ## 電圧ベクトル動画出力
 このアプリケーションは、例の六角形を動画で出力できます。形式は .avi です。<br>
-![2022-02-14 (1)](https://user-images.githubusercontent.com/77259842/153803078-11798e5b-8d68-4a32-9d3b-4f954b8e910c.png)
 
 ## マスコン状況出力
 このアプリケーションは、マスコンの操作状況を動画で出力できます。形式は .avi です。<br>
