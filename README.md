@@ -43,12 +43,10 @@ This application will export video as a `.avi` extension.
 
 ## Voltage Vector Video Generation
 This application will export video as a `.avi` extension.
-![2022-02-14 (1)](https://user-images.githubusercontent.com/77259842/153803078-11798e5b-8d68-4a32-9d3b-4f954b8e910c.png)
 
 ## Control stat Video Generation
 This application can export video of the control stat values.<br>
 The file will be the`.avi` extension. <br>
-We have simple one and Taroimo like one.<br>
 ![2022-02-14 (3)](https://user-images.githubusercontent.com/77259842/153803208-18692183-b1ae-4251-96dc-ccc4ce8b3c10.png)
 
 
