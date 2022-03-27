@@ -1,0 +1,151 @@
+﻿<UserControl x:Class="VVVF_Simulator.VVVF_Window.Control_Settings.Basic.Control_Basic"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VVVF_Simulator.VVVF_Window.Control_Settings.Basic"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="661">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid Background="White">
+        <StackPanel>
+            <Grid Height="50" Background="#FF86AEFF">
+                <Label Content="Basic Setting" FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+            </Grid>
+            <Grid Height="350">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="103*"/>
+                            <ColumnDefinition Width="573*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Background="#FFA5A5A5">
+                            <Label Content="From" FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="452*"/>
+                                <ColumnDefinition Width="83*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="from_text_box" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="56" VerticalAlignment="Stretch" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="20" TextAlignment="Center" MaxLength="20" MaxLines="1" TextChanged="TextBox_TextChanged" Tag="From" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Label Grid.Column="1" Content="Hz" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0,0,0,0" HorizontalContentAlignment="Center" FontFamily="M PLUS 2 Medium"/>
+                        </Grid>
+                    </Grid>
+                    <Border BorderBrush="#FFA5A5A5" BorderThickness="1"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Border BorderBrush="#FFA5A5A5" BorderThickness="1"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="103*"/>
+                            <ColumnDefinition Width="573*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Background="#FFA5A5A5">
+                            <Label Content="Sine From" FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="452*"/>
+                                <ColumnDefinition Width="83*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="sine_from_text_box" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="56" VerticalAlignment="Stretch" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="20" TextAlignment="Center" MaxLength="20" MaxLines="1" TextChanged="TextBox_TextChanged" Tag="SineFrom" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Label Grid.Column="1" Content="Hz" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0,0,0,0" HorizontalContentAlignment="Center" FontFamily="M PLUS 2 Medium"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Border BorderBrush="#FFA5A5A5" BorderThickness="1"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="103*"/>
+                            <ColumnDefinition Width="573*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Background="#FFA5A5A5">
+                            <Label Content="Sine Below" FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="452*"/>
+                                <ColumnDefinition Width="83*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="sine_below_text_box" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="56" VerticalAlignment="Stretch" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="20" TextAlignment="Center" MaxLength="20" MaxLines="1" TextChanged="TextBox_TextChanged" Tag="SineBelow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Label Grid.Column="1" Content="Hz" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="0,0,0,0" HorizontalContentAlignment="Center" FontFamily="M PLUS 2 Medium"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="3">
+                    <Border BorderBrush="#FFA5A5A5" BorderThickness="1"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="103*"/>
+                            <ColumnDefinition Width="573*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Background="#FFA5A5A5">
+                            <Label Content="Pulse Mode" FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+                            <ComboBox x:Name="Pulse_Name_Selector" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="Selector_SelectionChanged" Grid.ColumnSpan="1" Margin="10,10,10,10" Tag="PulseName"/>
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox x:Name="Shifted_Box" Content="Shifted" HorizontalAlignment="Center" VerticalAlignment="Top" Checked="enable_checked" Unchecked="enable_checked" Tag="Shifted" Visibility="{Binding Shifted_Visible, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,19,0,0"/>
+                                <Button x:Name="Open_Harmonic_Setting_Button" Content="Harmonic Setting" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="24" Width="133" Visibility="{Binding Harmonic_Visible, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Open_Harmonic_Setting_Button_Click" Grid.Column="2" Margin="0,15,0,0"/>
+                                <ComboBox x:Name="Base_Wave_Selector" Grid.Column="1" Visibility="{Binding Base_Wave_Selector_Visible, Converter={StaticResource BooleanToVisibilityConverter}}" SelectionChanged="Selector_SelectionChanged" Margin="10,10,10,10" FontFamily="M PLUS 2" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="1" Tag="BaseWave"/>
+                                <CheckBox x:Name="Square_Box" Content="Square" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="enable_checked" Unchecked="enable_checked" Tag="Square" Visibility="{Binding Square_Visible, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="1"/>
+                                <ComboBox x:Name="Alt_Mode_Selector" Visibility="{Binding Alt_Mode_Selector_Visible, Converter={StaticResource BooleanToVisibilityConverter}}" SelectionChanged="Selector_SelectionChanged" Margin="10,10,10,10" FontFamily="M PLUS 2" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="1" Tag="AltMode"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="4">
+                    <Border BorderBrush="#FFA5A5A5" BorderThickness="1" Margin="0,0,0,0"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="103*"/>
+                            <ColumnDefinition Width="573*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Background="#FFA5A5A5">
+                            <Label Content="Enable" FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <CheckBox x:Name="Enable_Normal_Check" Content="Enable on Normal" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="enable_checked" Tag="Normal" Unchecked="enable_checked"/>
+                            <CheckBox x:Name="Enable_FreeRun_On_Check" Content="Enable on FreeRun(ON)" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="enable_checked" Tag="FreeRunOn" Unchecked="enable_checked" Grid.Column="1"/>
+                            <CheckBox x:Name="Enable_FreeRun_Off_Check" Content="Enable on FreeRun(OFF)" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="enable_checked" Tag="FreeRunOff" Unchecked="enable_checked" Grid.Column="2"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

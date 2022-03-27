@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="VVVF_Simulator.GUI.VVVF_Window.Control_Settings.Common.Control_Moving_Setting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VVVF_Simulator.GUI.VVVF_Window.Control_Settings.Common"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="800">
+    <StackPanel>
+        <Grid Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Background="#FF86AEFF">
+                <Label Content="Move Type" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="White" FontFamily="M PLUS 2 Medium"/>
+            </Grid>
+            <Grid Grid.Column="1" Background="White">
+                <ComboBox x:Name="Move_Mode_Selector" HorizontalAlignment="Stretch" SelectionChanged="Move_Mode_SelectionChanged" SelectedItem="{Binding Moving_Value.type}" FontFamily="M PLUS 2 Medium" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#FFF3F3F3" FontSize="16" Margin="10,10,10,10"/>
+            </Grid>
+        </Grid>
+
+        <Grid Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Background="#FF86AEFF"/>
+            <Grid Grid.Column="1" Background="White"/>
+            <Label Content="Start[Hz]" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="White" FontFamily="M PLUS 2 Medium"/>
+            <TextBox x:Name="start" Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Moving_Value.start}" VerticalAlignment="Stretch" Height="31" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="M PLUS 2 Medium" FontWeight="Bold" FontSize="16" TextChanged="text_changed" Tag="start" Margin="10,0,10,0"/>
+        </Grid>
+        <Grid Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Background="#FF86AEFF"/>
+            <Grid Grid.Column="1" Background="White"/>
+            <Label Content="Start Value" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="White" FontFamily="M PLUS 2 Medium"/>
+            <TextBox x:Name="start_val" Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Moving_Value.start_value}" VerticalAlignment="Stretch" Height="31" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="M PLUS 2 Medium" FontWeight="Bold" FontSize="16" TextChanged="text_changed" Tag="start_val" Margin="10,0,10,0"/>
+        </Grid>
+        <Grid Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Background="#FF86AEFF"/>
+            <Grid Grid.Column="1" Background="White"/>
+            <Label Content="End[Hz]" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="White" FontFamily="M PLUS 2 Medium"/>
+            <TextBox x:Name="end" Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Moving_Value.end}" VerticalAlignment="Stretch" Height="31" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="M PLUS 2 Medium" FontWeight="Bold" FontSize="16" TextChanged="text_changed" Tag="end" Margin="10,0,10,0"/>
+        </Grid>
+        <Grid Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Background="#FF86AEFF"/>
+            <Grid Grid.Column="1" Background="White"/>
+            <Label Content="End Value" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="White" FontFamily="M PLUS 2 Medium"/>
+            <TextBox x:Name="end_val" Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Moving_Value.end_value}" VerticalAlignment="Stretch" Height="31" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="M PLUS 2 Medium" FontWeight="Bold" FontSize="16" TextChanged="text_changed" Tag="end_val" Margin="10,0,10,0"/>
+        </Grid>
+        <Grid Visibility="{Binding Exponential_Visibility}" Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Background="#FF86AEFF"/>
+            <Grid Grid.Column="1" Background="White"/>
+            <Label Content="Exponential" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="White" FontFamily="M PLUS 2 Medium"/>
+            <TextBox x:Name="exponential_box" Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Moving_Value.degree}" VerticalAlignment="Stretch" Height="31" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="M PLUS 2 Medium" FontWeight="Bold" FontSize="16" TextChanged="text_changed" Tag="degree" Margin="10,0,10,0"/>
+        </Grid>
+        <Grid Visibility="{Binding CurveRate_Visibility}" Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Background="#FF86AEFF"/>
+            <Grid Grid.Column="1" Background="White"/>
+            <Label Content="Curve Rate" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="White" FontFamily="M PLUS 2 Medium"/>
+            <TextBox x:Name="curve_rate_box" Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Moving_Value.curve_rate}" VerticalAlignment="Stretch" Height="31" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="M PLUS 2 Medium" FontWeight="Bold" FontSize="16" TextChanged="text_changed" Tag="curve_rate" Margin="10,0,10,0"/>
+        </Grid>
+    </StackPanel>
+</UserControl>

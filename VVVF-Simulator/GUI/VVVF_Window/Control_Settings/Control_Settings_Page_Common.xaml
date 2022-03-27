@@ -1,0 +1,27 @@
+﻿<Page x:Class="VVVF_Simulator.VVVF_Window.Control_Settings.Control_Setting_Page_Common"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:VVVF_Simulator.VVVF_Window.Control_Settings"
+      mc:Ignorable="d" 
+      d:DesignHeight="100" d:DesignWidth="661"
+      Title="Level_3_Page_Control_Common_Async">
+
+
+    <Grid>
+        <ScrollViewer x:Name="scrollViewer" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+            <StackPanel>
+                <Frame x:Name="Control_Basic" Visibility="{Binding basic}" NavigationUIVisibility="Hidden"/>
+                <Frame x:Name="Control_When_FreeRun" Visibility="{Binding freerun}" NavigationUIVisibility="Hidden"/>
+                <Frame x:Name="Control_Amplitude_Default" Visibility="{Binding amp_def}" NavigationUIVisibility="Hidden"/>
+                <Frame x:Name="Control_Amplitude_FreeRun_On" Visibility="{Binding amp_free_on}" NavigationUIVisibility="Hidden" />
+                <Frame x:Name="Control_Amplitude_FreeRun_Off" Visibility="{Binding amp_free_off}" NavigationUIVisibility="Hidden"/>
+                <Frame x:Name="Control_Dipolar" Visibility="{Binding dipolar}" NavigationUIVisibility="Hidden" />
+                <Frame x:Name="Control_Async" Visibility="{Binding async}" NavigationUIVisibility="Hidden" />
+                
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</Page>
