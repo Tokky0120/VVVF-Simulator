@@ -49,7 +49,11 @@ namespace VVVF_Simulator.GUI.Util_Window
 
         private void copy_button_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetData(DataFormats.Text, ans_textbox.Text);
+            try
+            {
+                Clipboard.SetData(DataFormats.Text, ans_textbox.Text);
+            }
+            catch { }
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
