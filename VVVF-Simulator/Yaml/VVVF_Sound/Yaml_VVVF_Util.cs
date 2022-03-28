@@ -15,6 +15,8 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
             List<Yaml_VVVF_Sound_Data.Yaml_Control_Data> ysd = brake ? ysd_x.braking_pattern : ysd_x.accelerate_pattern;
             var parameter = ysd[i].amplitude_control.default_data.parameter;
 
+            if (ysd[i].amplitude_control.default_data.mode != VVVF_Calculate.Amplitude_Mode.Linear) return;
+
             parameter.disable_range_limit = false;
 
             double target_freq;
@@ -100,9 +102,8 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
             bool allow_accel = true;
             for (int i = 0; i < accel.Count; i++)
             {
-                bool flg_1 = accel[i].amplitude_control.default_data.mode.Equals(VVVF_Calculate.Amplitude_Mode.Linear);
                 bool flg_2 = accel[i].from >= 0;
-                if (flg_1 && flg_2) continue;
+                if (flg_2) continue;
                 allow_accel = false;
                 break;
             }
@@ -112,9 +113,8 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
             bool allow_brake = true;
             for (int i = 0; i < brake.Count; i++)
             {
-                bool flg_1 = brake[i].amplitude_control.default_data.mode.Equals(VVVF_Calculate.Amplitude_Mode.Linear);
                 bool flg_2 = brake[i].from >= 0;
-                if (flg_1 && flg_2) continue;
+                if (flg_2) continue;
                 allow_brake = false;
                 break;
             }

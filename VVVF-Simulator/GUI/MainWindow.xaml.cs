@@ -715,6 +715,7 @@ namespace VVVF_Simulator
                 view_data.blocking = true;
                 Task.Run(() =>
                 {
+                    MessageBox.Show("The settings which is not using `Linear` will be skipped.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                     bool result = Yaml_VVVF_Util.Auto_Voltage(Yaml_VVVF_Manage.current_data);
                     if(!result)
                         MessageBox.Show("Please check next things.\r\nAll of the amplitude mode are linear.\r\nAccel and Braking has more than 2 settings.\r\nFrom is grater or equal to 0", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
