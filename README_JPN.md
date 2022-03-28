@@ -44,3 +44,11 @@ Enter - 終了
 # 親プロジェクト
 このプログラムは、Raspberry pi zero vvvf から派生しました。
 https://github.com/JOTAN-0655/RPi-Zero-VVVF
+
+
+# 貢献者
+・Thunderfeng<br>
+https://github.com/Leifengfengfeng
+
+・Geek of the Week<br>
+https://github.com/geekotw

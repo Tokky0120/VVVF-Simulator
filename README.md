@@ -45,3 +45,10 @@ Enter - Exit the program
 # Parent Project
 This program was ported from RPi-Zero-VVVF
 https://github.com/JOTAN-0655/RPi-Zero-VVVF
+
+# Contributor
+・Thunderfeng<br>
+https://github.com/Leifengfengfeng
+
+・Geek of the Week<br>
+https://github.com/geekotw
