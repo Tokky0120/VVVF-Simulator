@@ -183,10 +183,7 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
 				if (carrier_freq_mode == Yaml_Async_Parameter.Yaml_Async_Parameter_Carrier_Freq.Yaml_Async_Carrier_Mode.Const)
 					carrier_freq_val = carrier_data.const_value;
 				else if (carrier_freq_mode == Yaml_Async_Parameter.Yaml_Async_Parameter_Carrier_Freq.Yaml_Async_Carrier_Mode.Moving)
-				{
 					carrier_freq_val = Get_Moving_Value(carrier_data.moving_value, original_wave_stat);
-
-				}
 				else if (carrier_freq_mode == Yaml_Async_Parameter.Yaml_Async_Parameter_Carrier_Freq.Yaml_Async_Carrier_Mode.Table)
 				{
 					var table_data = carrier_data.carrier_table_value;

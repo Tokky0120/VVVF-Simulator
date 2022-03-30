@@ -523,12 +523,24 @@ namespace VVVF_Simulator
 
 			if (pulse_mode.pulse_name == Pulse_Mode_Names.Async)
             {
+
 				double desire_saw_angle_freq = (freq_data.range == 0) ? freq_data.base_freq * M_2PI : get_Random_freq(freq_data, control) * M_2PI;
 
-				control.set_Saw_Time(control.get_Saw_Angle_Freq() / desire_saw_angle_freq * control.get_Saw_Time());
-				control.set_Saw_Angle_Freq(desire_saw_angle_freq);
+				double saw_time = control.get_Saw_Time();
+				double saw_angle_freq = control.get_Saw_Angle_Freq();
+				double sin_time = control.get_Sine_Time();
+				double sin_angle_freq = control.get_Sine_Angle_Freq();
 
-				double sine_x = sine_time * sine_angle_freq + initial_phase;
+				if (desire_saw_angle_freq == 0)
+					saw_time = 0;
+				else
+					saw_time = saw_angle_freq / desire_saw_angle_freq * saw_time;
+				saw_angle_freq = desire_saw_angle_freq;
+
+				control.set_Saw_Angle_Freq(saw_angle_freq);
+				control.set_Saw_Time(saw_time);
+
+				double sine_x = sin_time * sin_angle_freq + initial_phase;
 				double sin_value = Get_Sine_Value_With_Harmonic(pulse_mode.Clone(), sine_x, calculate_values.amplitude);
 
 				double saw_value = Get_Saw(control.get_Saw_Time() * control.get_Saw_Angle_Freq());
@@ -539,6 +551,8 @@ namespace VVVF_Simulator
 				int pwm_value = get_pwm_value(sin_value, changed_saw + 0.5) + get_pwm_value(sin_value, changed_saw - 0.5);
 
 				return pwm_value;
+
+				
 
 			}
 			else
