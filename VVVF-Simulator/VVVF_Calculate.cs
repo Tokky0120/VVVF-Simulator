@@ -528,8 +528,6 @@ namespace VVVF_Simulator
 
 				double saw_time = control.get_Saw_Time();
 				double saw_angle_freq = control.get_Saw_Angle_Freq();
-				double sin_time = control.get_Sine_Time();
-				double sin_angle_freq = control.get_Sine_Angle_Freq();
 
 				if (desire_saw_angle_freq == 0)
 					saw_time = 0;
@@ -540,7 +538,7 @@ namespace VVVF_Simulator
 				control.set_Saw_Angle_Freq(saw_angle_freq);
 				control.set_Saw_Time(saw_time);
 
-				double sine_x = sin_time * sin_angle_freq + initial_phase;
+				double sine_x = sine_time * sine_angle_freq + initial_phase;
 				double sin_value = Get_Sine_Value_With_Harmonic(pulse_mode.Clone(), sine_x, calculate_values.amplitude);
 
 				double saw_value = Get_Saw(control.get_Saw_Time() * control.get_Saw_Angle_Freq());
