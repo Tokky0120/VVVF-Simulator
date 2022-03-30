@@ -66,7 +66,7 @@ namespace VVVF_Simulator.VVVF_Window.Control_Settings
 
             viewModel.basic = Visibility.Visible;
             viewModel.freerun = Visibility.Visible;
-            viewModel.amp_def = ycd.enable_normal ? Visibility.Visible : Visibility.Collapsed;
+            viewModel.amp_def = Visibility.Visible;
             viewModel.amp_free_on = ycd.enable_on_free_run ? Visibility.Visible : Visibility.Collapsed;
             viewModel.amp_free_off = ycd.enable_off_free_run ? Visibility.Visible : Visibility.Collapsed;
 
