@@ -179,6 +179,8 @@ namespace VVVF_Simulator.VVVF_Window.Control_Settings.Basic
 
             Set_Control();
             MainWindow.update_Control_List_View();
+            MainWindow.update_Control_Showing();
+            return;
         }
 
         private void Open_Harmonic_Setting_Button_Click(object sender, RoutedEventArgs e)

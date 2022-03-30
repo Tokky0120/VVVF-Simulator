@@ -60,13 +60,15 @@ namespace VVVF_Simulator.VVVF_Window.Control_Settings
             }
         }
 
-        private void Set_Visibility(Pulse_Mode_Names mode , int level)
+        private void Set_Visibility(Yaml_Control_Data ycd , int level)
         {
+            Pulse_Mode_Names mode = ycd.pulse_Mode.pulse_name;
+
             viewModel.basic = Visibility.Visible;
             viewModel.freerun = Visibility.Visible;
-            viewModel.amp_def = Visibility.Visible;
-            viewModel.amp_free_on = Visibility.Visible;
-            viewModel.amp_free_off = Visibility.Visible;
+            viewModel.amp_def = ycd.enable_normal ? Visibility.Visible : Visibility.Collapsed;
+            viewModel.amp_free_on = ycd.enable_on_free_run ? Visibility.Visible : Visibility.Collapsed;
+            viewModel.amp_free_off = ycd.enable_off_free_run ? Visibility.Visible : Visibility.Collapsed;
 
             if (level == 3 && mode == Pulse_Mode_Names.Async)
                 viewModel.dipolar = Visibility.Visible;
@@ -83,7 +85,7 @@ namespace VVVF_Simulator.VVVF_Window.Control_Settings
         {
             InitializeComponent();
             DataContext = viewModel;
-            Set_Visibility(ycd.pulse_Mode.pulse_name, level);
+            Set_Visibility(ycd, level);
 
             Control_Basic.Navigate(new Control_Basic(ycd, mainWindow, level));
             Control_When_FreeRun.Navigate(new Control_When_FreeRun(ycd, mainWindow));
