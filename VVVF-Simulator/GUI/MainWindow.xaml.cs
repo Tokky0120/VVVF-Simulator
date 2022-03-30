@@ -16,6 +16,7 @@ using VVVF_Simulator.GUI.Mascon_Window;
 using VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation;
 using VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display;
 using VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Setting_Window;
+using YamlDotNet.Core;
 
 namespace VVVF_Simulator
 {
@@ -235,10 +236,19 @@ namespace VVVF_Simulator
                 };
                 if (dialog.ShowDialog() == false) return;
 
-                if (Yaml_VVVF_Manage.load_Yaml(dialog.FileName))
+                try
+                {
+                    Yaml_VVVF_Manage.load_Yaml(dialog.FileName);
                     MessageBox.Show("Load OK.", "Great", MessageBoxButton.OK, MessageBoxImage.Information);
-                else
-                    MessageBox.Show("Invalid yaml or path.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch(YamlException ex)
+                {
+                    String error_message = "";
+                    error_message += "Invalid yaml\r\n";
+                    error_message += "\r\n" + ex.End.ToString() + "\r\n";
+                    MessageBox.Show(error_message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
 
                 load_path = dialog.FileName;
                 update_Control_List_View();

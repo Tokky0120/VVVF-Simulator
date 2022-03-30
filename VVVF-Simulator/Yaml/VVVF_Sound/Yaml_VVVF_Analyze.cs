@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using static VVVF_Simulator.VVVF_Calculate;
 using static VVVF_Simulator.VVVF_Structs;
@@ -639,10 +640,9 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
                 input.Close();
                 return true;
             }
-            catch (Exception e)
+            catch (YamlException e)
             {
-                Debug.Print(e.StackTrace);
-                return false;
+                throw e;
             }
         }
 
