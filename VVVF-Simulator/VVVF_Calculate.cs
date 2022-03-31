@@ -478,7 +478,6 @@ namespace VVVF_Simulator
         {
 
 			if (control.get_Sine_Freq() < value.min_sine_freq && control.get_Control_Frequency() > 0) control.set_Video_Sine_Freq(value.min_sine_freq);
-			else control.set_Video_Sine_Freq(control.get_Sine_Freq());
 
 			if (value.none) return new Wave_Values() { U = 0, V = 0, W = 0 };
 

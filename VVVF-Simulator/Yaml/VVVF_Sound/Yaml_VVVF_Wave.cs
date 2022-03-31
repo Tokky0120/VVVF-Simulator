@@ -282,7 +282,8 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
 					target_amp = yaml_amplitude_calculate(solve_data.amplitude_control.default_data, control.get_Sine_Freq());
 
 				double start_amp = free_run_amp_param.start_amp;
-				if(start_amp == -1) start_amp = yaml_amplitude_calculate(solve_data.amplitude_control.default_data, control.get_Sine_Freq());
+				if(start_amp == -1) 
+					start_amp = yaml_amplitude_calculate(solve_data.amplitude_control.default_data, control.get_Sine_Freq());
 
 
 				object free_run_amplitude_parameter;
