@@ -13,6 +13,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using VVVF_Simulator.Yaml.Mascon_Control;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze.Yaml_Mascon_Data;
 
@@ -109,6 +110,23 @@ namespace VVVF_Simulator.GUI.Mascon_Window
                     MessageBox.Show("Save OK.", "Great", MessageBoxButton.OK, MessageBoxImage.Information);
                 else
                     MessageBox.Show("Error occurred on saving.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (tag.Equals("Midi"))
+            {
+                Generation_Mascon_Control_Midi gmcm = new();
+                gmcm.ShowDialog();
+                var load_data = gmcm.loadData;
+                try
+                {
+                    Yaml_Mascon_Data? data = Yaml_Mascon_Midi.Convert(load_data);
+                    if (data == null) return;
+                    Yaml_Mascon_Manage.current_data = data;
+                    Refresh_ItemList();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 

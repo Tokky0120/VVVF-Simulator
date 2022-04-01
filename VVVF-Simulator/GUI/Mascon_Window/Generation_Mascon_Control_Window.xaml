@@ -21,6 +21,7 @@
             <MenuItem Header="File">
                 <MenuItem Header="Save Yaml" Tag="Save" Click="File_Menu_Click"/>
                 <MenuItem Header="Load Yaml" Tag="Load" Click="File_Menu_Click"/>
+                <MenuItem Header="Load Midi" Tag="Midi" Click="File_Menu_Click"/>
             </MenuItem>
         </Menu>
         <Grid Grid.Row="1">

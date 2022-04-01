@@ -1,79 +1,135 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
 using NextMidi.Data;
 using NextMidi.Data.Score;
 using NextMidi.Data.Track;
 using NextMidi.DataElement;
 using NextMidi.Filing.Midi;
+using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
+using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze.Yaml_Mascon_Data;
+using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Midi.NoteEvent_Simple;
 
 namespace VVVF_Simulator.Yaml.Mascon_Control
 {
     public class Yaml_Mascon_Midi
     {
-        public class Converted_Construct
+        public class NoteEvent_Simple
         {
-            public Note_Event_Type type;
-            public int tick;
-            public int tempo;
-            public int note;
+            public NoteEvent_SimpleData On = new();
+            public NoteEvent_SimpleData Off = new();
+            public class NoteEvent_SimpleData
+            {
+                public Note_Event_Type type;
+                public int tick;
+                public int tempo;
+                public int note;
+            }
+
+            public enum Note_Event_Type
+            {
+                ON, OFF,
+            }
         }
 
-        public enum Note_Event_Type
+        public static Yaml_Mascon_Data? Convert(GUI.Mascon_Window.Generation_Mascon_Control_Midi.LoadData loadData)
         {
-            ON,OFF,
+            //MIDIDataを変換
+            MidiData midiData;
+            try
+            {
+                midiData = MidiReader.ReadFrom(loadData.path);
+            }
+            catch
+            {
+                MessageBox.Show("This MIDI cannot be converted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            List<NoteEvent_Simple> converted_Constructs = GetTime_Line(midiData, loadData.track);
+            Yaml_Mascon_Data mascon_Data = new();
+
+            int pre_event_tick = 0;
+
+            for(int j = 0; j < loadData.priority; j++)
+            {
+                List<int> selected_Data = new();
+                for (int i = 0; i < converted_Constructs.Count; i++)
+                {
+                    NoteEvent_Simple data = converted_Constructs[i];
+
+                    if (data.On.tick < pre_event_tick) continue;
+
+                    int tick_diff_initial = data.On.tick - pre_event_tick;
+                    double initial_wait = TempoMap.GetMilliSeconds(tick_diff_initial, data.On.tempo, midiData.Resolution.Resolution) * 0.001;
+
+                    int tick_diff_play = data.Off.tick - data.On.tick;
+                    double play_wait = TempoMap.GetMilliSeconds(tick_diff_play, data.Off.tempo, midiData.Resolution.Resolution) * 0.001;
+
+                    pre_event_tick = data.Off.tick;
+
+                    selected_Data.Add(i);
+
+                    if (loadData.priority != j + 1) continue;
+
+                    // set initial
+                    mascon_Data.points.Add(new Yaml_Mascon_Point_Data() { rate = 0, duration = -1, brake = false, mascon_on = true, order = 4 * i });
+                    // wait initial
+                    mascon_Data.points.Add(new Yaml_Mascon_Point_Data() { rate = 0, duration = initial_wait, brake = false, mascon_on = true, order = 4 * i + 1 });
+                    // set play
+                    double frequency = 440 * Math.Pow(2, (data.On.note - 69) / 12.0) / loadData.division;
+                    mascon_Data.points.Add(new Yaml_Mascon_Point_Data() { rate = frequency, duration = -1, brake = false, mascon_on = true, order = 4 * i + 2 });
+                    // wait play
+                    mascon_Data.points.Add(new Yaml_Mascon_Point_Data() { rate = 0, duration = play_wait, brake = false, mascon_on = true, order = 4 * i + 3 });
+
+                }
+
+                for(int i = 0; i < selected_Data.Count; i++)
+                {
+                    converted_Constructs.RemoveAt(selected_Data[selected_Data.Count - i - 1]);
+                }
+            }
+
+            Debug.WriteLine("OK");
+            return mascon_Data;
         }
-        public List<Converted_Construct> GetTime_Line(MidiData midiData)
+        public static List<NoteEvent_Simple> GetTime_Line(MidiData midiData,int track_num)
         {
-            List<Converted_Construct> events = new List<Converted_Construct>();
-            List<Converted_Construct> converted_Constructs = new List<Converted_Construct>();
+            List<NoteEvent_Simple> events = new List<NoteEvent_Simple>();
             TempoMap sc = new TempoMap(midiData);
-            for (int i = 0; i < midiData.Tracks.Count; i++)
+            MidiTrack track = midiData.Tracks[track_num];
+
+            foreach (var note in track.GetData<NoteEvent>())
             {
-                MidiTrack track = midiData.Tracks[i];
-                foreach (var note in track.GetData<NoteEvent>())
+                NoteEvent_SimpleData Note_ON_Data = new()
                 {
-                    Converted_Construct Note_ON_Data = new Converted_Construct
-                    {
-                        tick = note.Tick,
-                        tempo = sc.GetTempo(note.Tick),
-                        type = Note_Event_Type.ON,
-                        note = note.Note
-                    };
-                    events.Add(Note_ON_Data);
-                    Converted_Construct Note_OFF_Data = new Converted_Construct
-                    {
-                        tick = note.Tick + note.Gate,
-                        tempo = sc.GetTempo(note.Tick + note.Gate),
-                        type = Note_Event_Type.OFF,
-                        note = note.Note
-                    };
-                    events.Add(Note_OFF_Data);
-                }
-            }
-            if (events.Count == 0) return null;//もしも、何もイベントがなかったらnullを返す
-            while (true)
-            {
-                int min_tick = Int32.MaxValue, found = 0;
-                for (int i = 0; i < events.Count; i++)
+                    tick = note.Tick,
+                    tempo = sc.GetTempo(note.Tick),
+                    type = Note_Event_Type.ON,
+                    note = note.Note
+                };
+
+                NoteEvent_SimpleData Note_OFF_Data = new()
                 {
-                    Converted_Construct converted_Construct = events[i];
-                    int tick = converted_Construct.tick;
-                    if (min_tick > tick)
-                    {
-                        min_tick = tick;
-                        found = i;
-                    }
-                }
-                converted_Constructs.Add(events[found]);
-                events.RemoveAt(found);
-                if (events.Count == 0)
+                    tick = note.Tick + note.Gate,
+                    tempo = sc.GetTempo(note.Tick + note.Gate),
+                    type = Note_Event_Type.OFF,
+                    note = note.Note
+                };
+
+                NoteEvent_Simple note_event = new()
                 {
-                    break;
-                }
+                    On = Note_ON_Data,
+                    Off = Note_OFF_Data
+                };
+
+                events.Add(note_event);
             }
 
-            return converted_Constructs;
+            events.Sort((a, b) => a.On.tick - b.On.tick);
+            return events;
         }
     }
 }

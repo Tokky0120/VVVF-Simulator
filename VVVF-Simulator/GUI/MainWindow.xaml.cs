@@ -708,7 +708,7 @@ namespace VVVF_Simulator
                 lc.Show();
             }else if(tag_str.Equals("AccelPattern")){
                 Generation_Mascon_Control_Window gmcw = new();
-                gmcw.Show();
+                gmcw.ShowDialog();
             }
         }
 

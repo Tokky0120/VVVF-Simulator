@@ -84,7 +84,11 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             };
             public static Yaml_Mascon_Data current_data = default_data.Clone();
 
-
+            public static Yaml_Mascon_Data Sort()
+            {
+                current_data.points.Sort((a, b) => Math.Sign(a.order - b.order));
+                return current_data;
+            }
             public static bool save_Yaml(String path)
             {
                 try

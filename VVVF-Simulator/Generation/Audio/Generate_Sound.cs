@@ -7,6 +7,7 @@ using static VVVF_Simulator.Generation.NAudio_Filter;
 using NAudio.Wave;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
 using NAudio.Wave.SampleProviders;
+using System.Collections.Generic;
 
 namespace VVVF_Simulator.Generation.Audio
 {
@@ -27,7 +28,7 @@ namespace VVVF_Simulator.Generation.Audio
             control.reset_control_variables();
             control.reset_all_variables();
 
-            Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.current_data.Clone();
+            Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.Sort().Clone();
 
             int sample_freq = 192000;
             int sound_block_count = 0;
@@ -51,12 +52,22 @@ namespace VVVF_Simulator.Generation.Audio
 
             bool loop = true;
 
+            byte[] temp_bytes = new byte[19200];
+            int temp_bytes_count = 0;
+
             while (loop)
             {
                 control.add_Sine_Time(1.00 / sample_freq);
                 control.add_Saw_Time(1.00 / sample_freq);
 
-                writer.Write(Get_VVVF_Sound(control, sound_data));
+                temp_bytes[temp_bytes_count] = Get_VVVF_Sound(control, sound_data);
+                temp_bytes_count++;
+                if(temp_bytes_count == 19200)
+                {
+                    writer.Write(temp_bytes);
+                    temp_bytes_count = 0;
+                }
+
                 sound_block_count++;
 
                 loop = Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / sample_freq);
@@ -114,7 +125,7 @@ namespace VVVF_Simulator.Generation.Audio
             control.reset_control_variables();
             control.reset_all_variables();
 
-            Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.current_data.Clone();
+            Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.Sort().Clone();
 
             int sample_freq = 192000;
             

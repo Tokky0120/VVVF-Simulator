@@ -94,7 +94,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
 
             control.set_Allowed_Random_Freq_Move(false);
 
-            Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.current_data.Clone();
+            Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.Sort().Clone();
 
             int fps = 60;
 
@@ -206,7 +206,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
             control.reset_all_variables();
             control.set_Allowed_Random_Freq_Move(false);
 
-            Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.current_data.Clone();
+            Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.Sort().Clone();
 
             int fps = 60;
 
