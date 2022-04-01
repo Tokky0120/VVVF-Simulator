@@ -22,6 +22,14 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             for (int i = 0; i < select_source.Count; i++)
             {
                 Yaml_Mascon_Point_Data ympd = select_source[i];
+
+                if (ympd.duration < 0)
+                {
+                    current_freq = ympd.rate;
+                    continue;
+                }
+                    
+
                 if(time >= current_time + ympd.duration)
                     current_freq += ympd.duration * ympd.rate * (ympd.brake ? -1 : 1);
                 else
