@@ -478,6 +478,7 @@ namespace VVVF_Simulator
         {
 
 			if (control.get_Sine_Freq() < value.min_sine_freq && control.get_Control_Frequency() > 0) control.set_Video_Sine_Freq(value.min_sine_freq);
+			else control.set_Video_Sine_Freq(control.get_Sine_Freq());
 
 			if (value.none) return new Wave_Values() { U = 0, V = 0, W = 0 };
 
@@ -885,7 +886,7 @@ namespace VVVF_Simulator
 			{
 				int pulse_num = Get_Pulse_Num(pulse_mode,2);
 				double x = sin_angle_freq * sin_time + initial_phase;
-				double saw_value = Get_Saw(pulse_num * x);
+				double saw_value = -Get_Sine(pulse_num * x);//Get_Saw(pulse_num * x);
 				double sin_value = Get_Sine_Value_With_Harmonic(pulse_mode.Clone(), x, amplitude);
 
 				if (pulse_mode.Shift)

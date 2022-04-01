@@ -101,8 +101,6 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             double new_sine = Get_Freq_At(current_time, 0, ymd);
             if (new_sine < 0) new_sine = 0;
 
-            control.set_Video_Sine_Freq(new_sine);
-
             if (!control.is_Free_Running())
             {
                 double amp = new_sine == 0 ? 0 : control.get_Sine_Freq() / new_sine;
