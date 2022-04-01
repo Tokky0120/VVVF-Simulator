@@ -886,7 +886,7 @@ namespace VVVF_Simulator
 			{
 				int pulse_num = Get_Pulse_Num(pulse_mode,2);
 				double x = sin_angle_freq * sin_time + initial_phase;
-				double saw_value = -Get_Sine(pulse_num * x);//Get_Saw(pulse_num * x);
+				double saw_value = Get_Saw(pulse_num * x);
 				double sin_value = Get_Sine_Value_With_Harmonic(pulse_mode.Clone(), x, amplitude);
 
 				if (pulse_mode.Shift)
