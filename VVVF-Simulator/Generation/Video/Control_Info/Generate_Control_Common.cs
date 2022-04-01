@@ -88,7 +88,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
             }
             catch
             {
-                val = 0;
+                return -1;
             }
             double rate = val / 182.4 * 100.0;
             return Math.Round(rate,2);
