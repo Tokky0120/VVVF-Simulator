@@ -905,4 +905,180 @@ namespace VVVF_Simulator
 
 		}
 	}
+
+	public class SVM
+    {
+		private double SQRT3 = Math.Sqrt(3);
+		private double SQRT3_2 = Math.Sqrt(3)/2.0;
+		private double __2PI_3 = Math.PI * 2 / 3.0;
+		public class Function_time
+		{
+			public double T0;
+			public double T1;
+			public double T2;
+		};
+
+		public class Vabc
+		{
+			public double Ua;
+			public double Ub;
+			public double Uc;
+
+			public static Vabc operator +(Vabc a, double d) => new Vabc()
+			{
+				Ua = a.Ua + d,
+				Ub = a.Ub + d,
+				Uc = a.Uc + d
+			};
+
+			public static Vabc operator *(Vabc a, double d) => new Vabc()
+            {
+				Ua = a.Ua * d,
+				Ub = a.Ub * d,
+				Uc = a.Uc * d
+			};
+
+			public static Vabc operator -(Vabc a) => new Vabc()
+            {
+				Ua = -a.Ua,
+				Ub = -a.Ub,
+				Uc = -a.Uc,
+			};
+
+			public static Vabc operator -(Vabc a, Vabc b) => new Vabc()
+			{
+				Ua = a.Ua - b.Ua,
+				Ub = a.Ub - b.Ub,
+				Uc = a.Uc - b.Uc
+			};
+		};
+
+		public class Valbe
+		{
+			public double Ualpha;
+			public double Ubeta;
+		};
+		public int Sector_estimate(Valbe U)
+		{
+			int A = U.Ubeta > 0.0 ? 0 : 1;
+			int B = U.Ubeta - SQRT3 * U.Ualpha > 0.0 ? 0 : 1;
+			int C = U.Ubeta + SQRT3 * U.Ualpha > 0.0 ? 0 : 1;
+			switch (4 * A + 2 * B + C)
+			{
+				case 0: return 2;
+				case 1: return 3;
+				case 2: return 1;
+				case 3: return 0;
+				case 4: return 0;
+				case 5: return 4;
+				case 6: return 6;
+				case 7: return 5;
+				default: return 2;
+			}
+		}
+		Function_time getfunctiontime(Valbe Vin, int sector)
+		{
+			Function_time ft = new();
+			switch (sector)
+			{
+				case 1:
+					{
+						ft.T1 = SQRT3_2 * Vin.Ualpha - 0.5 * Vin.Ubeta;
+						ft.T2 = Vin.Ubeta;
+					}
+					break;
+				case 2:
+					{
+						ft.T1 = SQRT3_2 * Vin.Ualpha + 0.5 * Vin.Ubeta;
+						ft.T2 = 0.5 * Vin.Ubeta - SQRT3_2 * Vin.Ualpha;
+					}
+					break;
+				case 3:
+					{
+						ft.T1 = Vin.Ubeta;
+						ft.T2 = -(SQRT3_2 * Vin.Ualpha + 0.5 * Vin.Ubeta);
+					}
+					break;
+				case 4:
+					{
+						ft.T1 = 0.5 * Vin.Ubeta - SQRT3_2 * Vin.Ualpha;
+						ft.T2 = -Vin.Ubeta;
+					}
+					break;
+				case 5:
+					{
+						ft.T1 = -(SQRT3_2 * Vin.Ualpha + 0.5 * Vin.Ubeta);
+						ft.T2 = SQRT3_2 * Vin.Ualpha - 0.5 * Vin.Ubeta;
+					}
+					break;
+				case 6:
+					{
+						ft.T1 = -Vin.Ubeta;
+						ft.T2 = SQRT3_2 * Vin.Ualpha + 0.5 * Vin.Ubeta;
+					}
+					break;
+			}
+			ft.T0 = 1.0 - ft.T1 - ft.T2;
+			return ft;
+		}
+		Vabc get_abcvolteage(Function_time Tin, int sector)
+		{
+			Vabc v_out = new();
+			switch (sector)
+			{
+				case 1:
+					{
+						v_out.Ua = 0.5 * Tin.T0;
+						v_out.Ub = Tin.T1 + 0.5 * Tin.T0;
+						v_out.Uc = Tin.T1 + Tin.T2 + 0.5 * Tin.T0;
+					}
+					break;
+				case 2:
+					{
+						v_out.Ua = Tin.T2 + 0.5 * Tin.T0;
+						v_out.Ub = 0.5 * Tin.T0;
+						v_out.Uc = Tin.T1 + Tin.T2 + 0.5 * Tin.T0;
+					}
+					break;
+				case 3:
+					{
+						v_out.Ua = Tin.T1 + Tin.T2 + 0.5 * Tin.T0;
+						v_out.Ub = 0.5 * Tin.T0;
+						v_out.Uc = Tin.T1 + 0.5 * Tin.T0;
+					}
+					break;
+				case 4:
+					{
+						v_out.Ua = Tin.T1 + Tin.T2 + 0.5 * Tin.T0;
+						v_out.Ub = Tin.T2 + 0.5 * Tin.T0;
+						v_out.Uc = 0.5 * Tin.T0;
+					}
+					break;
+				case 5:
+					{
+						v_out.Ua = Tin.T1 + 0.5 * Tin.T0;
+						v_out.Ub = Tin.T1 + Tin.T2 + 0.5 * Tin.T0;
+						v_out.Uc = 0.5 * Tin.T0;
+					}
+					break;
+				case 6:
+					{
+						v_out.Ua = 0.5 * Tin.T0;
+						v_out.Ub = Tin.T1 + Tin.T2 + 0.5 * Tin.T0;
+						v_out.Uc = Tin.T2 + 0.5 * Tin.T0;
+					}
+					break;
+			}
+			return v_out;
+		}
+
+		Valbe Clark(Vabc V0)
+		{
+			Valbe Vin = new();
+			Vin.Ualpha = 0.66666666666666666666666666666667 * (V0.Ua - 0.5 * V0.Ub - 0.5 * V0.Uc);
+			Vin.Ubeta = 0.66666666666666666666666666666667 * (SQRT3_2 * (V0.Ub - V0.Uc));
+			return Vin;
+		}
+		
+	}
 }
