@@ -172,137 +172,37 @@ namespace VVVF_Simulator
 		}
 		public class Amplitude_Argument
         {
-			public class General_Amplitude_Argument
-			{
-				public double min_freq = 0;
-				public double min_amp = 0;
-				public double max_freq = 0;
-				public double max_amp = 0;
-				public bool disable_range_limit = true;
+			public double min_freq = 0;
+			public double min_amp = 0;
+			public double max_freq = 0;
+			public double max_amp = 0;
 
-				public double current = 0;
+			public bool disable_range_limit = false;
+			public double change_const = 0.43;
+			public double polynomial = 1.0;
 
-				public General_Amplitude_Argument(double Minimum_Freq, double Minimum_Amplitude, double Maximum_Freq, double Maximum_Amplitude, double Current, bool Disable_Range_Limit)
-				{
-					min_freq = Minimum_Freq;
-					max_freq = Maximum_Freq;
+			public double current = 0;
 
-					min_amp = Minimum_Amplitude;
-					max_amp = Maximum_Amplitude;
+			public Amplitude_Argument() { }
+			public Amplitude_Argument(Yaml_Control_Data_Amplitude_Control.Yaml_Control_Data_Amplitude.Yaml_Control_Data_Amplitude_Single_Parameter config, double current)
+            {
+				change_const = config.curve_change_rate;
+				this.current = current;
+				disable_range_limit = config.disable_range_limit;
+				polynomial = config.polynomial;
 
-					disable_range_limit = Disable_Range_Limit;
-
-					current = Current;
-				}
-
-			}
-
-			public class Inv_Proportional_Amplitude_Argument
-			{
-				public double min_freq = 0;
-				public double min_amp = 0;
-				public double max_freq = 0;
-				public double max_amp = 0;
-				public bool disable_range_limit = true;
-
-				public double change_const = 0.43;
-
-				public double current = 0;
-
-				public Inv_Proportional_Amplitude_Argument(double Minimum_Freq, double Minimum_Amplitude, double Maximum_Freq, double Maximum_Amplitude, double Current, double Change_Const, bool Disable_Range_Limit)
-				{
-					min_freq = Minimum_Freq;
-					max_freq = Maximum_Freq;
-
-					min_amp = Minimum_Amplitude;
-					max_amp = Maximum_Amplitude;
-
-					disable_range_limit = Disable_Range_Limit;
-
-					change_const = Change_Const;
-
-					current = Current;
-				}
-
-			}
-
-			public class Linear_Polynomial_Amplitude_Argument
-			{
-				public double polynomial = 2;
-
-				public double max_freq = 0;
-				public double max_amp = 0;
-				public bool disable_range_limit = true;
-
-				public double current = 0;
-
-				public Linear_Polynomial_Amplitude_Argument(double Maximum_Freq, double Maximum_Amplitude, double Polynomial, double Current, bool Disable_Range_Limit)
-				{
-					max_freq = Maximum_Freq;
-
-					max_amp = Maximum_Amplitude;
-
-					polynomial = Polynomial;
-
-					disable_range_limit = Disable_Range_Limit;
-
-					current = Current;
-				}
-
-			}
-
-			public class Exponential_Amplitude_Argument
-			{
-
-				public double max_freq = 0;
-				public double max_amp = 0;
-				public bool disable_range_limit = true;
-
-				public double current = 0;
-
-				public Exponential_Amplitude_Argument(double Maximum_Freq, double Maximum_Amplitude, double Current, bool Disable_Range_Limit)
-				{
-					max_freq = Maximum_Freq;
-
-					max_amp = Maximum_Amplitude;
-
-					disable_range_limit = Disable_Range_Limit;
-
-					current = Current;
-				}
-
-			}
-
-			public class Sine_Amplitude_Argument
-			{
-
-				public double max_freq = 0;
-				public double max_amp = 0;
-				public bool disable_range_limit = true;
-
-				public double current = 0;
-
-				public Sine_Amplitude_Argument(double Maximum_Freq, double Maximum_Amplitude, double Current, bool Disable_Range_Limit)
-				{
-					max_freq = Maximum_Freq;
-
-					max_amp = Maximum_Amplitude;
-
-					disable_range_limit = Disable_Range_Limit;
-
-					current = Current;
-				}
-
+				max_amp = config.end_amp;
+				max_freq = config.end_freq;
+				min_amp = config.start_amp;
+				min_freq = config.start_freq;
 			}
 		}
 
-		public static double get_Amplitude(Amplitude_Mode mode , Object arg_o)
+		public static double get_Amplitude(Amplitude_Mode mode , Amplitude_Argument arg)
         {
 			double val = 0;
 			if (mode == Amplitude_Mode.Linear)
             {
-				General_Amplitude_Argument arg = (General_Amplitude_Argument)arg_o;
-
 				if (!arg.disable_range_limit)
 				{
 					if (arg.current < arg.min_freq) arg.current = arg.min_freq;
@@ -313,8 +213,6 @@ namespace VVVF_Simulator
 				
 			else if(mode == Amplitude_Mode.Wide_3_Pulse)
             {
-				General_Amplitude_Argument arg = (General_Amplitude_Argument)arg_o;
-
 				if (!arg.disable_range_limit)
 				{
 					if (arg.current < arg.min_freq) arg.current = arg.min_freq;
@@ -326,15 +224,21 @@ namespace VVVF_Simulator
 
 			else if(mode == Amplitude_Mode.Inv_Proportional)
             {
-				Inv_Proportional_Amplitude_Argument arg = (Inv_Proportional_Amplitude_Argument)arg_o;
-
 				if (!arg.disable_range_limit)
 				{
 					if (arg.current < arg.min_freq) arg.current = arg.min_freq;
 					if (arg.current > arg.max_freq) arg.current = arg.max_freq;
 				}
 
-				double x = get_Amplitude(Amplitude_Mode.Linear, new General_Amplitude_Argument(arg.min_freq, 1 / arg.min_amp, arg.max_freq, 1 / arg.max_amp, arg.current, arg.disable_range_limit));
+				double x = get_Amplitude(Amplitude_Mode.Linear, new Amplitude_Argument()
+                {
+					min_freq = arg.min_freq, 
+					min_amp = 1 / arg.min_amp, 
+					max_freq = arg.max_freq, 
+					max_amp = 1 / arg.max_amp, 
+					current = arg.current,
+					disable_range_limit = arg.disable_range_limit
+				});
 
 				double c = -arg.change_const;
 				double k = arg.max_amp;
@@ -347,7 +251,6 @@ namespace VVVF_Simulator
 			}
 			else if(mode == Amplitude_Mode.Exponential)
             {
-				Exponential_Amplitude_Argument arg = (Exponential_Amplitude_Argument)arg_o;
 
 				if (!arg.disable_range_limit)
 				{
@@ -360,8 +263,6 @@ namespace VVVF_Simulator
 			}
 			else if(mode == Amplitude_Mode.Linear_Polynomial)
             {
-				Linear_Polynomial_Amplitude_Argument arg = (Linear_Polynomial_Amplitude_Argument)arg_o;
-
 				if (!arg.disable_range_limit)
 				{
 					if (arg.current > arg.max_freq) arg.current = arg.max_freq;
@@ -372,8 +273,6 @@ namespace VVVF_Simulator
 			}
 			else if (mode == Amplitude_Mode.Sine)
 			{
-				Sine_Amplitude_Argument arg = (Sine_Amplitude_Argument)arg_o;
-
 				if (!arg.disable_range_limit)
 				{
 					if (arg.current > arg.max_freq) arg.current = arg.max_freq;

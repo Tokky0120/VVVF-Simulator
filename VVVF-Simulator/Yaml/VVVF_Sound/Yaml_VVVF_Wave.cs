@@ -22,20 +22,8 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
 		private static double yaml_amplitude_calculate(Yaml_Control_Data_Amplitude amp_data, double x)
 		{
 			var amp_param = amp_data.parameter;
-			object default_amplitude_parameter;
-			if (amp_data.mode == Amplitude_Mode.Linear)
-				default_amplitude_parameter = new General_Amplitude_Argument(amp_param.start_freq, amp_param.start_amp, amp_param.end_freq, amp_param.end_amp, x, amp_param.disable_range_limit);
-			else if (amp_data.mode == Amplitude_Mode.Wide_3_Pulse)
-				default_amplitude_parameter = new General_Amplitude_Argument(amp_param.start_freq, amp_param.start_amp, amp_param.end_freq, amp_param.end_amp, x, amp_param.disable_range_limit);
-			else if (amp_data.mode == Amplitude_Mode.Inv_Proportional)
-				default_amplitude_parameter = new Inv_Proportional_Amplitude_Argument(amp_param.start_freq, amp_param.start_amp, amp_param.end_freq, amp_param.end_amp, x, amp_param.curve_change_rate, amp_param.disable_range_limit);
-			else if (amp_data.mode == Amplitude_Mode.Linear_Polynomial)
-				default_amplitude_parameter = new Linear_Polynomial_Amplitude_Argument(amp_param.end_freq, amp_param.end_amp, amp_param.polynomial, x, amp_param.disable_range_limit);
-			else if(amp_data.mode == Amplitude_Mode.Exponential)
-				default_amplitude_parameter = new Exponential_Amplitude_Argument(amp_param.end_freq, amp_param.end_amp, x, amp_param.disable_range_limit);
-			else
-				default_amplitude_parameter = new Sine_Amplitude_Argument(amp_param.end_freq, amp_param.end_amp, x, amp_param.disable_range_limit);
-			double amp = get_Amplitude(amp_data.mode, default_amplitude_parameter);
+			Amplitude_Argument aa = new Amplitude_Argument(amp_param,x);
+			double amp = get_Amplitude(amp_data.mode, aa);
 			if (amp_param.cut_off_amp > amp) amp = 0;
 			if (amp_param.max_amp != -1 && amp_param.max_amp < amp) amp = amp_param.max_amp;
 			return amp;
@@ -55,7 +43,23 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
 			else if (moving_val.type == Yaml_Moving_Value.Moving_Value_Type.Pow2_Exponential)
 				val = (Math.Pow(2, Math.Pow((current - moving_val.start) / (moving_val.end - moving_val.start), moving_val.degree)) - 1) * (moving_val.end_value - moving_val.start_value) + moving_val.start_value;
 			else if(moving_val.type == Yaml_Moving_Value.Moving_Value_Type.Inv_Proportional)
-				val = get_Amplitude(Amplitude_Mode.Inv_Proportional , new Inv_Proportional_Amplitude_Argument(moving_val.start, moving_val.start_value, moving_val.end, moving_val.end_value, current, moving_val.curve_rate, true));
+            {
+				double x = get_Changing_Value(
+					moving_val.start,
+					1 / moving_val.start_value,
+					moving_val.end,
+					1 / moving_val.end_value,
+					current
+				);
+
+				double c = -moving_val.curve_rate;
+				double k = moving_val.end_value;
+				double l = moving_val.start_value;
+				double a = 1 / ((1 / l) - (1 / k)) * (1 / (l - c) - 1 / (k - c));
+				double b = 1 / (1 - (1 / l) * k) * (1 / (l - c) - (1 / l) * k / (k - c));
+
+				val = 1 / (a * x + b) + c;
+			}
 			return val;
 
 		}
@@ -286,20 +290,20 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
 					start_amp = yaml_amplitude_calculate(solve_data.amplitude_control.default_data, control.get_Sine_Freq());
 
 
-				object free_run_amplitude_parameter;
-				if (free_run_amp_data.mode == Amplitude_Mode.Linear)
-					free_run_amplitude_parameter = new General_Amplitude_Argument(free_run_amp_param.start_freq, start_amp, target_freq, target_amp, cv.wave_stat, free_run_amp_param.disable_range_limit);
-				else if (free_run_amp_data.mode == Amplitude_Mode.Wide_3_Pulse)
-					free_run_amplitude_parameter = new General_Amplitude_Argument(free_run_amp_param.start_freq, start_amp, target_freq, target_amp, cv.wave_stat, free_run_amp_param.disable_range_limit);
-				else if (free_run_amp_data.mode == Amplitude_Mode.Inv_Proportional)
-					free_run_amplitude_parameter = new Inv_Proportional_Amplitude_Argument(free_run_amp_param.start_freq, start_amp, target_freq, target_amp, cv.wave_stat, free_run_amp_param.curve_change_rate, free_run_amp_param.disable_range_limit);
-				else if (free_run_amp_data.mode == Amplitude_Mode.Exponential)
-					free_run_amplitude_parameter = new Exponential_Amplitude_Argument(target_freq, target_amp, cv.wave_stat, free_run_amp_param.disable_range_limit);
-				else if(free_run_amp_data.mode == Amplitude_Mode.Linear_Polynomial)
-					free_run_amplitude_parameter = new Linear_Polynomial_Amplitude_Argument(target_freq, target_amp, free_run_amp_param.polynomial, cv.wave_stat, free_run_amp_param.disable_range_limit);
-				else
-					free_run_amplitude_parameter = new Sine_Amplitude_Argument(target_freq, target_amp, cv.wave_stat, free_run_amp_param.disable_range_limit);
-				amplitude = get_Amplitude(free_run_amp_data.mode, free_run_amplitude_parameter);
+				Amplitude_Argument aa = new Amplitude_Argument()
+				{
+					min_freq = free_run_amp_param.start_freq,
+					min_amp = start_amp,
+					max_freq = target_freq,
+					max_amp = target_amp,
+
+					current = cv.wave_stat,
+					disable_range_limit = free_run_amp_param.disable_range_limit,
+					polynomial = free_run_amp_param.polynomial,
+					change_const = free_run_amp_param.curve_change_rate
+				};
+				
+				amplitude = get_Amplitude(free_run_amp_data.mode, aa);
 
 				if (free_run_amp_param.cut_off_amp > amplitude) amplitude = 0;
 				if (free_run_amp_param.max_amp != -1 && amplitude > free_run_amp_param.max_amp) amplitude = free_run_amp_param.max_amp;
