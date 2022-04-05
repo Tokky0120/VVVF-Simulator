@@ -282,7 +282,7 @@ namespace VVVF_Simulator
             public Base_Wave_Type Base_Wave { get; set; } = Base_Wave_Type.Sine;
             public enum Base_Wave_Type
             {
-                Sine, Saw, Modified_Sine_1, Modified_Sine_2, Modified_Sine_3
+                Sine, Saw, Modified_Sine_1, Modified_Sine_2, Modified_Saw_1
             }
 
             //

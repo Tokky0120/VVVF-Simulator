@@ -48,16 +48,9 @@ namespace VVVF_Simulator
 			return value;
 		}
 
-		public static double Get_Modified_Saw(double x, int level)
+		public static double Get_Modified_Saw(double x)
         {
-			double saw = -Get_Saw(x) * level;
-			double value = Math.Round(saw) / level;
-			return value;
-        }
-
-		public static double Get_Modified_Sine_2(double x)
-        {
-			double sine = Get_Sine(x);
+			double sine = -Get_Saw(x) * M_PI_2;
 			int D = sine > 0 ? 1 : -1;
 			if (Math.Abs(sine) > 0.5) sine = D;
 
@@ -76,8 +69,9 @@ namespace VVVF_Simulator
 				sin_value = Get_Modified_Sine(x, 1);
 			else if (mode.Base_Wave.Equals(Base_Wave_Type.Modified_Sine_2))
 				sin_value = Get_Modified_Sine(x, 2);
-			else if (mode.Base_Wave.Equals(Base_Wave_Type.Modified_Sine_3))
-				sin_value = Get_Modified_Sine_2(x);
+
+			else if (mode.Base_Wave.Equals(Base_Wave_Type.Modified_Saw_1))
+				sin_value = Get_Modified_Saw(x);
 
 
 			for (int i = 0; i < mode.pulse_harmonics.Count; i++)
