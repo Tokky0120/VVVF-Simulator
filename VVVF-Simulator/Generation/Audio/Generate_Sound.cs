@@ -74,7 +74,8 @@ namespace VVVF_Simulator.Generation.Audio
 
             }
 
-
+            if (temp_bytes_count > 0)
+                writer.Write(temp_bytes);
 
             writer.Seek(4, SeekOrigin.Begin);
             writer.Write(sound_block_count + 36);

@@ -803,7 +803,7 @@ namespace VVVF_Simulator
     {
 		private double SQRT3 = Math.Sqrt(3);
 		private double SQRT3_2 = Math.Sqrt(3)/2.0;
-		private double __2PI_3 = Math.PI * 2 / 3.0;
+		//private double __2PI_3 = Math.PI * 2 / 3.0;
 		public class Function_time
 		{
 			public double T0;

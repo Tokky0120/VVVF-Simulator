@@ -416,14 +416,15 @@ namespace VVVF_Simulator
             {
                 if (command[1].Equals("WAV"))
                 {
+                    
                     var dialog = new SaveFileDialog { Filter = "wav (*.wav)|*.wav" };
                     if (dialog.ShowDialog() == false) return true;
+                    /*
                     Task task = Task.Run(() => {
                         try
                         {
                             Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            //Generation.Audio.Generate_Sound.Export_Train_Sound(dialog.FileName, clone, Generation.Audio.Generate_Sound.Sound_Export_Extension.WAV);
-                            Generation.Motor.Generate_Motor_Core.Export_Wav(dialog.FileName, clone);
+                            Generation.Audio.Generate_Sound.Export_Train_Sound(dialog.FileName, clone, Generation.Audio.Generate_Sound.Sound_Export_Extension.WAV);
                         }
                         catch (Exception e)
                         {
@@ -431,6 +432,10 @@ namespace VVVF_Simulator
                         }
                         SystemSounds.Beep.Play();
                     });
+                    */
+
+                    Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
+                    Generation.Motor.Generate_Motor_Core.Export_Wav(dialog.FileName, clone);
                 }
                 else if (command[1].Equals("MP3"))
                 {
