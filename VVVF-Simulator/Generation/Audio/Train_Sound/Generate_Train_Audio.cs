@@ -43,10 +43,9 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             public Harmonic_Data[] Gear_Harmonics = new Harmonic_Data[]
             {
 
-                new Harmonic_Data{harmonic = 1, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 7, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 14, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 99, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                
 
             };
 
@@ -71,14 +70,11 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                     BiQuadFilter.PeakingEQ(sample_rate,100,0.8f,2),
                     BiQuadFilter.PeakingEQ(sample_rate,200,0.8f,-2),
                     BiQuadFilter.PeakingEQ(sample_rate,800,0.8f,8),
-                    BiQuadFilter.PeakingEQ(sample_rate,1200,0.8f,-10),
-                    BiQuadFilter.PeakingEQ(sample_rate,2400,0.8f,-13),
-                    BiQuadFilter.PeakingEQ(sample_rate,4800,0.8f,-13),
-                    BiQuadFilter.PeakingEQ(sample_rate,5000,0.8f,-13),
-                    BiQuadFilter.PeakingEQ(sample_rate,9600,0.8f,-13),
-
-                    BiQuadFilter.LowPassFilter(sample_rate,8000,0.1f),
-
+                    BiQuadFilter.PeakingEQ(sample_rate,1200,0.8f,-5),
+                    BiQuadFilter.PeakingEQ(sample_rate,2400,0.8f,-10),
+                    BiQuadFilter.PeakingEQ(sample_rate,4800,0.8f,-12),
+                    BiQuadFilter.PeakingEQ(sample_rate,5000,0.8f,-25),
+                    BiQuadFilter.PeakingEQ(sample_rate,9600,1.0f,-50),
                 }
                 };
 
@@ -123,6 +119,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
 
                 double amplitude_disappear = (harmonic_freq + 100.0 > harmonic_data.disappear) ?
                     ((harmonic_data.disappear - harmonic_freq) / 100.0) : 1;
+                sine_val *= amplitude * amplitude_disappear;
 
                 sound_val += Math.Round(sine_val);
                 total_sound_count++;
