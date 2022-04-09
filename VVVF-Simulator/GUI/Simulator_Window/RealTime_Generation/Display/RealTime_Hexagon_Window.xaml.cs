@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using VVVF_Simulator.Yaml.VVVF_Sound;
-using static VVVF_Simulator.Generation.Audio.Generate_RealTime;
+using static VVVF_Simulator.Generation.Audio.Generate_RealTime_Common;
 using static VVVF_Simulator.VVVF_Calculate;
 
 namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
@@ -50,9 +50,12 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
 
 
         private RealTime_Hexagon_Style style;
+        private RealTime_Parameter realTime_Parameter;
         private bool show_zero_vector;
-        public RealTime_Hexagon_Window(RealTime_Hexagon_Style style, bool show_zero_vector)
+        public RealTime_Hexagon_Window(RealTime_Parameter r,RealTime_Hexagon_Style style, bool show_zero_vector)
         {
+            realTime_Parameter = r;
+
             InitializeComponent();
 
             this.style = style;
@@ -67,7 +70,7 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
         public void Start_Task()
         {
             Task.Run(() => {
-                while (!RealTime_Parameter.quit)
+                while (!realTime_Parameter.quit)
                 {
                     update_control_stat();
                 }
@@ -82,8 +85,8 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
         {
             Bitmap image = new Bitmap(100,100);
 
-            VVVF_Values control = RealTime_Parameter.control_values.Clone();
-            Yaml_VVVF_Sound_Data ysd = RealTime_Parameter.sound_data;
+            VVVF_Values control = realTime_Parameter.control_values.Clone();
+            Yaml_VVVF_Sound_Data ysd = realTime_Parameter.sound_data;
 
             control.set_Sine_Time(0);
             control.set_Saw_Time(0);

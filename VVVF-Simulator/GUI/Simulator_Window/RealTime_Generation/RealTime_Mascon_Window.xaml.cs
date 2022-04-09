@@ -13,7 +13,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Setting_Window;
-using static VVVF_Simulator.Generation.Audio.Generate_RealTime;
+using static VVVF_Simulator.Generation.Audio.Generate_RealTime_Common;
 using static VVVF_Simulator.VVVF_Calculate;
 using static VVVF_Simulator.VVVF_Structs;
 using static VVVF_Simulator.VVVF_Structs.Pulse_Mode;
@@ -25,8 +25,11 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation
     /// </summary>
     public partial class RealTime_Mascon_Window : Window
     {
-        public RealTime_Mascon_Window()
+        RealTime_Parameter realTime_Parameter;
+        public RealTime_Mascon_Window(RealTime_Parameter parameter)
         {
+            realTime_Parameter = parameter;
+
             InitializeComponent();
             set_Stat(0);
             DataContext = view_model;
@@ -36,20 +39,20 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation
         {
 
             Task.Run(() => {
-                while (!RealTime_Parameter.quit)
+                while (!realTime_Parameter.quit)
                 {
                     System.Threading.Thread.Sleep(20);
-                    view_model.sine_freq = RealTime_Parameter.control_values.get_Video_Sine_Freq();
+                    view_model.sine_freq = realTime_Parameter.control_values.get_Video_Sine_Freq();
                     view_model.pulse_state = get_Pulse_Name();
                 }
             });
             Task.Run(() => {
                 double pre_voltage = 0.0;
-                while (!RealTime_Parameter.quit)
+                while (!realTime_Parameter.quit)
                 {
-                    VVVF_Values control = RealTime_Parameter.control_values.Clone();
+                    VVVF_Values control = realTime_Parameter.control_values.Clone();
                     control.set_Allowed_Random_Freq_Move(false);
-                    double voltage = Generation.Video.Control_Info.Generate_Control_Common.Get_Voltage_Rate(RealTime_Parameter.sound_data, control, false);
+                    double voltage = Generation.Video.Control_Info.Generate_Control_Common.Get_Voltage_Rate(realTime_Parameter.sound_data, control, false);
                     double avg_voltage = Math.Round((pre_voltage + voltage) / 2.0, 2);
                     view_model.voltage = avg_voltage;
                     pre_voltage = voltage;
@@ -99,12 +102,12 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation
             private Brush _P4 = new SolidColorBrush(Color.FromRgb(0xA0, 0xA0, 0xA0));
             public Brush P4 { get { return _P4; } set { _P4 = value; RaisePropertyChanged(nameof(P4)); } }
 
-            
 
-            private double _sine_freq = RealTime_Parameter.control_values.get_Sine_Freq();
+
+            private double _sine_freq = 0;
             public double sine_freq { get { return _sine_freq; } set { _sine_freq = value; RaisePropertyChanged(nameof(sine_freq)); } }
 
-            private double _voltage = RealTime_Parameter.control_values.get_Sine_Freq();
+            private double _voltage = 0;
             public double voltage { get { return _voltage; } set { _voltage = value; RaisePropertyChanged(nameof(voltage)); } }
 
             private String _pulse_state = Pulse_Mode_Names.Async.ToString();
@@ -122,7 +125,7 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation
         private String get_Pulse_Name()
         {
             // Recalculate
-            VVVF_Values solve_control = RealTime_Parameter.control_values.Clone();
+            VVVF_Values solve_control = realTime_Parameter.control_values.Clone();
             Task re_calculate = Task.Run(() =>
             {
                 solve_control.set_Allowed_Random_Freq_Move(false);
@@ -133,7 +136,7 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation
                     free_run = solve_control.is_Free_Running(),
                     wave_stat = solve_control.get_Control_Frequency()
                 };
-                PWM_Calculate_Values calculated_Values = Yaml.VVVF_Sound.Yaml_VVVF_Wave.calculate_Yaml(solve_control, cv, RealTime_Parameter.sound_data);
+                PWM_Calculate_Values calculated_Values = Yaml.VVVF_Sound.Yaml_VVVF_Wave.calculate_Yaml(solve_control, cv, realTime_Parameter.sound_data);
                 calculate_values(solve_control, calculated_Values, 0);
             });
             re_calculate.Wait();
@@ -207,11 +210,11 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation
             int at_abs = (at < 0) ? -at : at;
             bool nega = at < 0;
 
-            RealTime_Parameter.change_amount = (nega ? -1 : 1) * ((at_abs - 1 < 0) ? 0 : at_abs - 1) * Math.PI * 0.0003;
+            realTime_Parameter.change_amount = (nega ? -1 : 1) * ((at_abs - 1 < 0) ? 0 : at_abs - 1) * Math.PI * 0.0003;
 
-            bool pre_braking = RealTime_Parameter.braking;
-            RealTime_Parameter.free_run = at == 0;
-            RealTime_Parameter.braking = (at == 0) ? pre_braking : at < 0;
+            bool pre_braking = realTime_Parameter.braking;
+            realTime_Parameter.free_run = at == 0;
+            realTime_Parameter.braking = (at == 0) ? pre_braking : at < 0;
 
             Color gray = Color.FromRgb(0xA0, 0xA0, 0xA0);
 
@@ -363,7 +366,7 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (serialPort.IsOpen) serialPort.Close();
-            RealTime_Parameter.quit = true;
+            realTime_Parameter.quit = true;
         }
 
         

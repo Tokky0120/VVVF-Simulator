@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using VVVF_Simulator.Yaml.VVVF_Sound;
-using static VVVF_Simulator.Generation.Audio.Generate_RealTime;
+using static VVVF_Simulator.Generation.Audio.Generate_RealTime_Common;
 using static VVVF_Simulator.VVVF_Calculate;
 using static VVVF_Simulator.VVVF_Structs;
 
@@ -42,8 +42,11 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
             }
         }
 
-        public RealTime_WaveForm_Window()
+        RealTime_Parameter realTime_Parameter;
+        public RealTime_WaveForm_Window(RealTime_Parameter r)
         {
+            realTime_Parameter = r;
+
             DataContext = view_model;
             InitializeComponent();
         }
@@ -51,7 +54,7 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
         public void Start_Task()
         {
             Task.Run(() => {
-                while (!RealTime_Parameter.quit)
+                while (!realTime_Parameter.quit)
                 {
                     set_WaveForm();
                     System.Threading.Thread.Sleep(16);
@@ -65,8 +68,8 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
 
         private void set_WaveForm()
         {
-            Yaml_VVVF_Sound_Data sound_data = RealTime_Parameter.sound_data;
-            VVVF_Values control = RealTime_Parameter.control_values.Clone();
+            Yaml_VVVF_Sound_Data sound_data = realTime_Parameter.sound_data;
+            VVVF_Values control = realTime_Parameter.control_values.Clone();
 
             control.set_Saw_Time(0);
             control.set_Sine_Time(0);

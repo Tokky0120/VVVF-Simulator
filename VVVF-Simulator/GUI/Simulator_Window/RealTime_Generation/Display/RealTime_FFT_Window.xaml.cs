@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using VVVF_Simulator.Yaml.VVVF_Sound;
-using static VVVF_Simulator.Generation.Audio.Generate_RealTime;
+using static VVVF_Simulator.Generation.Audio.Generate_RealTime_Common;
 
 namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
 {
@@ -40,8 +40,12 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-        public RealTime_FFT_Window()
+
+        RealTime_Parameter realTime_Parameter;
+        public RealTime_FFT_Window(RealTime_Parameter r)
         {
+            realTime_Parameter = r;
+
             InitializeComponent();
             DataContext = view_model;
         }
@@ -49,7 +53,7 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
         public void Start_Task()
         {
             Task.Run(() => {
-                while (!RealTime_Parameter.quit)
+                while (!realTime_Parameter.quit)
                 {
                     update_control_stat();
                 }
@@ -64,8 +68,8 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
         {
             
 
-            VVVF_Values control = RealTime_Parameter.control_values.Clone();
-            Yaml_VVVF_Sound_Data ysd = RealTime_Parameter.sound_data;
+            VVVF_Values control = realTime_Parameter.control_values.Clone();
+            Yaml_VVVF_Sound_Data ysd = realTime_Parameter.sound_data;
 
             control.set_Sine_Time(0);
             control.set_Saw_Time(0);

@@ -17,6 +17,7 @@ using VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation;
 using VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display;
 using VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Setting_Window;
 using YamlDotNet.Core;
+using static VVVF_Simulator.Generation.Audio.Generate_RealTime_Common;
 
 namespace VVVF_Simulator
 {
@@ -311,7 +312,7 @@ namespace VVVF_Simulator
                         try
                         {
                             Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            Generation.Audio.Generate_Sound.Export_VVVF_Sound(dialog.FileName, clone, Generation.Audio.Generate_Sound.Sound_Export_Extension.WAV);
+                            Generation.Audio.VVVF_Sound.Generate_VVVF_Audio.Export_VVVF_Sound(dialog.FileName, clone);
                         }
                         catch (Exception e)
                         {
@@ -320,30 +321,15 @@ namespace VVVF_Simulator
                         SystemSounds.Beep.Play();
                     });
                 }
-                else if (command[1].Equals("MP3"))
-                {
-                    var dialog = new SaveFileDialog { Filter = "mp3 (*.mp3)|*.mp3" };
-                    if (dialog.ShowDialog() == false) return true;
-                    Task task = Task.Run(() => {
-                        try
-                        {
-                            Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            Generation.Audio.Generate_Sound.Export_VVVF_Sound(dialog.FileName, clone, Generation.Audio.Generate_Sound.Sound_Export_Extension.MP3);
-                        }
-                        catch (Exception e)
-                        {
-                            MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                        SystemSounds.Beep.Play();
-                    });
-                }
+               
                 else if(command[1].Equals("RealTime"))
                 {
-                    Generation.Audio.Generate_RealTime.RealTime_Parameter.quit = false;
+                    RealTime_Parameter parameter = new();
+                    parameter.quit = false;
 
                     view_data.blocking = true;
 
-                    RealTime_Mascon_Window mascon = new();
+                    RealTime_Mascon_Window mascon = new(parameter);
                     mascon.Show();
                     mascon.Start_Task();
 
@@ -354,7 +340,7 @@ namespace VVVF_Simulator
 
                     if (Properties.Settings.Default.RealTime_VVVF_WaveForm_Show)
                     {
-                        wave_form = new();
+                        wave_form = new(parameter);
                         wave_form.Show();
                         wave_form.Start_Task();
                     }
@@ -362,6 +348,7 @@ namespace VVVF_Simulator
                     if (Properties.Settings.Default.RealTime_VVVF_Control_Show)
                     {
                         stat_window = new(
+                            parameter,
                             (RealTime_ControlStat_Style)Properties.Settings.Default.RealTime_VVVF_Control_Style
                         );
                         stat_window.Show();
@@ -371,6 +358,7 @@ namespace VVVF_Simulator
                     if (Properties.Settings.Default.RealTime_VVVF_Hexagon_Show)
                     {
                         hexagon_window = new(
+                            parameter,
                             (RealTime_Hexagon_Style)Properties.Settings.Default.RealTime_VVVF_Hexagon_Style,
                             Properties.Settings.Default.RealTime_VVVF_Hexagon_ZeroVector
                         );
@@ -380,7 +368,7 @@ namespace VVVF_Simulator
 
                     if (Properties.Settings.Default.RealTime_VVVF_FFT_Show)
                     {
-                        fft_window = new RealTime_FFT_Window();
+                        fft_window = new RealTime_FFT_Window(parameter);
                         fft_window.Show();
                         fft_window.Start_Task();
                     }
@@ -394,7 +382,7 @@ namespace VVVF_Simulator
                                 data = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
                             else
                                 data = Yaml_VVVF_Manage.current_data;
-                            Generation.Audio.Generate_RealTime.realtime_vvvf_sound(data);
+                            Generation.Audio.VVVF_Sound.RealTime_VVVF_Audio.RealTime_VVVF_Generation(data, parameter);
                         }
                         catch (Exception e)
                         {
@@ -419,12 +407,12 @@ namespace VVVF_Simulator
                     
                     var dialog = new SaveFileDialog { Filter = "wav (*.wav)|*.wav" };
                     if (dialog.ShowDialog() == false) return true;
-                    /*
+
                     Task task = Task.Run(() => {
                         try
                         {
                             Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            Generation.Audio.Generate_Sound.Export_Train_Sound(dialog.FileName, clone, Generation.Audio.Generate_Sound.Sound_Export_Extension.WAV);
+                            Generation.Audio.Train_Sound.Generate_Train_Audio.Export_Train_Sound(dialog.FileName, clone);
                         }
                         catch (Exception e)
                         {
@@ -432,33 +420,16 @@ namespace VVVF_Simulator
                         }
                         SystemSounds.Beep.Play();
                     });
-                    */
 
-                    Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                    Generation.Motor.Generate_Motor_Core.Export_Wav(dialog.FileName, clone);
-                }
-                else if (command[1].Equals("MP3"))
-                {
-                    var dialog = new SaveFileDialog { Filter = "mp3 (*.mp3)|*.mp3" };
-                    if (dialog.ShowDialog() == false) return true;
-                    Task task = Task.Run(() => {
-                        try
-                        {
-                            Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            Generation.Audio.Generate_Sound.Export_Train_Sound(dialog.FileName, clone, Generation.Audio.Generate_Sound.Sound_Export_Extension.MP3);
-                        }
-                        catch(Exception e)
-                        {
-                            MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                        SystemSounds.Beep.Play();
-                    });
+
+                    
                 }
                 else if (command[1].Equals("RealTime"))
                 {
-                    Generation.Audio.Generate_RealTime.RealTime_Parameter.quit = false;
+                    RealTime_Parameter parameter = new();
+                    parameter.quit = false;
 
-                    RealTime_Mascon_Window mascon = new();
+                    RealTime_Mascon_Window mascon = new(parameter);
                     mascon.Show();
                     mascon.Start_Task();
 
@@ -469,7 +440,7 @@ namespace VVVF_Simulator
 
                     if (Properties.Settings.Default.RealTime_Train_WaveForm_Show)
                     {
-                        wave_form = new();
+                        wave_form = new(parameter);
                         wave_form.Show();
                         wave_form.Start_Task();
                     }
@@ -477,6 +448,7 @@ namespace VVVF_Simulator
                     if (Properties.Settings.Default.RealTime_Train_Control_Show)
                     {
                         stat_window = new(
+                            parameter,
                             (RealTime_ControlStat_Style)Properties.Settings.Default.RealTime_Train_Control_Style
                         );
                         stat_window.Show();
@@ -486,6 +458,7 @@ namespace VVVF_Simulator
                     if (Properties.Settings.Default.RealTime_Train_Hexagon_Show)
                     {
                         hexagon_window = new(
+                            parameter,
                             (RealTime_Hexagon_Style)Properties.Settings.Default.RealTime_Train_Hexagon_Style,
                             Properties.Settings.Default.RealTime_Train_Hexagon_ZeroVector
                         );
@@ -495,7 +468,7 @@ namespace VVVF_Simulator
 
                     if (Properties.Settings.Default.RealTime_Train_FFT_Show)
                     {
-                        fft_window = new RealTime_FFT_Window();
+                        fft_window = new RealTime_FFT_Window(parameter);
                         fft_window.Show();
                         fft_window.Start_Task();
                     }
@@ -511,7 +484,7 @@ namespace VVVF_Simulator
                                 data = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
                             else
                                 data = Yaml_VVVF_Manage.current_data;
-                            Generation.Audio.Generate_RealTime.realtime_train_sound(data);
+                            Generation.Audio.Train_Sound.RealTime_Train_Audio.RealTime_Train_Generation(data , parameter);
                         }
                         catch (Exception e)
                         {

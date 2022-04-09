@@ -128,10 +128,8 @@
 
                 <MenuItem Header="Sound">
                     <MenuItem Header="WAV VVVF Sound" Tag="VVVF_WAV" Click="Generation_Menu_Click"/>
-                    <MenuItem Header="MP3 VVVF Sound" Tag="VVVF_MP3" Click="Generation_Menu_Click"/>
                     <Separator/>
                     <MenuItem Header="WAV Train Sound" Tag="Train_WAV" Click="Generation_Menu_Click"/>
-                    <MenuItem Header="MP3 Train Sound" Tag="Train_MP3" Click="Generation_Menu_Click"/>
                 </MenuItem>
                 
                 

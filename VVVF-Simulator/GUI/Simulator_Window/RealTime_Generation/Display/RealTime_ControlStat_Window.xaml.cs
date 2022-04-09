@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using VVVF_Simulator.Yaml.VVVF_Sound;
-using static VVVF_Simulator.Generation.Audio.Generate_RealTime;
+using static VVVF_Simulator.Generation.Audio.Generate_RealTime_Common;
 using static VVVF_Simulator.Generation.Video.Control_Info.Generate_Control_Common;
 
 namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
@@ -49,11 +49,13 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
         }
 
         RealTime_ControlStat_Style style;
-
+        RealTime_Parameter realTime_Parameter;
         int image_width = 960;
         int image_height = 1620;
-        public RealTime_ControlStat_Window(RealTime_ControlStat_Style style)
+        public RealTime_ControlStat_Window(RealTime_Parameter r,RealTime_ControlStat_Style style)
         {
+            realTime_Parameter = r;
+
             DataContext = view_model;
             InitializeComponent();
             this.style = style;
@@ -65,7 +67,7 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
         public void Start_Task()
         {
             Task.Run(() => {
-                while (!RealTime_Parameter.quit)
+                while (!realTime_Parameter.quit)
                 {
                     update_control_stat();
 
@@ -84,19 +86,19 @@ namespace VVVF_Simulator.GUI.Simulator_Window.RealTime_Generation.Display
 
             if(style == RealTime_ControlStat_Style.Original)
             {
-                VVVF_Values control = RealTime_Parameter.control_values.Clone();
+                VVVF_Values control = realTime_Parameter.control_values.Clone();
                 image = Generation.Video.Control_Info.Generate_Control_Original.Get_Control_Original_Image(
                     control,
-                    RealTime_Parameter.control_values.get_Sine_Freq() == 0
+                    realTime_Parameter.control_values.get_Sine_Freq() == 0
                 );
             }
             else
             {
-                VVVF_Values control = RealTime_Parameter.control_values.Clone();
+                VVVF_Values control = realTime_Parameter.control_values.Clone();
                 image = Generation.Video.Control_Info.Generate_Control_Original2.Get_Control_Original2_Image(
                     control,
                     true,
-                    RealTime_Parameter.sound_data,
+                    realTime_Parameter.sound_data,
                     pre_Voltage_Data,
                     false
                 );
