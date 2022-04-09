@@ -43,20 +43,20 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             public Harmonic_Data[] Gear_Harmonics = new Harmonic_Data[]
             {
 
-                new Harmonic_Data{harmonic = 1, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=60,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=60,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=60,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 7, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=60,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 1, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 7, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
 
             };
 
             public Harmonic_Data[] Sine_Harmonics = new Harmonic_Data[]
             {
 
-                new Harmonic_Data{harmonic = 1, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=60,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=60,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=60,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 7, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=60,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 1, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 7, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
 
             };
 
@@ -67,7 +67,17 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                 {
                 {
 
-                    
+                    BiQuadFilter.PeakingEQ(sample_rate,10,0.8f,1),
+                    BiQuadFilter.PeakingEQ(sample_rate,100,0.8f,2),
+                    BiQuadFilter.PeakingEQ(sample_rate,200,0.8f,-2),
+                    BiQuadFilter.PeakingEQ(sample_rate,800,0.8f,8),
+                    BiQuadFilter.PeakingEQ(sample_rate,1200,0.8f,-10),
+                    BiQuadFilter.PeakingEQ(sample_rate,2400,0.8f,-13),
+                    BiQuadFilter.PeakingEQ(sample_rate,4800,0.8f,-13),
+                    BiQuadFilter.PeakingEQ(sample_rate,5000,0.8f,-13),
+                    BiQuadFilter.PeakingEQ(sample_rate,9600,0.8f,-13),
+
+                    BiQuadFilter.LowPassFilter(sample_rate,8000,0.1f),
 
                 }
                 };
@@ -92,7 +102,8 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             motor.AynMotorControler(new Wave_Values() { U = value.W, V = value.V, W = value.U });
             motor.Asyn_Moduleabc();
 
-            double pwm_sound_val = motor.motor_Param.Te * 1;
+            double pwm_sound_val = motor.motor_Param.Te - (motor.motor_Param.pre_Te + motor.motor_Param.Te) / 2.0;
+            pwm_sound_val *= 120;
 
             double sound_val = 0, total_sound_count = 0;
 
@@ -113,7 +124,6 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                 double amplitude_disappear = (harmonic_freq + 100.0 > harmonic_data.disappear) ?
                     ((harmonic_data.disappear - harmonic_freq) / 100.0) : 1;
 
-                sine_val *= amplitude * amplitude_disappear * (control.get_Control_Frequency() == 0 ? 0 : 1);
                 sound_val += Math.Round(sine_val);
                 total_sound_count++;
             }
@@ -169,12 +179,12 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
 
             Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.Sort().Clone();
 
-            int sample_freq = 192000;
+            int sample_freq = 200000;
 
             BufferedWaveProvider wave_provider = new BufferedWaveProvider(new WaveFormat(sample_freq, 8, 1));
             wave_provider.BufferLength = 20000;
 
-            Equalizer equalizer = new Equalizer(wave_provider.ToSampleProvider(), Train_Harmonic_Data.Get_Filter(192000));
+            Equalizer equalizer = new Equalizer(wave_provider.ToSampleProvider(), Train_Harmonic_Data.Get_Filter(sample_freq));
             IWaveProvider equal_wave_provider = equalizer.ToWaveProvider();
             WaveFileWriter writer = new WaveFileWriter(temp, equal_wave_provider.WaveFormat);
 
