@@ -30,12 +30,12 @@
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="1" Grid.Row="1" Background="#FF86AEFF">
                     <Border BorderBrush="#FF969696" BorderThickness="1">
-                        <Label Content="Accelerate" FontSize="20" FontFamily="M PLUS 2" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Label Content="Accelerate" FontSize="20" FontFamily="M PLUS 2" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
                     </Border>
                 </Grid>
                 <Grid Grid.Column="2" Grid.Row="1" Background="#FF86AEFF">
                     <Border BorderBrush="#FF969696" BorderThickness="1">
-                        <Label Content="Brake" FontSize="20" FontFamily="M PLUS 2" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Label Content="Brake" FontSize="20" FontFamily="M PLUS 2" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
                     </Border>
                 </Grid>
                 <Grid Grid.Column="1" Grid.Row="2" Background="White">
@@ -54,12 +54,12 @@
                             </Grid.RowDefinitions>
                             <Border BorderBrush="#FF969696" BorderThickness="1" Background="#FFCDDEFF">
                                 <Grid>
-                                    <Label Content="Mascon ON" HorizontalAlignment="Center" VerticalAlignment="Center"  FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold"/>
+                                    <Label Content="Mascon ON" HorizontalAlignment="Center" VerticalAlignment="Center"  FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold" Foreground="#FF0036A0"/>
                                 </Grid>
                             </Border>
                             <Border BorderBrush="#FF969696" BorderThickness="1" Grid.Column="1" Background="#FFCDDEFF">
                                 <Grid>
-                                    <Label Content="Mascon OFF" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold"/>
+                                    <Label Content="Mascon OFF" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold" Foreground="#FF0036A0"/>
                                 </Grid>
                             </Border>
                             <Border BorderBrush="#FF969696" BorderThickness="1" Grid.Row="1" Background="#FFE6E8EC">
@@ -124,12 +124,12 @@
                             </Grid.RowDefinitions>
                             <Border BorderBrush="#FF969696" BorderThickness="1" Background="#FFCDDEFF">
                                 <Grid>
-                                    <Label Content="Mascon ON" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold"/>
+                                    <Label Content="Mascon ON" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold" Foreground="#FF0036A0"/>
                                 </Grid>
                             </Border>
                             <Border BorderBrush="#FF969696" BorderThickness="1" Grid.Column="1" Background="#FFCDDEFF">
                                 <Grid>
-                                    <Label Content="Mascon OFF" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold"/>
+                                    <Label Content="Mascon OFF" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="M PLUS 2" FontWeight="Bold" Foreground="#FF0036A0"/>
                                 </Grid>
                             </Border>
                             <Border BorderBrush="#FF969696" BorderThickness="1" Grid.Row="1" Background="#FFE6E8EC">
@@ -181,7 +181,7 @@
             </Grid>
         </Grid>
         <Grid Background="#FF86AEFF">
-            <Label Content="MASCON OFF SETTING" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="M PLUS 2" FontSize="24" RenderTransformOrigin="0.5,0.5" FontWeight="Bold">
+            <Label Content="MASCON OFF SETTING" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="M PLUS 2" FontSize="24" RenderTransformOrigin="0.5,0.5" FontWeight="Bold" Foreground="White">
                 <Label.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>

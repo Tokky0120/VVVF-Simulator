@@ -84,6 +84,7 @@ namespace VVVF_Simulator
         public double get_Sine_Angle_Freq() { return sin_angle_freq; }
         public void add_Sine_Angle_Freq(double b) { sin_angle_freq += b; }
 
+        // Util for sine angle freq
         public double get_Sine_Freq() { return sin_angle_freq * M_1_2PI; }
 
         public void set_Sine_Time(double t) { sin_time = t; }

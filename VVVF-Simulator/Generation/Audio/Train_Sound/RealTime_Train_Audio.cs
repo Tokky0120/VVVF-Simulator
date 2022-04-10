@@ -55,7 +55,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             while (true)
             {
                 var bufferedWaveProvider = new BufferedWaveProvider(new WaveFormat(192000, 8, 1));
-                var equalizer = new Equalizer(bufferedWaveProvider.ToSampleProvider(), Train_Harmonic_Data.Get_Filter(192000));
+                var equalizer = new Equalizer(bufferedWaveProvider.ToSampleProvider(), realTime_Parameter.Train_Harmonic_Data.Get_Filter(192000));
 
                 var mmDevice = new MMDeviceEnumerator().GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
                 IWavePlayer wavPlayer = new WasapiOut(mmDevice, AudioClientShareMode.Shared, false, 50);

@@ -29,10 +29,10 @@
                     <ColumnDefinition Width="12*"/>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="1" Grid.Row="1" Background="#FF86AEFF">
-                    <Label Content="Accelerating" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="M PLUS 2 Medium" FontWeight="Normal"/>
+                    <Label Content="Accelerating" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="M PLUS 2 Medium" FontWeight="Bold" Foreground="White"/>
                 </Grid>
                 <Grid Grid.Column="2" Grid.Row="1" Background="#FF86AEFF">
-                    <Label Content="Braking" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="M PLUS 2 Medium"/>
+                    <Label Content="Braking" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontFamily="M PLUS 2 Medium" FontWeight="Bold" Foreground="White"/>
                 </Grid>
                 <Grid Grid.Column="1" Grid.Row="2" Background="White">
                     <TextBox x:Name="accelerate_min_freq_box" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="2.00" VerticalAlignment="Center" FontFamily="M PLUS 2 Medium" FontSize="24" UndoLimit="100" TextAlignment="Center" MaxLength="10" Margin="40,0,50,0"
@@ -52,7 +52,7 @@
             </Grid>
         </Grid>
         <Grid Background="#FF86AEFF">
-            <Label Content="MINIMUM FREQUENCY" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="M PLUS 2" FontSize="24" RenderTransformOrigin="0.5,0.5" FontWeight="Bold">
+            <Label Content="MINIMUM FREQUENCY" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="M PLUS 2" FontSize="24" RenderTransformOrigin="0.5,0.5" FontWeight="Bold" Foreground="White">
                 <Label.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>

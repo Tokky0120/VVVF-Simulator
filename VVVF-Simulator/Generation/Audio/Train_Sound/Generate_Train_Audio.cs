@@ -43,9 +43,8 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             public Harmonic_Data[] Gear_Harmonics = new Harmonic_Data[]
             {
 
-                new Harmonic_Data{harmonic = 14, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 99, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                
+                new Harmonic_Data{harmonic = 1 * 120 / 4 / 60.0, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 7.07142857 * 120 / 4 / 60.0, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
 
             };
 
@@ -53,13 +52,13 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             {
 
                 new Harmonic_Data{harmonic = 1, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 7, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x30,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x15,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 7, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x07,min_val=0,max_val=0x60},disappear = 10000},
 
             };
 
-            public static BiQuadFilter[,] Get_Filter(float sample_rate)
+            public BiQuadFilter[,] Get_Filter(float sample_rate)
             {
 
                 BiQuadFilter[,] filters = new BiQuadFilter[,]
@@ -68,8 +67,8 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
 
                     BiQuadFilter.PeakingEQ(sample_rate,10,0.8f,1),
                     BiQuadFilter.PeakingEQ(sample_rate,100,0.8f,2),
-                    BiQuadFilter.PeakingEQ(sample_rate,200,0.8f,-2),
-                    BiQuadFilter.PeakingEQ(sample_rate,800,0.8f,8),
+                    BiQuadFilter.PeakingEQ(sample_rate,300,0.8f,4),
+                    BiQuadFilter.PeakingEQ(sample_rate,700,2.8f,8),
                     BiQuadFilter.PeakingEQ(sample_rate,1200,0.8f,-5),
                     BiQuadFilter.PeakingEQ(sample_rate,2400,0.8f,-10),
                     BiQuadFilter.PeakingEQ(sample_rate,4800,0.8f,-12),
@@ -181,7 +180,9 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             BufferedWaveProvider wave_provider = new BufferedWaveProvider(new WaveFormat(sample_freq, 8, 1));
             wave_provider.BufferLength = 20000;
 
-            Equalizer equalizer = new Equalizer(wave_provider.ToSampleProvider(), Train_Harmonic_Data.Get_Filter(sample_freq));
+            var harmonic_train = new Train_Harmonic_Data();
+
+            Equalizer equalizer = new Equalizer(wave_provider.ToSampleProvider(), harmonic_train.Get_Filter(sample_freq));
             IWaveProvider equal_wave_provider = equalizer.ToWaveProvider();
             WaveFileWriter writer = new WaveFileWriter(temp, equal_wave_provider.WaveFormat);
 
@@ -193,7 +194,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             motor.SIM_SAMPLE_FREQ = sample_freq;
             motor_Param.TL = 0.0;
 
-            var harmonic_train = new Train_Harmonic_Data();
+            
 
             while (loop)
             {

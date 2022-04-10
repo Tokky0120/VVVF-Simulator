@@ -64,9 +64,11 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
 
                     int tick_diff_initial = data.On.tick - pre_event_tick;
                     double initial_wait = TempoMap.GetMilliSeconds(tick_diff_initial, data.On.tempo, midiData.Resolution.Resolution) * 0.001;
+                    initial_wait = Math.Round(initial_wait, 5);
 
                     int tick_diff_play = data.Off.tick - data.On.tick;
                     double play_wait = TempoMap.GetMilliSeconds(tick_diff_play, data.Off.tempo, midiData.Resolution.Resolution) * 0.001;
+                    play_wait = Math.Round(play_wait, 5);
 
                     pre_event_tick = data.Off.tick;
 
