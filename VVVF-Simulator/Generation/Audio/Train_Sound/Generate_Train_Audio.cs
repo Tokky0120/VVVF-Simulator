@@ -43,18 +43,27 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             public Harmonic_Data[] Gear_Harmonics = new Harmonic_Data[]
             {
 
-                new Harmonic_Data{harmonic = 1 * 120 / 4 / 60.0, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 7.07142857 * 120 / 4 / 60.0, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 14 * 120 / 4 / 60.0, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 99 * 120 / 4 / 60.0, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
 
+                new Harmonic_Data{harmonic = 14 * 120 / 4 / 60.0 / 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x30,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 99 * 120 / 4 / 60.0 / 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x30,min_val=0,max_val=0x60},disappear = 10000},
+
+                new Harmonic_Data{harmonic = 14 * 120 / 4 / 60.0 / 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x15,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 99 * 120 / 4 / 60.0 / 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x15,min_val=0,max_val=0x60},disappear = 10000},
+
+                new Harmonic_Data{harmonic = 1 * 120 / 4 / 60.0, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 7.07142857 * 120 / 4 / 60.0, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                
             };
 
             public Harmonic_Data[] Sine_Harmonics = new Harmonic_Data[]
             {
 
-                new Harmonic_Data{harmonic = 1, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x30,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x15,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 7, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x00,end=200,end_val=0x07,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 1, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x10,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x10,end=200,end_val=0x30,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x10,end=200,end_val=0x15,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 7, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x10,end=200,end_val=0x07,min_val=0,max_val=0x60},disappear = 10000},
 
             };
 
@@ -65,12 +74,12 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                 {
                 {
 
-                    BiQuadFilter.PeakingEQ(sample_rate,10,0.8f,1),
-                    BiQuadFilter.PeakingEQ(sample_rate,100,0.8f,2),
+                    BiQuadFilter.PeakingEQ(sample_rate,10,0.8f,4),
+                    BiQuadFilter.PeakingEQ(sample_rate,100,0.8f,4),
                     BiQuadFilter.PeakingEQ(sample_rate,300,0.8f,4),
                     BiQuadFilter.PeakingEQ(sample_rate,700,2.8f,8),
-                    BiQuadFilter.PeakingEQ(sample_rate,1200,0.8f,-5),
-                    BiQuadFilter.PeakingEQ(sample_rate,2400,0.8f,-10),
+                    BiQuadFilter.PeakingEQ(sample_rate,1200,0.8f,9),
+                    BiQuadFilter.PeakingEQ(sample_rate,2400,0.8f,-6),
                     BiQuadFilter.PeakingEQ(sample_rate,4800,0.8f,-12),
                     BiQuadFilter.PeakingEQ(sample_rate,5000,0.8f,-25),
                     BiQuadFilter.PeakingEQ(sample_rate,9600,1.0f,-50),
