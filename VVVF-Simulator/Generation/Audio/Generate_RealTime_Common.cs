@@ -26,7 +26,7 @@ namespace VVVF_Simulator.Generation.Audio
             public Train_Harmonic_Data Train_Harmonic_Data = new();
         }
 
-        public static int RealTime_CheckForFreq(VVVF_Values control, RealTime_Parameter param)
+        public static int RealTime_CheckForFreq(VVVF_Values control, RealTime_Parameter param, int step)
         {
             control.set_Braking(param.braking);
             control.set_Mascon_Off(param.free_run);
@@ -64,7 +64,7 @@ namespace VVVF_Simulator.Generation.Audio
                     control.set_Control_Frequency(control.get_Sine_Freq());
                 else
                 {
-                    double freq_change = control.get_Free_Freq_Change() * 1.0 / 192000 * 20.0;
+                    double freq_change = control.get_Free_Freq_Change() * 1.0 / 192000 * step;
                     double final_freq = control.get_Control_Frequency() + freq_change;
 
                     if (control.get_Sine_Freq() <= final_freq)
@@ -81,7 +81,7 @@ namespace VVVF_Simulator.Generation.Audio
             }
             else
             {
-                double freq_change = control.get_Free_Freq_Change() * 1.0 / 192000 * 20.0;
+                double freq_change = control.get_Free_Freq_Change() * 1.0 / 192000 * step;
                 double final_freq = control.get_Control_Frequency() - freq_change;
                 control.set_Control_Frequency(final_freq > 0 ? final_freq : 0);
                 control.set_Free_Running(true);

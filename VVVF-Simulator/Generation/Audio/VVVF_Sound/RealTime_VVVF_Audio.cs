@@ -14,12 +14,14 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
         {
             while (true)
             {
-                int v = RealTime_CheckForFreq(control , realTime_Parameter);
+                int bufsize = 20;
+
+                int v = RealTime_CheckForFreq(control , realTime_Parameter, bufsize);
                 if (v != -1) return v;
 
-                byte[] add = new byte[20];
+                byte[] add = new byte[bufsize];
 
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < bufsize; i++)
                 {
                     control.add_Sine_Time(1.0 / 192000.0);
                     control.add_Saw_Time(1.0 / 192000.0);
@@ -29,9 +31,6 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
 
                     add[i] = sound_byte;
                 }
-
-
-                int bufsize = 20;
 
                 provider.AddSamples(add, 0, bufsize);
                 while (provider.BufferedBytes > Properties.Settings.Default.RealTime_VVVF_BuffSize) ;

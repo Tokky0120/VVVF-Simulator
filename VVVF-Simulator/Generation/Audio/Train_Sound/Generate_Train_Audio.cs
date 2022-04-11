@@ -40,31 +40,43 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
 
         public class Train_Harmonic_Data
         {
-            public Harmonic_Data[] Gear_Harmonics = new Harmonic_Data[]
+            public int Gear1 = 16;
+            public int Gear2 = 101;
+
+            public Harmonic_Data[] Get_Gear_Harmonics()
             {
+                List<Harmonic_Data> Gear_Harmonics = new List<Harmonic_Data>();
+                Harmonic_Data_Amplitude hda = new Harmonic_Data_Amplitude { start = 0, start_val = 0x0, end = 20, end_val = 0x60, min_val = 0, max_val = 0x60 };
 
-                new Harmonic_Data{harmonic = 14 * 120 / 4 / 60.0, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 99 * 120 / 4 / 60.0, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                double gear_rate = Gear2 / Gear1;
 
-                new Harmonic_Data{harmonic = 14 * 120 / 4 / 60.0 / 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x30,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 99 * 120 / 4 / 60.0 / 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x30,min_val=0,max_val=0x60},disappear = 10000},
+                // basic harmonics
+                for (int i = 0; i < 2; i++)
+                {
+                    int odd = 2 * i + 1;
 
-                new Harmonic_Data{harmonic = 14 * 120 / 4 / 60.0 / 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x15,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 99 * 120 / 4 / 60.0 / 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x15,min_val=0,max_val=0x60},disappear = 10000},
+                    double harmonic_1 = Gear1 * 120 / 4 / 60.0 / odd;
+                    double harmonic_2 = Gear2 * 120 / 4 / 60.0 / odd;
 
-                new Harmonic_Data{harmonic = 1 * 120 / 4 / 60.0, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 7.07142857 * 120 / 4 / 60.0, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x0,end=50,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                
-            };
+                    Gear_Harmonics.Add(new Harmonic_Data { harmonic = harmonic_1, amplitude = hda, disappear = 10000 });
+                    Gear_Harmonics.Add(new Harmonic_Data { harmonic = harmonic_2, amplitude = hda, disappear = 10000 });
+
+                }
+
+
+                Gear_Harmonics.Add(new Harmonic_Data { harmonic = Gear1 * 120 / 4 / 60.0 / 3 * gear_rate / 5.0, amplitude = hda, disappear = 10000 });
+                Gear_Harmonics.Add(new Harmonic_Data { harmonic = Gear2 * 120 / 4 / 60.0 / 3 * gear_rate / 5.0, amplitude = hda, disappear = 10000 });
+
+
+                return Gear_Harmonics.ToArray();
+            }
 
             public Harmonic_Data[] Sine_Harmonics = new Harmonic_Data[]
             {
 
-                new Harmonic_Data{harmonic = 1, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x10,end=200,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 3, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x10,end=200,end_val=0x30,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x10,end=200,end_val=0x15,min_val=0,max_val=0x60},disappear = 10000},
-                new Harmonic_Data{harmonic = 7, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x10,end=200,end_val=0x07,min_val=0,max_val=0x60},disappear = 10000},
-
+                new Harmonic_Data{harmonic = 1, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x10,end=60,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 5, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x10,end=60,end_val=0x60,min_val=0,max_val=0x60},disappear = 10000},
+                new Harmonic_Data{harmonic = 7, amplitude = new Harmonic_Data_Amplitude{start=0,start_val=0x10,end=60,end_val=0x30,min_val=0,max_val=0x60},disappear = 10000},
             };
 
             public BiQuadFilter[,] Get_Filter(float sample_rate)
@@ -74,11 +86,12 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                 {
                 {
 
-                    BiQuadFilter.PeakingEQ(sample_rate,10,0.8f,4),
-                    BiQuadFilter.PeakingEQ(sample_rate,100,0.8f,4),
-                    BiQuadFilter.PeakingEQ(sample_rate,300,0.8f,4),
+                    BiQuadFilter.PeakingEQ(sample_rate,10,0.8f,-50),
+                    BiQuadFilter.PeakingEQ(sample_rate,100,0.8f,-10),
+                    BiQuadFilter.PeakingEQ(sample_rate,300,0.8f,-1),
                     BiQuadFilter.PeakingEQ(sample_rate,700,2.8f,8),
-                    BiQuadFilter.PeakingEQ(sample_rate,1200,0.8f,9),
+                    BiQuadFilter.PeakingEQ(sample_rate,1250,0.8f,-10),
+                    BiQuadFilter.PeakingEQ(sample_rate,1600,0.8f,9),
                     BiQuadFilter.PeakingEQ(sample_rate,2400,0.8f,-6),
                     BiQuadFilter.PeakingEQ(sample_rate,4800,0.8f,-12),
                     BiQuadFilter.PeakingEQ(sample_rate,5000,0.8f,-25),
@@ -108,6 +121,8 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
 
             double pwm_sound_val = motor.motor_Param.Te - (motor.motor_Param.pre_Te + motor.motor_Param.Te) / 2.0;
             pwm_sound_val *= 120;
+            pwm_sound_val += (value.U - value.V) * 5 * (control.get_Sine_Freq() > 40 ? 1 : 5 * (40 - control.get_Sine_Freq()) / 40.0 + 1);
+            pwm_sound_val = pwm_sound_val * 2 / 3.0;
 
             double sound_val = 0, total_sound_count = 0;
 
@@ -134,9 +149,10 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             }
 
             // GEAR HARMONICS
-            for (int harmonic = 0; harmonic < train_Harmonic_Data.Gear_Harmonics.Length; harmonic++)
+            Harmonic_Data[] Gear_Harmonics = train_Harmonic_Data.Get_Gear_Harmonics();
+            for (int harmonic = 0; harmonic < Gear_Harmonics.Length; harmonic++)
             {
-                Harmonic_Data harmonic_data = train_Harmonic_Data.Gear_Harmonics[harmonic];
+                Harmonic_Data harmonic_data = Gear_Harmonics[harmonic];
 
                 double harmonic_freq = harmonic_data.harmonic * control.get_Sine_Freq();
 
@@ -155,14 +171,6 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                 total_sound_count++;
             }
 
-            double[] saw_harmonics = new double[] { 3 };
-            for (int harmonic = 0; harmonic < saw_harmonics.Length; harmonic++)
-            {
-                double saw_val = sin(control.get_Saw_Time() * control.get_Saw_Angle_Freq() * harmonic);
-                saw_val *= 0x20 * (control.get_Control_Frequency() == 0 ? 0 : 1);
-                sound_val += Math.Round(saw_val);
-                total_sound_count++;
-            }
 
             int pre_sound_byte = (int)Math.Round(sound_val / total_sound_count + pwm_sound_val + 0xFF / 2);
             byte sound_byte = (byte)(pre_sound_byte);
