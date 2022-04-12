@@ -23,7 +23,7 @@ namespace VVVF_Simulator.Generation.Audio
             public Yaml_VVVF_Sound_Data sound_data { get; set; } = new();
 
             public Motor_Data Motor = new();
-            public Train_Harmonic_Data Train_Harmonic_Data = new();
+            public Train_Harmonic_Data Train_Harmonic_Data = default_Train_Harmonic_Data.Clone();
         }
 
         public static int RealTime_CheckForFreq(VVVF_Values control, RealTime_Parameter param, int step)

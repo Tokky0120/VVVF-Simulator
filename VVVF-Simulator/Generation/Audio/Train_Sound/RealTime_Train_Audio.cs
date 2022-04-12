@@ -41,11 +41,15 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                 while (provider.BufferedBytes > Properties.Settings.Default.RealTime_Train_BuffSize) ;
             }
         }
+
         public static void RealTime_Train_Generation(Yaml_VVVF_Sound_Data ysd, RealTime_Parameter realTime_Parameter)
         {
+            int sample_freq = 192000;
             realTime_Parameter.quit = false;
             realTime_Parameter.sound_data = ysd;
-            realTime_Parameter.Motor = new Motor_Data() { SIM_SAMPLE_FREQ = 192000 };
+            realTime_Parameter.Motor = new Motor_Data() { SIM_SAMPLE_FREQ = sample_freq };
+
+            Train_Harmonic_Data thd = realTime_Parameter.Train_Harmonic_Data;
 
             VVVF_Values control = new();
             control.reset_all_variables();
@@ -53,16 +57,14 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             realTime_Parameter.control_values = control;
             while (true)
             {
-                var bufferedWaveProvider = new BufferedWaveProvider(new WaveFormat(192000, 8, 1));
-                var equalizer = new Equalizer(bufferedWaveProvider.ToSampleProvider(), realTime_Parameter.Train_Harmonic_Data.Get_Filter(192000));
+                var bufferedWaveProvider = new BufferedWaveProvider(new WaveFormat(sample_freq, 8, 1));
+                var equalizer = new Equalizer(bufferedWaveProvider.ToSampleProvider(), thd.NFilteres);
 
                 var mmDevice = new MMDeviceEnumerator().GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-                IWavePlayer wavPlayer = new WasapiOut(mmDevice, AudioClientShareMode.Shared, false, 50);
+                IWavePlayer wavPlayer = new WasapiOut(mmDevice, AudioClientShareMode.Shared, false, 0);
 
                 wavPlayer.Init(equalizer);
                 wavPlayer.Play();
-
-
 
                 int stat;
                 try

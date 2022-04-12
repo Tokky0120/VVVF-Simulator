@@ -412,7 +412,7 @@ namespace VVVF_Simulator
                         try
                         {
                             Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            Generation.Audio.Train_Sound.Generate_Train_Audio.Export_Train_Sound(dialog.FileName, clone);
+                            Generation.Audio.Train_Sound.Generate_Train_Audio.Export_Train_Sound(dialog.FileName, clone, Generation.Audio.Train_Sound.Generate_Train_Audio.default_Train_Harmonic_Data.Clone());
                         }
                         catch (Exception e)
                         {

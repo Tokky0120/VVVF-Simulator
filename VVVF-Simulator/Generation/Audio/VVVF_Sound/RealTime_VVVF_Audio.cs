@@ -51,7 +51,7 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
                 var bufferedWaveProvider = new BufferedWaveProvider(new WaveFormat(192000, 8, 1));
 
                 var mmDevice = new MMDeviceEnumerator().GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-                IWavePlayer wavPlayer = new WasapiOut(mmDevice, AudioClientShareMode.Shared, false, 50);
+                IWavePlayer wavPlayer = new WasapiOut(mmDevice, AudioClientShareMode.Shared, false, 0);
 
                 wavPlayer.Init(bufferedWaveProvider);
                 wavPlayer.Play();
