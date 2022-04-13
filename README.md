@@ -6,8 +6,8 @@ This program is for the C# wpf app.<br>
 
 # Term of use
 You are **free** to use the code in this program.<br>
-Notice<br>
-- We don't take any responsibility for what you done with this appliation.<br>
+Disclaimer<br>
+We are not responsible for anything you do with this application.<br>
 
 Please:<br>
 - Post the URL of this GitHub page<br>
