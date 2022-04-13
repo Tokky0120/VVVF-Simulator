@@ -4,10 +4,11 @@ Simulates VVVF inverter sound on a PC.
 # Description
 This program is for the C# wpf app.<br>
 
+# Disclaimer
+We are not responsible for anything you do with this application.<br>
+
 # Term of use
 You are **free** to use the code in this program.<br>
-Disclaimer<br>
-We are not responsible for anything you do with this application.<br>
 
 Please:<br>
 - Post the URL of this GitHub page<br>
