@@ -218,15 +218,15 @@ namespace VVVF_Simulator.Yaml.TrainAudio_Setting
                 }
             }
 
-            public static void load_Yaml(String path)
+            public static Yaml_TrainSound_Data load_Yaml(String path)
             {
                 try
                 {
                     var input = new StreamReader(path, Encoding.UTF8);
                     var deserializer = new Deserializer();
                     Yaml_TrainSound_Data deserializeObject = deserializer.Deserialize<Yaml_TrainSound_Data>(input);
-                    current_data = deserializeObject;
                     input.Close();
+                    return deserializeObject;
                 }
                 catch
                 {

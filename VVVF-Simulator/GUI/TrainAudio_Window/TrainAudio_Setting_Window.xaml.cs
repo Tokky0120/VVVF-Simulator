@@ -107,7 +107,8 @@ namespace VVVF_Simulator.GUI.TrainAudio_Window
 
                 try
                 {
-                    Yaml_TrainSound_Data_Manage.load_Yaml(dialog.FileName);
+                    Setting_Page_Frame.Navigate(null);
+                    train_Harmonic_Data = Yaml_TrainSound_Data_Manage.load_Yaml(dialog.FileName);
                     MessageBox.Show("Load OK.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch(YamlException ex)
