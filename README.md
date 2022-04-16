@@ -2,10 +2,14 @@
 Simulates VVVF inverter sound on a PC.
 
 # Description
-This program is for the C# console app on VisualStudio.<br>
+This program is for the C# wpf app.<br>
+
+# Disclaimer
+We are not responsible for anything you do with this application.<br>
 
 # Term of use
 You are **free** to use the code in this program.<br>
+
 Please:<br>
 - Post the URL of this GitHub page<br>
 
@@ -31,16 +35,7 @@ The file will be the`.avi` extension. <br>
 
 ## Realtime Audio Generation
 You can generate the audio in real time and control if the sound increases or decreases in frequency as well as the rate that the frequency increases or decreases. <br>
-Key Bindings<br>
-```
-W - Largest Change in frequency
-S - Medium Change in frequency
-X - Smallest Change in frequency
-B - Brake Toggle between ON/OFF
-N - Mascon Toggle between ON/OFF 
-R - Reselect vvvf inverter sound
-Enter - Exit the program
-```
+
 
 # Parent Project
 This program was ported from RPi-Zero-VVVF
