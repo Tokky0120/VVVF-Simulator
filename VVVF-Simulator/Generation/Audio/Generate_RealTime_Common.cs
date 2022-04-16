@@ -4,6 +4,7 @@ using System;
 using VVVF_Simulator.Yaml.VVVF_Sound;
 using static VVVF_Simulator.Generation.Audio.Train_Sound.Generate_Train_Audio;
 using static VVVF_Simulator.Generation.Motor.Generate_Motor_Core;
+using static VVVF_Simulator.Yaml.TrainAudio_Setting.Yaml_TrainSound_Analyze;
 
 namespace VVVF_Simulator.Generation.Audio
 {
@@ -23,7 +24,7 @@ namespace VVVF_Simulator.Generation.Audio
             public Yaml_VVVF_Sound_Data sound_data { get; set; } = new();
 
             public Motor_Data Motor = new();
-            public Train_Harmonic_Data Train_Harmonic_Data = default_Train_Harmonic_Data.Clone();
+            public Yaml_TrainSound_Data Train_Sound_Data = Yaml_TrainSound_Data_Manage.current_data.Clone();
         }
 
         public static int RealTime_CheckForFreq(VVVF_Values control, RealTime_Parameter param, int step)

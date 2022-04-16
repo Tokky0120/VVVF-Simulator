@@ -116,9 +116,8 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                     input.Close();
                     return true;
                 }
-                catch (Exception e)
+                catch
                 {
-                    Debug.Print(e.StackTrace);
                     return false;
                 }
             }

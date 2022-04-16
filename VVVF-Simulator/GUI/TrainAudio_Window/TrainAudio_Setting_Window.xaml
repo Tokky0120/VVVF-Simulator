@@ -1,0 +1,57 @@
+﻿<Window x:Class="VVVF_Simulator.GUI.TrainAudio_Window.TrainAudio_Setting_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VVVF_Simulator.GUI.TrainAudio_Window"
+        mc:Ignorable="d"
+        Closing="Window_Closing"
+        Title="Train Sound Environment Settings" Height="500" Width="800">
+
+    <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Background="#FF006CBE">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid Margin="5,5,5,5" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" MouseDown="Button_Click" Tag="GearSound">
+                <Grid.Background>
+                    <ImageBrush ImageSource="/GUI/Images/TrainAudio_Settings/gear_normal.png"/>
+                </Grid.Background>
+            </Grid>
+            <Grid Margin="5,5,5,5" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" MouseDown="Button_Click" Tag="MotorSound" Grid.Row="1">
+                <Grid.Background>
+                    <ImageBrush ImageSource="/GUI/Images/TrainAudio_Settings/motor_normal.png"/>
+                </Grid.Background>
+            </Grid>
+            <Grid Margin="5,5,5,5" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" MouseDown="Button_Click" Tag="Filter" Grid.Row="2">
+                <Grid.Background>
+                    <ImageBrush ImageSource="/GUI/Images/TrainAudio_Settings/filter_normal.png"/>
+                </Grid.Background>
+            </Grid>
+            <Grid Margin="5,5,5,5" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" MouseDown="Button_Click" Tag="Load" Grid.Row="4">
+                <Grid.Background>
+                    <ImageBrush ImageSource="/GUI/Images/TrainAudio_Settings/load_normal.png"/>
+                </Grid.Background>
+            </Grid>
+            <Grid Margin="5,5,5,5" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" MouseDown="Button_Click" Tag="Save" Grid.Row="5">
+                <Grid.Background>
+                    <ImageBrush ImageSource="/GUI/Images/TrainAudio_Settings/save_normal.png"/>
+                </Grid.Background>
+            </Grid>
+        </Grid>
+        <ScrollViewer Grid.Column="1">
+            <Frame x:Name="Setting_Page_Frame" NavigationUIVisibility="Hidden" ScrollViewer.CanContentScroll="True"/>
+        </ScrollViewer>
+
+
+    </Grid>
+</Window>

@@ -111,6 +111,7 @@
                 <MenuItem Header="Window">
                     <MenuItem Header="Linear Calculator" Tag="LCalc" Click="Window_Menu_Click"/>
                     <MenuItem Header="Accel Pattern of Generation" Tag="AccelPattern" Click="Window_Menu_Click"/>
+                    <MenuItem Header="Train Sound Setting" Tag="TrainSoundSetting" Click="Window_Menu_Click"/>
                 </MenuItem>
 
                 <MenuItem Header="Util">

@@ -21,6 +21,12 @@
                     <Setter Property="FontSize" Value="16"/>
                 </Style>
             </DataGrid.ColumnHeaderStyle>
+
+            <DataGrid.RowHeaderStyle>
+                <Style TargetType="DataGridRowHeader">
+                    <Setter Property="Width" Value="0"/>
+                </Style>
+            </DataGrid.RowHeaderStyle>
         </DataGrid>
         <Grid Grid.Row="1" Margin="10,10,10,10">
             <Grid.ColumnDefinitions>

@@ -10,6 +10,7 @@ using static VVVF_Simulator.Generation.Audio.Generate_RealTime_Common;
 using static VVVF_Simulator.Generation.Audio.Train_Sound.Generate_Train_Audio;
 using static VVVF_Simulator.Generation.Audio.Train_Sound.Generate_Train_Audio_Filter.NAudio_Filter;
 using static VVVF_Simulator.Generation.Motor.Generate_Motor_Core;
+using static VVVF_Simulator.Yaml.TrainAudio_Setting.Yaml_TrainSound_Analyze;
 
 namespace VVVF_Simulator.Generation.Audio.Train_Sound
 {
@@ -34,7 +35,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                     control.add_Saw_Time(1.0 / 192000.0);
                     control.Add_Generation_Current_Time(1.0 / 192000.0);
 
-                    add[i] = Get_Train_Sound(control, sound_data , realTime_Parameter.Motor, realTime_Parameter.Train_Harmonic_Data);
+                    add[i] = Get_Train_Sound(control, sound_data , realTime_Parameter.Motor, realTime_Parameter.Train_Sound_Data);
                 }
 
                 provider.AddSamples(add, 0, bufsize);
@@ -47,9 +48,13 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             int sample_freq = 192000;
             realTime_Parameter.quit = false;
             realTime_Parameter.sound_data = ysd;
-            realTime_Parameter.Motor = new Motor_Data() { SIM_SAMPLE_FREQ = sample_freq };
 
-            Train_Harmonic_Data thd = realTime_Parameter.Train_Harmonic_Data;
+            realTime_Parameter.Motor = new Motor_Data() { 
+                SIM_SAMPLE_FREQ = sample_freq ,
+                motor_Specification = realTime_Parameter.Train_Sound_Data.Motor_Specification.Clone(),
+            };
+
+            Yaml_TrainSound_Data thd = realTime_Parameter.Train_Sound_Data;
 
             VVVF_Values control = new();
             control.reset_all_variables();
@@ -58,7 +63,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             while (true)
             {
                 var bufferedWaveProvider = new BufferedWaveProvider(new WaveFormat(sample_freq, 8, 1));
-                var equalizer = new Equalizer(bufferedWaveProvider.ToSampleProvider(), thd.NFilteres);
+                var equalizer = new Equalizer(bufferedWaveProvider.ToSampleProvider(), thd.Get_NFilters());
 
                 var mmDevice = new MMDeviceEnumerator().GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
                 IWavePlayer wavPlayer = new WasapiOut(mmDevice, AudioClientShareMode.Shared, false, 0);

@@ -1,12 +1,6 @@
-﻿using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
-using System;
-using System.Diagnostics;
-using System.IO;
-using VVVF_Simulator.Yaml.VVVF_Sound;
-using static VVVF_Simulator.Generation.Motor.Generate_Motor_Core.Motor_Data;
+﻿using System;
 using static VVVF_Simulator.VVVF_Structs;
-using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
+
 
 
 namespace VVVF_Simulator.Generation.Motor
@@ -39,6 +33,11 @@ namespace VVVF_Simulator.Generation.Motor
                 public double DAMPING { get; set; } = 500.0;/* damping */
                 public double INERTIA { get; set; } = 0.05; /*Rotational inertia mass(kg.m^2)*/
                 public double STATICF { get; set; } = 0.005879; /*Static friction(N.m.s)*/
+
+                public Motor_Specification Clone()
+                {
+                    return (Motor_Specification)MemberwiseClone();
+                }
             }
             public class Motor_Param
             {

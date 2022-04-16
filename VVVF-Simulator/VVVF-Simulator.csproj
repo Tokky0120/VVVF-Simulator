@@ -13,9 +13,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="GUI\Images\TrainAudio_Settings\filter_normal.png" />
+    <None Remove="GUI\Images\TrainAudio_Settings\filter_over.png" />
+    <None Remove="GUI\Images\TrainAudio_Settings\gear_normal.png" />
+    <None Remove="GUI\Images\TrainAudio_Settings\gear_over.png" />
+    <None Remove="GUI\Images\TrainAudio_Settings\load_normal.png" />
+    <None Remove="GUI\Images\TrainAudio_Settings\load_over.png" />
+    <None Remove="GUI\Images\TrainAudio_Settings\motor_normal.png" />
+    <None Remove="GUI\Images\TrainAudio_Settings\motor_over.png" />
+    <None Remove="GUI\Images\TrainAudio_Settings\save_normal.png" />
+    <None Remove="GUI\Images\TrainAudio_Settings\save_over.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="GUI\Images\VVVF_Settings\2-level.png" />
     <Resource Include="GUI\Images\VVVF_Settings\3-level.png" />
     <Content Include="vvvf-simulator.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="GUI\Images\TrainAudio_Settings\filter_normal.png" />
+    <Resource Include="GUI\Images\TrainAudio_Settings\filter_over.png" />
+    <Resource Include="GUI\Images\TrainAudio_Settings\gear_normal.png" />
+    <Resource Include="GUI\Images\TrainAudio_Settings\gear_over.png" />
+    <Resource Include="GUI\Images\TrainAudio_Settings\load_normal.png" />
+    <Resource Include="GUI\Images\TrainAudio_Settings\load_over.png" />
+    <Resource Include="GUI\Images\TrainAudio_Settings\motor_normal.png" />
+    <Resource Include="GUI\Images\TrainAudio_Settings\motor_over.png" />
+    <Resource Include="GUI\Images\TrainAudio_Settings\save_normal.png" />
+    <Resource Include="GUI\Images\TrainAudio_Settings\save_over.png" />
   </ItemGroup>
 
   <ItemGroup>
