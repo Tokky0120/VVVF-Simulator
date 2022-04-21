@@ -102,7 +102,7 @@
             </Grid>
         </Grid>
         <DockPanel LastChildFill="True">
-            <Menu DockPanel.Dock="Top">
+            <Menu DockPanel.Dock="Top" Background="#FFF8FAFF">
                 <MenuItem Header="File">
                     <MenuItem Header="Save Yaml" Tag="Save" Click="File_Menu_Click"/>
                     <MenuItem Header="Load Yaml" Tag="Load" Click="File_Menu_Click"/>

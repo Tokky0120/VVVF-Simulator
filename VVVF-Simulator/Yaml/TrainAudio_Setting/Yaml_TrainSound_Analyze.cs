@@ -157,14 +157,15 @@ namespace VVVF_Simulator.Yaml.TrainAudio_Setting
                 Harmonic_Data.Harmonic_Data_Amplitude hda = new Harmonic_Data.Harmonic_Data_Amplitude { start = 0, start_val = 0x0, end = 20, end_val = 0x60, min_val = 0, max_val = 0x60 };
 
                 double gear_rate = Gear2 / Gear1;
+                double motor_shaft_r = 120 / 4.0 / 60.0; // 0.5
 
                 // basic harmonics
                 for (int i = 0; i < 2; i++)
                 {
                     int odd = 2 * i + 1;
 
-                    double harmonic_1 = Gear1 * 120 / 4 / 60.0 / odd;
-                    double harmonic_2 = Gear2 * 120 / 4 / 60.0 / odd;
+                    double harmonic_1 = Gear1 * motor_shaft_r * odd;
+                    double harmonic_2 = Gear2 * motor_shaft_r * odd;
 
                     Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = harmonic_1, amplitude = hda, disappear = 10000 });
                     Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = harmonic_2, amplitude = hda, disappear = 10000 });
@@ -178,6 +179,7 @@ namespace VVVF_Simulator.Yaml.TrainAudio_Setting
 
                 Gear_Harmonics = new List<Harmonic_Data>(Gear_Harmonics_List);
             }
+            
             public Yaml_TrainSound_Data Clone()
             {
                 var cloned = (Yaml_TrainSound_Data)MemberwiseClone();
