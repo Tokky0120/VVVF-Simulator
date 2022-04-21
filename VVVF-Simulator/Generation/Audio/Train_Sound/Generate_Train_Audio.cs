@@ -100,7 +100,13 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                 total_sound_count++;
             }
 
-            int pre_sound_byte = (int)Math.Round(sound_val / total_sound_count / 2.0 + pwm_sound_val * 2 + 0xFF / 2);
+            int pre_sound_byte;
+
+            if(total_sound_count == 0)
+                pre_sound_byte = (int)Math.Round(pwm_sound_val * 2 + 0xFF / 2);
+            else
+                pre_sound_byte = (int)Math.Round(sound_val / total_sound_count / 2.0 + pwm_sound_val * 2 + 0xFF / 2);
+
             byte sound_byte = (byte)(pre_sound_byte);
             return sound_byte;
 
