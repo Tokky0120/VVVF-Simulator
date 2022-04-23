@@ -1,8 +1,7 @@
 {
   "profiles": {
     "VVVF-Simulator": {
-      "commandName": "Project",
-      "commandLineArgs": "test=train yaml_path=G:\\yaml\\JRW_207_1000_TOSHIBA.yaml export_path=G:\\a.wav"
+      "commandName": "Project"
     }
   }
 }
