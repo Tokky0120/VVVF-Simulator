@@ -31,7 +31,6 @@ namespace VVVF_Simulator
         }
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            //test=train yaml_path=G:\yaml\KINTETSU_9820_HITACHI_IGBT.yaml export_path=G:\a.wav
             string[] args = e.Args;
             string? test_mode = GetArgValue(args, "test");
             if (test_mode == null) return;
