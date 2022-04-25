@@ -28,8 +28,8 @@ namespace VVVF_Simulator.Yaml.TrainAudio_Setting
             };
             public List<SoundFilter> Filteres { get; set; } = new List<SoundFilter>()
             {
-                new(SoundFilter.FilterType.LowPassFilter,-1,1000,2),
-                new(SoundFilter.FilterType.HighPassFilter,-1,200,2)
+                new(SoundFilter.FilterType.HighPassFilter,-1,50,2f),
+                new(SoundFilter.FilterType.LowPassFilter,-1,900,2f),
             };
 
             public Motor_Specification Motor_Specification { get; set; } = new Motor_Specification();
@@ -165,11 +165,7 @@ namespace VVVF_Simulator.Yaml.TrainAudio_Setting
                 Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * Gear1 * 2.5, amplitude = amp_Strong, disappear = 10000 });
                 Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * Gear1 * 1, amplitude = amp_Strong, disappear = 10000 });
 
-                /*
-                Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * gear_rate, amplitude = hda, disappear = 10000 });
-                Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * Math.Pow(gear_rate,2), amplitude = hda, disappear = 10000 });
-                */
-
+                Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * 81 * 3, amplitude = new Harmonic_Data.Harmonic_Data_Amplitude { start = 0, start_val = 0x0, end = 20, end_val = 0x30, min_val = 0, max_val = 0x30 }, disappear = 5000 });
 
                 Gear_Harmonics = new List<Harmonic_Data>(Gear_Harmonics_List);
             }
@@ -195,7 +191,7 @@ namespace VVVF_Simulator.Yaml.TrainAudio_Setting
 
         public class Yaml_TrainSound_Data_Manage
         {
-            public static Yaml_TrainSound_Data current_data { get; set; } = new Yaml_TrainSound_Data(192000, 14, 99);
+            public static Yaml_TrainSound_Data current_data { get; set; } = new Yaml_TrainSound_Data(192000, 16, 101);
 
             public static bool save_Yaml(String path)
             {

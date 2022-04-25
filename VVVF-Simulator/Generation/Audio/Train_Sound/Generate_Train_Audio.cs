@@ -15,6 +15,7 @@ using static VVVF_Simulator.VVVF_Structs;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
 using static VVVF_Simulator.Yaml.TrainAudio_Setting.Yaml_TrainSound_Analyze;
 using static VVVF_Simulator.Yaml.TrainAudio_Setting.Yaml_TrainSound_Analyze.Yaml_TrainSound_Data;
+using static VVVF_Simulator.Yaml.VVVF_Sound.Yaml_VVVF_Sound_Data.Yaml_Mascon_Data;
 
 namespace VVVF_Simulator.Generation.Audio.Train_Sound
 {
@@ -73,8 +74,11 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                 total_sound_count++;
             }
 
-            // GEAR HARMONICS
+            // 
+            // Gear Sound
+            //
             List<Harmonic_Data> Gear_Harmonics = train_Harmonic_Data.Gear_Harmonics;
+            double Gear_Sound = 0;
             for (int harmonic = 0; harmonic < Gear_Harmonics.Count; harmonic++)
             {
                 Harmonic_Data harmonic_data = Gear_Harmonics[harmonic];
@@ -96,9 +100,18 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                     ((harmonic_data.disappear - harmonic_freq) / 100.0) : 1;
 
                 sine_val *= amplitude * amplitude_disappear;
-                sound_val += Math.Round(sine_val);
+                Gear_Sound += sine_val;
                 total_sound_count++;
             }
+            // Gear sound amplitude change
+            Yaml_Mascon_Data_On_Off ymdoo;
+            if (cv.brake) ymdoo = sound_data.mascon_data.braking;
+            else ymdoo = sound_data.mascon_data.accelerating;
+            double freq_to_go, gear_amp_rate;
+            if (cv.mascon_on) freq_to_go = ymdoo.on.control_freq_go_to;
+            else freq_to_go = ymdoo.off.control_freq_go_to;
+            gear_amp_rate = control.get_Control_Frequency() / (control.get_Sine_Freq() > freq_to_go ? freq_to_go : control.get_Sine_Freq());
+            sound_val += Math.Round(Gear_Sound * (gear_amp_rate > 1 ? 1 : gear_amp_rate));
 
             int pre_sound_byte;
 
