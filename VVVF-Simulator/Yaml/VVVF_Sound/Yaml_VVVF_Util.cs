@@ -67,7 +67,7 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
                 pre_diff = diff;
 
                 Debug.WriteLine(String.Format("{0:F02},{1:F02},{2:F02},{3},{4},{5},{6}", diff, desire_voltage, voltage, amplitude_seed, i, x, target_freq));
-                if (diff < 0.001)
+                if (diff < 0.01)
                 {
                     amplitude_seed -= 10;
                     if (amplitude_seed < 0)

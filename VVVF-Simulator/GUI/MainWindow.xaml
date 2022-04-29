@@ -104,8 +104,9 @@
         <DockPanel LastChildFill="True">
             <Menu DockPanel.Dock="Top" Background="#FFF8FAFF">
                 <MenuItem Header="File">
-                    <MenuItem Header="Save Yaml" Tag="Save" Click="File_Menu_Click"/>
-                    <MenuItem Header="Load Yaml" Tag="Load" Click="File_Menu_Click"/>
+                    <MenuItem Header="Save" Tag="Save" Click="File_Menu_Click"/>
+                    <MenuItem Header="Save As" Tag="Save_As" Click="File_Menu_Click"/>
+                    <MenuItem Header="Load" Tag="Load" Click="File_Menu_Click"/>
                 </MenuItem>
 
                 <MenuItem Header="Window">

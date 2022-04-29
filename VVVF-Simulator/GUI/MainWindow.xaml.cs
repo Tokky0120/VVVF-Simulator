@@ -258,7 +258,7 @@ namespace VVVF_Simulator
                 update_Control_Showing();
 
             }
-            else if (tag.Equals("Save"))
+            else if (tag.Equals("Save_As"))
             {
                 var dialog = new SaveFileDialog
                 {
@@ -270,6 +270,27 @@ namespace VVVF_Simulator
                 if (dialog.ShowDialog() == false) return;
                 load_path = dialog.FileName;
                 if (Yaml_VVVF_Manage.save_Yaml(dialog.FileName))
+                    MessageBox.Show("Save OK.", "Great", MessageBoxButton.OK, MessageBoxImage.Information);
+                else
+                    MessageBox.Show("Error occurred on saving.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (tag.Equals("Save"))
+            {
+                String save_path = load_path;
+                if(save_path.Length == 0)
+                {
+                    var dialog = new SaveFileDialog
+                    {
+                        Filter = "Yaml (*.yaml)|*.yaml",
+                        FileName = Path.GetFileName(load_path)
+                    };
+
+                    // ダイアログを表示する
+                    if (dialog.ShowDialog() == false) return;
+                    load_path = dialog.FileName;
+                    save_path = load_path;
+                }
+                if (Yaml_VVVF_Manage.save_Yaml(save_path))
                     MessageBox.Show("Save OK.", "Great", MessageBoxButton.OK, MessageBoxImage.Information);
                 else
                     MessageBox.Show("Error occurred on saving.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
