@@ -42,7 +42,6 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
 
             pwm_sound_val = motor.motor_Param.Te - (motor.motor_Param.pre_Te + motor.motor_Param.Te) / 2.0;
             pwm_sound_val *= 60;
-            //pwm_sound_val += (value.U - value.V) * 2;
             pwm_sound_val = pwm_sound_val * 2 / 3.0;
 
             double sound_val = 0, total_sound_count = 0;
@@ -89,7 +88,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
 
                 double harmonic_freq = harmonic_data.harmonic * control.get_Sine_Freq();
 
-                if (harmonic_freq > harmonic_data.disappear) continue;
+                if (harmonic_data.disappear != -1 && harmonic_freq > harmonic_data.disappear) continue;
                 double sine_val = sin(control.get_Sine_Time() * control.get_Sine_Angle_Freq() * harmonic_data.harmonic);
 
                 double amplitude = amplitude_data.start_val + (amplitude_data.end_val - amplitude_data.start_val) / (amplitude_data.end - harmonic_data.amplitude.start) * (control.get_Sine_Freq() - harmonic_data.amplitude.start);
@@ -99,7 +98,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                 double amplitude_disappear = (harmonic_freq + 100.0 > harmonic_data.disappear) ?
                     ((harmonic_data.disappear - harmonic_freq) / 100.0) : 1;
 
-                sine_val *= amplitude * amplitude_disappear;
+                sine_val *= amplitude * (harmonic_data.disappear == -1 ? 1 : amplitude_disappear);
                 Gear_Sound += sine_val;
                 total_sound_count++;
             }

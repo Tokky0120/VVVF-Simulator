@@ -161,11 +161,11 @@ namespace VVVF_Simulator.Yaml.TrainAudio_Setting
 
                 // Sound From Gear 1
                 // It has `Gear1` amount of teeth.
-                Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * Gear1 * 3, amplitude = amp_Strong, disappear = 10000 });
-                Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * Gear1 * 2.5, amplitude = amp_Strong, disappear = 10000 });
-                Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * Gear1 * 1, amplitude = amp_Strong, disappear = 10000 });
+                Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * Gear1 * 3, amplitude = amp_Strong, disappear = -1 });
+                Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * Gear1 * 2.5, amplitude = amp_Strong, disappear = -1 });
+                Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * Gear1 * 1, amplitude = amp_Strong, disappear = -1 });
 
-                Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * 81 * 3, amplitude = new Harmonic_Data.Harmonic_Data_Amplitude { start = 0, start_val = 0x0, end = 20, end_val = 0x30, min_val = 0, max_val = 0x30 }, disappear = 5000 });
+                Gear_Harmonics_List.Add(new Harmonic_Data { harmonic = motor_r * 86 * 2, amplitude = new Harmonic_Data.Harmonic_Data_Amplitude { start = 0, start_val = 0x0, end = 20, end_val = 0x60, min_val = 0, max_val = 0x30 }, disappear = -1 });
 
                 Gear_Harmonics = new List<Harmonic_Data>(Gear_Harmonics_List);
             }
