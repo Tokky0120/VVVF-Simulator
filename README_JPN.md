@@ -29,7 +29,7 @@ PC上で、VVVFの音を再現します。<br>
 
 ## マスコン状況出力
 このアプリケーションは、マスコンの操作状況を動画で出力できます。形式は .avi です。<br>
-![2022-02-14 (3)](https://user-images.githubusercontent.com/77259842/153803208-18692183-b1ae-4251-96dc-ccc4ce8b3c10.png)
+![2022-06-11 (1)](https://user-images.githubusercontent.com/77259842/173188904-8613f3b9-2204-49f3-b2f9-59390c4e63ab.png)
 
 ## リアルタイム音声生成
 いろいろ、リアルタイムで遊べます。<br>
