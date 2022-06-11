@@ -9,7 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VVVF_Simulator.Yaml.VVVF_Sound;
 using static VVVF_Simulator.Generation.Audio.Train_Sound.Generate_Train_Audio_Filter.NAudio_Filter;
+using static VVVF_Simulator.Generation.Generate_Common;
 using static VVVF_Simulator.Generation.Motor.Generate_Motor_Core;
+using static VVVF_Simulator.MainWindow;
 using static VVVF_Simulator.My_Math;
 using static VVVF_Simulator.VVVF_Structs;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
@@ -125,7 +127,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
         }
 
 
-        public static void Export_Train_Sound(String output_path, Yaml_VVVF_Sound_Data sound_data, Yaml_TrainSound_Data train_Sound_Data)
+        public static void Export_Train_Sound(ProgressData progressData, String output_path, Boolean resize, Yaml_VVVF_Sound_Data sound_data, Yaml_TrainSound_Data train_Sound_Data)
         {
 
             DateTime dt = DateTime.Now;
@@ -145,10 +147,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
 
             Equalizer equalizer = new Equalizer(wave_provider.ToSampleProvider(), train_Sound_Data.Get_NFilters());
             IWaveProvider equal_wave_provider = equalizer.ToWaveProvider();
-            WaveFileWriter writer = new WaveFileWriter(temp, equal_wave_provider.WaveFormat);
-
-
-            bool loop = true;
+            WaveFileWriter writer = new WaveFileWriter(resize ? temp : output_path, equal_wave_provider.WaveFormat);
 
             var motor = new Motor_Data();
             motor.motor_Specification = train_Sound_Data.Motor_Specification.Clone();
@@ -156,9 +155,9 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             motor.SIM_SAMPLE_FREQ = sample_freq;
             motor_Param.TL = 0.0;
 
-            
+            progressData.Total = ymd.GetEstimatedSteps(1.0 / sample_freq);
 
-            while (loop)
+            while (true)
             {
                 control.add_Sine_Time(1.00 / sample_freq);
                 control.add_Saw_Time(1.00 / sample_freq);
@@ -174,8 +173,11 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
                     writer.Write(buffer, 0, bytesRead);
                 }
 
-                loop = Generate_Common.Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / sample_freq);
+                progressData.Progress++;
 
+                bool flag_continue = Generate_Common.Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / sample_freq);
+                bool flag_cancel = progressData.Cancel;
+                if (!flag_continue || flag_cancel) break;
             }
 
             //last 
@@ -189,6 +191,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             writer.Close();
 
 
+            if (!resize) return;
             int outRate = 44800;
             using (var reader = new AudioFileReader(temp))
             {

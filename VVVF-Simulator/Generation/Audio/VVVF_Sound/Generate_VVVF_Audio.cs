@@ -6,7 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VVVF_Simulator.Yaml.Mascon_Control;
 using VVVF_Simulator.Yaml.VVVF_Sound;
+using static VVVF_Simulator.Generation.Generate_Common;
+using static VVVF_Simulator.MainWindow;
 using static VVVF_Simulator.VVVF_Structs;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
 
@@ -39,7 +42,7 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
 
 
         // Export Audio
-        public static void Export_VVVF_Sound(String output_path, Yaml_VVVF_Sound_Data sound_data)
+        public static void Export_VVVF_Sound(ProgressData progressData ,String output_path, Boolean resize, Yaml_VVVF_Sound_Data sound_data)
         {
             DateTime dt = DateTime.Now;
             String gen_time = dt.ToString("yyyy-MM-dd_HH-mm-ss");
@@ -54,7 +57,7 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
             int sample_freq = 192000;
             int sound_block_count = 0;
 
-            BinaryWriter writer = new BinaryWriter(new FileStream(temp, FileMode.Create));
+            BinaryWriter writer = new BinaryWriter(new FileStream(resize ? temp : output_path, FileMode.Create));
 
             //WAV FORMAT DATA
             writer.Write(0x46464952); // RIFF
@@ -71,12 +74,13 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
             writer.Write(0x61746164);
             writer.Write(new byte[] { 0x00, 0x00, 0x00, 0x00 }); //WAVE SIZE
 
-            bool loop = true;
-
             byte[] temp_bytes = new byte[19200];
             int temp_bytes_count = 0;
 
-            while (loop)
+            //TASK DATA PREPARE
+            progressData.Total = ymd.GetEstimatedSteps(1.0/sample_freq);
+
+            while (true)
             {
                 control.add_Sine_Time(1.00 / sample_freq);
                 control.add_Saw_Time(1.00 / sample_freq);
@@ -90,8 +94,12 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
                 }
 
                 sound_block_count++;
+                progressData.Progress = sound_block_count;
 
-                loop = Generate_Common.Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / sample_freq);
+                bool flag_continue = Generate_Common.Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / sample_freq);
+                bool flag_cancel = progressData.Cancel;
+
+                if (flag_cancel || !flag_continue) break;
 
             }
 
@@ -105,6 +113,8 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
             writer.Write(sound_block_count);
 
             writer.Close();
+
+            if (!resize) return;
 
             int outRate = 44800;
             using (var reader = new AudioFileReader(temp))

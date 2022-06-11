@@ -18,6 +18,7 @@ using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
 using static VVVF_Simulator.VVVF_Structs.Pulse_Mode;
+using static VVVF_Simulator.MainWindow;
 
 namespace VVVF_Simulator.Generation.Video.Control_Info
 {
@@ -264,6 +265,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
         }
 
         public static void Generate_Control_Original2_Video(
+            ProgressData progressData,
             String output_path,
             Yaml_VVVF_Sound_Data sound_data
         )
@@ -286,6 +288,9 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
                 return;
             }
 
+            // PROGRESS INITIALIZE
+            progressData.Total = ymd.GetEstimatedSteps(1.0 / fps) + 120;
+
             Pre_Voltage_Data pre_voltage_data = new Pre_Voltage_Data(false, 0);
 
             bool START_FRAMES = true;
@@ -307,6 +312,9 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
 
                 final_image.Dispose();
             }
+
+            //PROGRESS ADD
+            progressData.Progress += 60;
 
             while (true)
             {
@@ -333,7 +341,8 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
                 final_image.Dispose();
 
                 if (!Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / fps)) break;
-
+                if (progressData.Cancel) break;
+                progressData.Progress++;
             }
 
             bool END_FRAMES = true;
@@ -354,6 +363,9 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
 
                 final_image.Dispose();
             }
+
+            //PROGRESS ADD
+            progressData.Progress += 60;
 
             vr.Release();
             vr.Dispose();

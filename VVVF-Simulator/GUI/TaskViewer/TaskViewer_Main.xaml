@@ -1,0 +1,35 @@
+﻿<Window x:Class="VVVF_Simulator.GUI.TaskViewer.TaskViewer_Main"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VVVF_Simulator.GUI.TaskViewer"
+        mc:Ignorable="d"
+        Title="Task Viewer" Height="450" Width="800">
+    <Grid Name="BaseGrid">
+        <ListView Name="TaskView" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" UseLayoutRounding="False" SelectionMode="Single" ItemsSource="{Binding}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Height="40" Margin="0,0,0,0" Background="LightGray">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="100" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding Description}" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="16" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                        <Grid Grid.Column="1" Grid.ColumnSpan="3" Background="{Binding StatusColor}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Status}" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,5,5"/>
+
+                        <ProgressBar Grid.Column="2" Name="PbStatus" Minimum="0" Maximum="100" Value="{Binding progressData.RelativeProgress, Mode=OneWay}" Margin="5,5,5,5"/>
+                        <TextBlock Grid.Column="2" Text="{Binding ElementName=PbStatus, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,5,5" />
+                        
+                        <Button Tag="{Binding Task.Id}" Click="Button_Click" Grid.Column="3" Content="Cancel" IsEnabled="{Binding Cancelable}" Margin="5,5,5,5"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Window>

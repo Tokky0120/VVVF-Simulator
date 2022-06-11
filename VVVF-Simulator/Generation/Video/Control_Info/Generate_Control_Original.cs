@@ -12,6 +12,7 @@ using VVVF_Simulator.Yaml.VVVF_Sound;
 using static VVVF_Simulator.VVVF_Structs;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
 using static VVVF_Simulator.VVVF_Structs.Pulse_Mode;
+using static VVVF_Simulator.MainWindow;
 
 namespace VVVF_Simulator.Generation.Video.Control_Info
 {
@@ -270,7 +271,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
             return image;
         }
 
-        public static void Generate_Control_Original_Video(String output_path, Yaml_VVVF_Sound_Data sound_data)
+        public static void Generate_Control_Original_Video(ProgressData progressData, String output_path, Yaml_VVVF_Sound_Data sound_data)
         {
             VVVF_Values control = new();
             control.reset_control_variables();
@@ -294,6 +295,8 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
 
             bool loop = true, video_finished, final_show = false, first_show = true;
             int freeze_count = 0;
+
+            progressData.Total = ymd.GetEstimatedSteps(1.0 / fps) + 120;
 
             while (loop)
             {
@@ -321,6 +324,9 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
 
                 vr.Write(mat);
 
+                //PROGRESS ADD
+                progressData.Progress++;
+
                 if (first_show)
                 {
                     freeze_count++;
@@ -339,6 +345,9 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
                     freeze_count++;
                 }
                 if (freeze_count > 60) loop = false;
+                if(progressData.Cancel) loop = false;
+
+                
             }
             vr.Release();
             vr.Dispose();

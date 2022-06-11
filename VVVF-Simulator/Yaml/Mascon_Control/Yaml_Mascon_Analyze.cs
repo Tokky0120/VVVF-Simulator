@@ -32,6 +32,18 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
 
             }
 
+            public double GetEstimatedSteps(double sampleTime)
+            {
+                double totalDuration = 0;
+                for (int i = 0; i < points.Count; i++)
+                {
+                    Yaml_Mascon_Point_Data point = points[i];
+                    totalDuration += point.duration;
+                }
+
+                return totalDuration / sampleTime;
+            }
+
             public class Yaml_Mascon_Point_Data {
 
                 public int order { get; set; } = 0;

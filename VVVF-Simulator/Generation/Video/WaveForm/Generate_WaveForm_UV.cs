@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VVVF_Simulator.Yaml.VVVF_Sound;
 using static VVVF_Simulator.Generation.Generate_Common;
+using static VVVF_Simulator.MainWindow;
 using static VVVF_Simulator.VVVF_Calculate;
 using static VVVF_Simulator.VVVF_Structs;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
@@ -86,7 +87,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
             g.Dispose();
             return image;
         }
-        public static void Generate_UV_1(String fileName, Yaml_VVVF_Sound_Data sound_data)
+        public static void Generate_UV_1(ProgressData progressData, String fileName, Yaml_VVVF_Sound_Data sound_data)
         {
             VVVF_Values control = new();
             control.reset_control_variables();
@@ -112,6 +113,9 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 return;
             }
 
+            // Progress Initialize
+            progressData.Total = ymd.GetEstimatedSteps(1.0 / fps) + 120;
+
             Boolean START_WAIT = true;
             if (START_WAIT)
             {
@@ -124,11 +128,10 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
                 for (int i = 0; i < 60; i++)
                 {
-
+                    // PROGRESS CHANGE
+                    progressData.Progress++;
 
                     vr.Write(mat);
-
-
                 }
                 g.Dispose();
                 image.Dispose();
@@ -174,7 +177,10 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 image.Dispose();
 
                 loop = Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / fps);
+                if (progressData.Cancel) loop = false;
 
+                // PROGRESS CHANGE
+                progressData.Progress++;
             }
 
             Boolean END_WAIT = true;
@@ -189,6 +195,9 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
                 for (int i = 0; i < 60; i++)
                 {
+                    // PROGRESS CHANGE
+                    progressData.Progress++;
+
                     vr.Write(mat);
                 }
                 g.Dispose();
@@ -199,7 +208,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
             vr.Dispose();
         }
 
-        public static void Generate_UV_2(String fileName, Yaml_VVVF_Sound_Data sound_data)
+        public static void Generate_UV_2(ProgressData progressData, String fileName, Yaml_VVVF_Sound_Data sound_data)
         {
             VVVF_Values control = new();
             control.reset_control_variables();
@@ -224,6 +233,9 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 return;
             }
 
+            // Progress Initialize
+            progressData.Total = ymd.GetEstimatedSteps(1.0 / fps) + 120;
+
             Boolean START_WAIT = true;
             if (START_WAIT)
             {
@@ -238,6 +250,9 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
 
                 for (int i = 0; i < 60; i++)
                 {
+                    // PROGRESS CHANGE
+                    progressData.Progress++;
+
                     vr.Write(mat);
                 }
                 g.Dispose();
@@ -274,6 +289,10 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
 
                 image.Dispose();
                 loop = Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / fps);
+                if(progressData.Cancel) loop = false;
+
+                // PROGRESS CHANGE
+                progressData.Progress++;
 
             }
 
@@ -290,6 +309,9 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
                 for (int i = 0; i < 60; i++)
                 {
+                    // PROGRESS CHANGE
+                    progressData.Progress++;
+
                     vr.Write(mat);
                 }
                 g.Dispose();

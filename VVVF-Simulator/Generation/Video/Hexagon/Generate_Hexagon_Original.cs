@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Point = System.Drawing.Point;
 using static VVVF_Simulator.VVVF_Structs;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
+using static VVVF_Simulator.MainWindow;
 
 namespace VVVF_Simulator.Generation.Video.Hexagon
 {
@@ -149,7 +150,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
             return final_image;
         }
 
-        public static void Generate_Hexagon_Original_Video(String fileName, Yaml_VVVF_Sound_Data sound_data, bool circle)
+        public static void Generate_Hexagon_Original_Video(ProgressData progressData, String fileName, Yaml_VVVF_Sound_Data sound_data, bool circle)
         {
             VVVF_Values control = new();
             control.reset_control_variables();
@@ -176,6 +177,9 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
                 return;
             }
 
+            // Progress Initialize
+            progressData.Total = ymd.GetEstimatedSteps(1.0 / fps) + 120;
+
             Boolean START_WAIT = true;
             if (START_WAIT)
             {
@@ -189,6 +193,9 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
 
                 for (int i = 0; i < 60; i++)
                 {
+                    // PROGRESS CHANGE
+                    progressData.Progress++;
+
                     vr.Write(mat);
                 }
                 g.Dispose();
@@ -218,7 +225,10 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
                 vr.Write(mat);
 
                 loop = Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / fps);
+                if (progressData.Cancel) loop = false;
 
+                // PROGRESS CHANGE
+                progressData.Progress++;
             }
 
             Boolean END_WAIT = true;
@@ -234,6 +244,9 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
 
                 for (int i = 0; i < 60; i++)
                 {
+                    // PROGRESS CHANGE
+                    progressData.Progress++;
+
                     vr.Write(mat);
                 }
                 g.Dispose();

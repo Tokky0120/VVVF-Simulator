@@ -44,22 +44,6 @@ namespace VVVF_Simulator
             if (yaml_path != null)
                 Yaml_VVVF_Manage.load_Yaml(yaml_path);
 
-            if (test_mode.Equals("train"))
-            {
-                Task task = Task.Run(() => {
-                    try
-                    {
-                        Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                        Yaml_TrainSound_Data trainSound_Data_clone = Yaml_TrainSound_Data_Manage.current_data.Clone();
-                        Generation.Audio.Train_Sound.Generate_Train_Audio.Export_Train_Sound(export_path, clone, trainSound_Data_clone);
-                    }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    SystemSounds.Beep.Play();
-                });
-            }
         }
     }
 }

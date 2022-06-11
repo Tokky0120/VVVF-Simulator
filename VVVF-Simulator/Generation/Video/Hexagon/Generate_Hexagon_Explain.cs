@@ -11,12 +11,13 @@ using VVVF_Simulator.Yaml.VVVF_Sound;
 using System.Collections.Generic;
 using Point = System.Drawing.Point;
 using static VVVF_Simulator.VVVF_Structs;
+using static VVVF_Simulator.MainWindow;
 
 namespace VVVF_Simulator.Generation.Video.Hexagon
 {
     public class Generate_Hexagon_Explain
     {
-        public static bool generate_wave_hexagon_explain(String output_path, Yaml_VVVF_Sound_Data sound_data, bool circle, double d)
+        public static bool generate_wave_hexagon_explain(ProgressData progressData, String output_path, Yaml_VVVF_Sound_Data sound_data, bool circle, double d)
         {
             VVVF_Values control = new();
             control.reset_control_variables();
@@ -40,6 +41,9 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
             VideoWriter vr = new(output_path, FourCC.H264, fps, new OpenCvSharp.Size(image_width, image_height));
             if (!vr.IsOpened()) return false;
 
+            // Progress Initialize
+            progressData.Total = hex_div + 120;
+
             Boolean START_WAIT = false;
             if (START_WAIT)
             {
@@ -53,6 +57,9 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
 
                 for (int i = 0; i < 60; i++)
                 {
+                    // PROGRESS CHANGE
+                    progressData.Progress++;
+
                     vr.Write(free_mat);
                 }
                 free_g.Dispose();
@@ -282,6 +289,10 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
                 hexagon_g_with_dot.Dispose();
                 hexagon_image_with_dot.Dispose();
 
+                if (progressData.Cancel) break;
+
+                // PROGRESS CHANGE
+                progressData.Progress++;
             }
 
 
@@ -296,6 +307,9 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
 
                 for (int i = 0; i < 60; i++)
                 {
+                    // PROGRESS CHANGE
+                    progressData.Progress++;
+
                     vr.Write(free_mat);
                 }
             }

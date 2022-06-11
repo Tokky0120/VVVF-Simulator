@@ -10,12 +10,13 @@ using VVVF_Simulator.Yaml.VVVF_Sound;
 using System.Collections.Generic;
 using static VVVF_Simulator.VVVF_Structs;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
+using static VVVF_Simulator.MainWindow;
 
 namespace VVVF_Simulator.Generation.Video.WaveForm
 {
     public class Generate_WaveForm_UVW
     {
-        public static void generate_wave_UVW(String fileName, Yaml_VVVF_Sound_Data sound_data)
+        public static void generate_wave_UVW(ProgressData progressData, String fileName, Yaml_VVVF_Sound_Data sound_data)
         {
             VVVF_Values control = new();
             control.reset_control_variables();
@@ -38,6 +39,9 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 return;
             }
 
+            // Progress Initialize
+            progressData.Total = ymd.GetEstimatedSteps(1.0 / fps) + 120;
+
             Boolean START_WAIT = true;
             if (START_WAIT)
             {
@@ -53,6 +57,9 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 Cv2.WaitKey(1);
                 for (int i = 0; i < 60; i++)
                 {
+                    // PROGRESS CHANGE
+                    progressData.Progress++;
+
                     vr.Write(mat);
                 }
 
@@ -144,30 +151,34 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 image.Dispose();
 
                 loop = Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / fps);
+                if (progressData.Cancel) loop = false;
 
+                // PROGRESS CHANGE
+                progressData.Progress++;
             }
 
             Boolean END_WAIT = true;
             if (END_WAIT)
             {
+                Bitmap image = new(image_width, image_height);
+                Graphics g = Graphics.FromImage(image);
+                g.FillRectangle(new SolidBrush(Color.White), 0, 0, image_width, image_height);
+                MemoryStream ms = new MemoryStream();
+                image.Save(ms, ImageFormat.Png);
+                byte[] img = ms.GetBuffer();
+                Mat mat = OpenCvSharp.Mat.FromImageData(img);
+
+                Cv2.ImShow("Wave Form View", mat);
+                Cv2.WaitKey(1);
                 for (int i = 0; i < 60; i++)
                 {
-                    Bitmap image = new(image_width, image_height);
-                    Graphics g = Graphics.FromImage(image);
-                    g.FillRectangle(new SolidBrush(Color.White), 0, 0, image_width, image_height);
-                    MemoryStream ms = new MemoryStream();
-                    image.Save(ms, ImageFormat.Png);
-                    byte[] img = ms.GetBuffer();
-                    Mat mat = OpenCvSharp.Mat.FromImageData(img);
-
-                    Cv2.ImShow("Wave Form View", mat);
-                    Cv2.WaitKey(1);
+                    // PROGRESS CHANGE
+                    progressData.Progress++;
 
                     vr.Write(mat);
-
-                    g.Dispose();
-                    image.Dispose();
                 }
+                g.Dispose();
+                image.Dispose();
             }
 
             vr.Release();

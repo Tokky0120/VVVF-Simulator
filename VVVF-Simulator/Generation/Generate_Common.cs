@@ -48,6 +48,22 @@ namespace VVVF_Simulator.Generation
             for (int i = 0; i < frames; i++) { vr.Write(mat); }
         }
 
+        public class ProgressData
+        {
+            public double Progress = 1;
+            public double Total = 1;
+
+            public double RelativeProgress
+            {
+                get
+                {
+                    return Progress / Total * 100;
+                }
+            }
+
+            public bool Cancel = false;
+        }
+
 
 
     }
