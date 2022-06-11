@@ -31,7 +31,7 @@ This application will export video as a `.avi` extension.
 ## Control stat Video Generation
 This application can export video of the control stat values.<br>
 The file will be the`.avi` extension. <br>
-![2022-02-14 (3)](https://user-images.githubusercontent.com/77259842/153803208-18692183-b1ae-4251-96dc-ccc4ce8b3c10.png)
+![2022-06-11 (1)](https://user-images.githubusercontent.com/77259842/173188884-72a1290a-6d7b-4354-88e4-cecfa5d0d424.png)
 
 ## Realtime Audio Generation
 You can generate the audio in real time and control if the sound increases or decreases in frequency as well as the rate that the frequency increases or decreases. <br>
