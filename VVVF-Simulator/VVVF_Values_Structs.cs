@@ -159,6 +159,7 @@ namespace VVVF_Simulator
         public void Set_Generation_Current_Time(double d) { Generation_Current_Time = d; }
         public double Get_Generation_Current_Time() { return Generation_Current_Time; }
         public void Add_Generation_Current_Time(double d) { Generation_Current_Time += d; }
+
     }
 
     public static class VVVF_Structs

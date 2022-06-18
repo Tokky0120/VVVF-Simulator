@@ -53,7 +53,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             Yaml_Mascon_Point_Data? target = null;
             double time_temp = 0;
             double force_mascon_on_freq = -1;
-            bool braking = false, mascon_on = false; ;
+            bool braking = false, mascon_on = false;
 
             for (int i = 0; i < select_source.Count; i++)
             {
@@ -106,6 +106,10 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             double new_sine = Get_Freq_At(current_time, 0, ymd);
             if (new_sine < 0) new_sine = 0;
 
+            control.set_Braking(braking);
+            control.set_Mascon_Off(!mascon_on);
+            control.set_Free_Running(target != null && !target.mascon_on);
+
             if (!control.is_Free_Running())
             {
                 double amp = new_sine == 0 ? 0 : control.get_Sine_Freq() / new_sine;
@@ -120,8 +124,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                     control.multi_Sine_Time(amp);
             }
 
-            control.set_Braking(braking);
-            control.set_Mascon_Off(!mascon_on);
+            
 
             //This is also core of controlling. This should never changed.
             if (!control.is_Mascon_Off()) // mascon on
@@ -134,15 +137,9 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                     double final_freq = control.get_Control_Frequency() + freq_change;
 
                     if (control.get_Sine_Freq() <= final_freq)
-                    {
                         control.set_Control_Frequency(control.get_Sine_Freq());
-                        control.set_Free_Running(false);
-                    }
                     else
-                    {
                         control.set_Control_Frequency(final_freq);
-                        control.set_Free_Running(true);
-                    }
                 }
             }
             else
@@ -150,7 +147,6 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                 double freq_change = control.get_Free_Freq_Change() * add_time;
                 double final_freq = control.get_Control_Frequency() - freq_change;
                 control.set_Control_Frequency(final_freq > 0 ? final_freq : 0);
-                control.set_Free_Running(true);
             }
 
             control.Add_Generation_Current_Time(add_time);

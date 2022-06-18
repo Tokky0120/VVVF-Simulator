@@ -380,18 +380,20 @@ namespace VVVF_Simulator
             {
                 if (command[1].Equals("WAV"))
                 {
-                    var dialog = new SaveFileDialog { Filter = "High Resolution|*.wav|Down Sampled|*.wav" };
+                    var dialog = new SaveFileDialog { Filter = "Ultra High Resolution|*.wav|High Resolution|*.wav|Down Sampled|*.wav" };
+                    dialog.FilterIndex = 2;
                     if (dialog.ShowDialog() == false) return true;
+
+                    int sample_freq = new int[] { 1000000 * 5, 192000, 192000 }[dialog.FilterIndex - 1];
+                    bool resize = new bool[] {false,false,true}[dialog.FilterIndex - 1];
 
                     ProgressData progressData = new();
 
                     Task task = Task.Run(() => {
                         try
                         {
-                            bool resize = dialog.FilterIndex == 2;
-
                             Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            Generation.Audio.VVVF_Sound.Generate_VVVF_Audio.Export_VVVF_Sound(progressData, dialog.FileName, resize, clone);
+                            Generation.Audio.VVVF_Sound.Generate_VVVF_Audio.Export_VVVF_Sound(progressData, dialog.FileName, resize, sample_freq,clone);
                         }
                         catch (Exception e)
                         {

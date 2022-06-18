@@ -42,7 +42,7 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
 
 
         // Export Audio
-        public static void Export_VVVF_Sound(ProgressData progressData ,String output_path, Boolean resize, Yaml_VVVF_Sound_Data sound_data)
+        public static void Export_VVVF_Sound(ProgressData progressData ,String output_path, Boolean resize, int sample_freq, Yaml_VVVF_Sound_Data sound_data)
         {
             DateTime dt = DateTime.Now;
             String gen_time = dt.ToString("yyyy-MM-dd_HH-mm-ss");
@@ -54,7 +54,6 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
 
             Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.Sort().Clone();
 
-            int sample_freq = 192000;
             int sound_block_count = 0;
 
             BinaryWriter writer = new BinaryWriter(new FileStream(resize ? temp : output_path, FileMode.Create));
@@ -96,7 +95,7 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
                 sound_block_count++;
                 progressData.Progress = sound_block_count;
 
-                bool flag_continue = Generate_Common.Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / sample_freq);
+                bool flag_continue = Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / sample_freq);
                 bool flag_cancel = progressData.Cancel;
 
                 if (flag_cancel || !flag_continue) break;
