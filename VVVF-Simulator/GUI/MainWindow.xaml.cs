@@ -380,7 +380,7 @@ namespace VVVF_Simulator
             {
                 if (command[1].Equals("WAV"))
                 {
-                    var dialog = new SaveFileDialog { Filter = "Ultra High Resolution|*.wav|High Resolution|*.wav|Down Sampled|*.wav" };
+                    var dialog = new SaveFileDialog { Filter = "Ultra High Resolution|*.wav|High Resolution|*.wav|Low Resolution|*.wav" };
                     dialog.FilterIndex = 2;
                     if (dialog.ShowDialog() == false) return true;
 

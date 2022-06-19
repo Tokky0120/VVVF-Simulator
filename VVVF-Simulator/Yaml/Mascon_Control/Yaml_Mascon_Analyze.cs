@@ -38,7 +38,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                 for (int i = 0; i < points.Count; i++)
                 {
                     Yaml_Mascon_Point_Data point = points[i];
-                    totalDuration += point.duration;
+                    totalDuration += point.duration > 0 ? point.duration : 0;
                 }
 
                 return totalDuration / sampleTime;
