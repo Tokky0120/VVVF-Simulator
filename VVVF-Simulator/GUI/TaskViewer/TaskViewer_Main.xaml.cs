@@ -41,10 +41,17 @@ namespace VVVF_Simulator.GUI.TaskViewer
             {
                 while (updateGridTask)
                 {
-                    Dispatcher.Invoke(() =>
+                    try
                     {
-                        TaskView.Items.Refresh();
-                    });
+                        Dispatcher.Invoke(() =>
+                        {
+                            TaskView.Items.Refresh();
+                        });
+                    }
+                    catch
+                    {
+                        break;
+                    }
 
                     Thread.Sleep(500);
                 }

@@ -50,11 +50,11 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             List<NoteEvent_Simple> converted_Constructs = GetTime_Line(midiData, loadData.track);
             Yaml_Mascon_Data mascon_Data = new();
 
-            double pre_event_time = 0;
             double total_time = 0;
 
             for(int j = 0; j < loadData.priority; j++)
             {
+                double pre_event_time = 0;
                 List<int> selected_Data = new();
                 for (int i = 0; i < converted_Constructs.Count; i++)
                 {

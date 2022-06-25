@@ -6,6 +6,11 @@
         xmlns:local="clr-namespace:VVVF_Simulator.GUI.TaskViewer"
         mc:Ignorable="d"
         Title="Task Viewer" Height="450" Width="800">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter" />
+    </Window.Resources>
+    
     <Grid Name="BaseGrid">
         <ListView Name="TaskView" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" UseLayoutRounding="False" SelectionMode="Single" ItemsSource="{Binding}">
             <ListView.ItemTemplate>
@@ -25,8 +30,8 @@
 
                         <ProgressBar Grid.Column="2" Name="PbStatus" Minimum="0" Maximum="100" Value="{Binding progressData.RelativeProgress, Mode=OneWay}" Margin="5,5,5,5"/>
                         <TextBlock Grid.Column="2" Text="{Binding ElementName=PbStatus, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,5,5" />
-                        
-                        <Button Tag="{Binding Task.Id}" Click="Button_Click" Grid.Column="3" Content="Cancel" IsEnabled="{Binding Cancelable}" Margin="5,5,5,5"/>
+
+                        <Button Tag="{Binding Task.Id}" Click="Button_Click" Grid.Column="3" Content="Cancel" Visibility="{Binding Cancelable, Converter={StaticResource BoolVisibilityConverter}}" Margin="5,5,5,5"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
