@@ -22,10 +22,12 @@ namespace VVVF_Simulator.GUI.Mascon_Window
     {
 
         bool no_update = true;
-        public Generation_Mascon_Control_Midi()
+        string initial_path;
+        public Generation_Mascon_Control_Midi(string? initial_path)
         {
             InitializeComponent();
             no_update = false;
+            this.initial_path = initial_path == null ? "" : initial_path;
         }
 
         private double parse_d(TextBox tb, double minimum)
@@ -97,7 +99,8 @@ namespace VVVF_Simulator.GUI.Mascon_Window
 
             var dialog = new OpenFileDialog
             {
-                Filter = "Midi (*.mid)|*.mid|All (*.*)|*.*"
+                Filter = "Midi (*.mid)|*.mid|All (*.*)|*.*",
+                InitialDirectory = initial_path
             };
             if (dialog.ShowDialog() == false) return;
 

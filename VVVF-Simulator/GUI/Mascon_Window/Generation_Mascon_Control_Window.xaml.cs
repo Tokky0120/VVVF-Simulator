@@ -72,6 +72,7 @@ namespace VVVF_Simulator.GUI.Mascon_Window
         }
 
         private String load_path = "";
+        private String load_midi_path = "";
         private void File_Menu_Click(object sender, RoutedEventArgs e)
         {
             MenuItem button = (MenuItem)sender;
@@ -113,11 +114,12 @@ namespace VVVF_Simulator.GUI.Mascon_Window
             }
             else if (tag.Equals("Midi"))
             {
-                Generation_Mascon_Control_Midi gmcm = new();
+                Generation_Mascon_Control_Midi gmcm = new(Path.GetDirectoryName(load_midi_path));
                 gmcm.ShowDialog();
                 var load_data = gmcm.loadData;
                 try
                 {
+                    load_midi_path = load_data.path;
                     Yaml_Mascon_Data? data = Yaml_Mascon_Midi.Convert(load_data);
                     if (data == null) return;
                     Yaml_Mascon_Manage.current_data = data;

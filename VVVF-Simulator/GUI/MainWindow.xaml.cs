@@ -823,6 +823,32 @@ namespace VVVF_Simulator
             }
         }
 
+        private void Setting_Menu_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem button = (MenuItem)sender;
+            Object? tag = button.Tag;
+            if (tag == null) return;
+            String? tag_str = tag.ToString();
+            if (tag_str == null) return;
+
+            if (tag_str.Equals("AccelPattern"))
+            {
+                view_data.blocking = true;
+                Generation_Mascon_Control_Window gmcw = new();
+                gmcw.ShowDialog();
+                view_data.blocking = false;
+            }
+            else if (tag_str.Equals("TrainSoundSetting"))
+            {
+                view_data.blocking = true;
+                Yaml_TrainSound_Data _TrainSound_Data = Yaml_TrainSound_Data_Manage.current_data;
+                TrainAudio_Setting_Window tahw = new(_TrainSound_Data);
+                tahw.ShowDialog();
+                view_data.blocking = false;
+            }
+            
+        }
+
         private void Util_Menu_Click(object sender, RoutedEventArgs e)
         {
             MenuItem button = (MenuItem)sender;

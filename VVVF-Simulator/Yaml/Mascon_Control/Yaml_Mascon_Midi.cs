@@ -23,8 +23,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             public class NoteEvent_SimpleData
             {
                 public Note_Event_Type type;
-                public int tick;
-                public int tempo;
+                public double time;
                 public int note;
             }
 
@@ -51,7 +50,8 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             List<NoteEvent_Simple> converted_Constructs = GetTime_Line(midiData, loadData.track);
             Yaml_Mascon_Data mascon_Data = new();
 
-            int pre_event_tick = 0;
+            double pre_event_time = 0;
+            double total_time = 0;
 
             for(int j = 0; j < loadData.priority; j++)
             {
@@ -60,18 +60,12 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                 {
                     NoteEvent_Simple data = converted_Constructs[i];
 
-                    if (data.On.tick < pre_event_tick) continue;
+                    if (data.On.time < pre_event_time) continue;
 
-                    int tick_diff_initial = data.On.tick - pre_event_tick;
-                    double initial_wait = TempoMap.GetMilliSeconds(tick_diff_initial, data.On.tempo, midiData.Resolution.Resolution) * 0.001;
-                    initial_wait = Math.Round(initial_wait, 5);
+                    double initial_wait = data.On.time - pre_event_time;
+                    double play_wait = data.Off.time - data.On.time;
 
-                    int tick_diff_play = data.Off.tick - data.On.tick;
-                    double play_wait = TempoMap.GetMilliSeconds(tick_diff_play, data.Off.tempo, midiData.Resolution.Resolution) * 0.001;
-                    play_wait = Math.Round(play_wait, 5);
-
-                    pre_event_tick = data.Off.tick;
-
+                    pre_event_time = data.Off.time;
                     selected_Data.Add(i);
 
                     if (loadData.priority != j + 1) continue;
@@ -86,6 +80,8 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                     // wait play
                     mascon_Data.points.Add(new Yaml_Mascon_Point_Data() { rate = 0, duration = play_wait, brake = false, mascon_on = true, order = 4 * i + 3 });
 
+                    total_time += play_wait;
+                    total_time += initial_wait;
                 }
 
                 for(int i = 0; i < selected_Data.Count; i++)
@@ -95,6 +91,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             }
 
             Debug.WriteLine("OK");
+            Debug.WriteLine(total_time);
             return mascon_Data;
         }
         public static List<NoteEvent_Simple> GetTime_Line(MidiData midiData,int track_num)
@@ -107,16 +104,14 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             {
                 NoteEvent_SimpleData Note_ON_Data = new()
                 {
-                    tick = note.Tick,
-                    tempo = sc.GetTempo(note.Tick),
+                    time = 0.001 * TempoMapBase.GetMilliSeconds(note.Tick, sc.GetTempo(note.Tick), midiData.Resolution.Resolution),
                     type = Note_Event_Type.ON,
                     note = note.Note
                 };
 
                 NoteEvent_SimpleData Note_OFF_Data = new()
                 {
-                    tick = note.Tick + note.Gate,
-                    tempo = sc.GetTempo(note.Tick + note.Gate),
+                    time = 0.001 * TempoMapBase.GetMilliSeconds(note.Tick + note.Gate, sc.GetTempo(note.Tick + note.Gate), midiData.Resolution.Resolution),
                     type = Note_Event_Type.OFF,
                     note = note.Note
                 };
@@ -130,7 +125,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                 events.Add(note_event);
             }
 
-            events.Sort((a, b) => a.On.tick - b.On.tick);
+            events.Sort((a, b) => Math.Sign(a.On.time - b.On.time));
             return events;
         }
     }
