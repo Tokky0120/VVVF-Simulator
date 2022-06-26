@@ -94,6 +94,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             Debug.WriteLine(total_time);
             return mascon_Data;
         }
+
         public static List<NoteEvent_Simple> GetTime_Line(MidiData midiData,int track_num)
         {
             List<NoteEvent_Simple> events = new List<NoteEvent_Simple>();
@@ -104,14 +105,14 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             {
                 NoteEvent_SimpleData Note_ON_Data = new()
                 {
-                    time = 0.001 * TempoMapBase.GetMilliSeconds(note.Tick, sc.GetTempo(note.Tick), midiData.Resolution.Resolution),
+                    time = 0.001 * sc.ToMilliSeconds(note.Tick),
                     type = Note_Event_Type.ON,
                     note = note.Note
                 };
 
                 NoteEvent_SimpleData Note_OFF_Data = new()
                 {
-                    time = 0.001 * TempoMapBase.GetMilliSeconds(note.Tick + note.Gate, sc.GetTempo(note.Tick + note.Gate), midiData.Resolution.Resolution),
+                    time = 0.001 * sc.ToMilliSeconds(note.Tick + note.Gate),
                     type = Note_Event_Type.OFF,
                     note = note.Note
                 };
@@ -128,5 +129,6 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             events.Sort((a, b) => Math.Sign(a.On.time - b.On.time));
             return events;
         }
+
     }
 }
