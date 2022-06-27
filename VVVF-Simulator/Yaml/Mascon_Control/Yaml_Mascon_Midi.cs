@@ -90,8 +90,6 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                 }
             }
 
-            Debug.WriteLine("OK");
-            Debug.WriteLine(total_time);
             return mascon_Data;
         }
 

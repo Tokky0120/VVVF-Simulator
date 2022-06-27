@@ -13,27 +13,39 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
     public class Yaml_Mascon_Control
     {
 
-        private static double Get_Freq_At(double time, double initial, Yaml_Mascon_Data_Compiled ymdc)
+        private static int GetPointAtNum(double time, Yaml_Mascon_Data_Compiled ymdc)
         {
             List<Yaml_Mascon_Data_Compiled_Point> SelectSource = ymdc.Points;
 
-            int pos = SelectSource.Count / 2;
-            int search = SelectSource.Count / 2;
+            if (time < SelectSource.First().StartTime || SelectSource.Last().EndTime < time) return -1;
+
+            int E_L = 0;
+            int E_R = SelectSource.Count - 1;
+            int Pos = (E_R - E_L) / 2 + E_L;
             while (true)
             {
-                search /= 2;
-                if (SelectSource[pos].StartTime < time)
-                    pos += search;
-                else if (SelectSource[pos].StartTime > time)
-                    pos -= search;
+                bool time_f = SelectSource[Pos].StartTime <= time && time <= SelectSource[Pos].EndTime;
+                if (time_f) break;
 
-                if (search == 1)
-                    break;
+                if (SelectSource[Pos].StartTime < time)
+                    E_L = Pos + 1;
+                else if (SelectSource[Pos].StartTime > time)
+                    E_R = Pos - 1;
+
+                Pos = (E_R - E_L) / 2 + E_L;
+                
             }
 
-            Yaml_Mascon_Data_Compiled_Point Selected = SelectSource[pos];
-            
-            bool time_f = Selected.StartTime <= time && time <= Selected.EndTime;
+            return Pos;
+        }
+        private static Yaml_Mascon_Data_Compiled_Point GetPointAtData(double time, Yaml_Mascon_Data_Compiled ymdc)
+        {
+            Yaml_Mascon_Data_Compiled_Point Selected = ymdc.Points[GetPointAtNum(time, ymdc)];
+            return Selected;
+        }
+        private static double GetFreqAt(double time, double initial, Yaml_Mascon_Data_Compiled ymdc)
+        {
+            Yaml_Mascon_Data_Compiled_Point Selected = GetPointAtData(time,ymdc);
 
             double A_Frequency = (Selected.EndFrequency - Selected.StartFrequency) / (Selected.EndTime - Selected.StartTime);
             double Frequency = A_Frequency * (time - Selected.StartTime) + Selected.StartFrequency;
@@ -42,112 +54,100 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
 
         }
 
-        public static bool Check_For_Freq_Change(VVVF_Values control, Yaml_Mascon_Data_Compiled ymdc, Yaml_Mascon_Data ysd, double add_time)
+        public static bool Check_For_Freq_Change(VVVF_Values Control, Yaml_Mascon_Data_Compiled MasconDataCompiled, Yaml_Mascon_Data MasconChangeData, double TimeDelta)
         {
+            double ForceOnFrequency;
+            bool Braking, IsMasconOn;
+            double CurrentTime = Control.Get_Generation_Current_Time();
+            List<Yaml_Mascon_Data_Compiled_Point> SelectSource = MasconDataCompiled.Points;
+            int DataAt = GetPointAtNum(CurrentTime,MasconDataCompiled);
+            if (DataAt < 0) return false;
+            Yaml_Mascon_Data_Compiled_Point Target = SelectSource[DataAt];
+            Yaml_Mascon_Data_Compiled_Point? NextTarget = DataAt + 1 < SelectSource.Count ? SelectSource[DataAt + 1] : null;
+            Yaml_Mascon_Data_Compiled_Point? PreviousTarget = DataAt - 1 >= 0 ? SelectSource[DataAt - 1] : null;
 
-            double current_time = control.Get_Generation_Current_Time();
-            List<Yaml_Mascon_Data_Compiled_Point> select_source = ymdc.Points;
+            Braking = !Target.IsAccel();
+            IsMasconOn = Target.IsMasconOn;
+            ForceOnFrequency = -1;
 
-            Yaml_Mascon_Data_Compiled_Point? target = null;
-            double time_temp = 0;
-            double force_mascon_on_freq = -1;
-            bool braking = false, mascon_on = false;
+            if (!IsMasconOn && PreviousTarget != null)
+                Braking = !PreviousTarget.IsAccel();
 
-            for (int i = 0; i < select_source.Count; i++)
+            if (NextTarget != null && Control.is_Free_Running() && NextTarget.IsMasconOn)
             {
-                Yaml_Mascon_Data_Compiled_Point search = select_source[i];
-                Yaml_Mascon_Data_Compiled_Point? next_search = i + 1 < select_source.Count ? select_source[i + 1] : null;
-                Yaml_Mascon_Data_Compiled_Point? pre_search = i - 1 >= 0 ? select_source[i - 1] : null;
 
-                braking = !search.IsAccel();
-                mascon_on = search.IsMasconOn;
-                force_mascon_on_freq = -1;
-
-                if (!mascon_on && pre_search != null)
-                    braking = !pre_search.IsAccel();
-
-                if (next_search != null && control.is_Free_Running() && next_search.IsMasconOn)
+                double MasconOnFrequency = GetFreqAt(Target.EndTime, 0, MasconDataCompiled);
+                double FreqPerSec, FreqGoto;
+                if (!NextTarget.IsAccel())
                 {
-                    
-                    double mascon_on_finish_freq = Get_Freq_At(time_temp, 0, ymdc);
-                    double freq_per_sec,freq_go_to;
-                    if (!next_search.IsAccel())
-                    {
-                        freq_per_sec = ysd.braking.on.freq_per_sec;
-                        freq_go_to = ysd.braking.on.control_freq_go_to;
-                    }
-                    else
-                    {
-                        freq_per_sec = ysd.accelerating.on.freq_per_sec;
-                        freq_go_to = ysd.accelerating.on.control_freq_go_to;
-                    }
-
-                    double target_freq = mascon_on_finish_freq > freq_go_to ? freq_go_to : mascon_on_finish_freq;
-                    double need_time = target_freq  / freq_per_sec;
-                    if (time_temp - need_time < control.Get_Generation_Current_Time())
-                    {
-                        mascon_on = true;
-                        braking = !next_search.IsAccel();
-                        force_mascon_on_freq = mascon_on_finish_freq;
-                    }
+                    FreqPerSec = MasconChangeData.braking.on.freq_per_sec;
+                    FreqGoto = MasconChangeData.braking.on.control_freq_go_to;
+                }
+                else
+                {
+                    FreqPerSec = MasconChangeData.accelerating.on.freq_per_sec;
+                    FreqGoto = MasconChangeData.accelerating.on.control_freq_go_to;
                 }
 
-                if (time_temp > current_time)
+                double TargetFrequency = MasconOnFrequency > FreqGoto ? FreqGoto : MasconOnFrequency;
+                double RequireTime = TargetFrequency / FreqPerSec;
+                if (Target.EndTime - RequireTime < Control.Get_Generation_Current_Time())
                 {
-                    target = search;
-                    break;
+                    IsMasconOn = true;
+                    Braking = !NextTarget.IsAccel();
+                    ForceOnFrequency = MasconOnFrequency;
                 }
             }
 
-            double new_sine = Get_Freq_At(current_time, 0, ymdc);
-            if (new_sine < 0) new_sine = 0;
+            double NewSineFrequency = GetFreqAt(CurrentTime, 0, MasconDataCompiled);
+            if (NewSineFrequency < 0) NewSineFrequency = 0;
 
-            control.set_Braking(braking);
-            control.set_Mascon_Off(!mascon_on);
-            control.set_Free_Running(target != null && !target.IsMasconOn);
+            Control.set_Braking(Braking);
+            Control.set_Mascon_Off(!IsMasconOn);
+            Control.set_Free_Running(Target != null && !Target.IsMasconOn);
 
-            if (!control.is_Free_Running())
+            if (!Control.is_Free_Running())
             {
-                double amp = new_sine == 0 ? 0 : control.get_Sine_Freq() / new_sine;
-                control.set_Sine_Angle_Freq(new_sine * Math.PI * 2);
-                if (control.is_Allowed_Sine_Time_Change())
-                    control.multi_Sine_Time(amp);
-            }else if (force_mascon_on_freq != -1)
+                double SineTimeAmplitude = NewSineFrequency == 0 ? 0 : Control.get_Sine_Freq() / NewSineFrequency;
+                Control.set_Sine_Angle_Freq(NewSineFrequency * Math.PI * 2);
+                if (Control.is_Allowed_Sine_Time_Change())
+                    Control.multi_Sine_Time(SineTimeAmplitude);
+            }else if (ForceOnFrequency != -1)
             {
-                double amp = force_mascon_on_freq == 0 ? 0 : control.get_Sine_Freq() / force_mascon_on_freq;
-                control.set_Sine_Angle_Freq(force_mascon_on_freq * Math.PI * 2);
-                if (control.is_Allowed_Sine_Time_Change())
-                    control.multi_Sine_Time(amp);
+                double SineTimeAmplitude = ForceOnFrequency == 0 ? 0 : Control.get_Sine_Freq() / ForceOnFrequency;
+                Control.set_Sine_Angle_Freq(ForceOnFrequency * Math.PI * 2);
+                if (Control.is_Allowed_Sine_Time_Change())
+                    Control.multi_Sine_Time(SineTimeAmplitude);
             }
 
             
 
             //This is also core of controlling. This should never changed.
-            if (!control.is_Mascon_Off()) // mascon on
+            if (!Control.is_Mascon_Off()) // mascon on
             {
-                if (!control.is_Free_Running())
-                    control.set_Control_Frequency(control.get_Sine_Freq());
+                if (!Control.is_Free_Running())
+                    Control.set_Control_Frequency(Control.get_Sine_Freq());
                 else
                 {
-                    double freq_change = control.get_Free_Freq_Change() * add_time;
-                    double final_freq = control.get_Control_Frequency() + freq_change;
+                    double freq_change = Control.get_Free_Freq_Change() * TimeDelta;
+                    double final_freq = Control.get_Control_Frequency() + freq_change;
 
-                    if (control.get_Sine_Freq() <= final_freq)
-                        control.set_Control_Frequency(control.get_Sine_Freq());
+                    if (Control.get_Sine_Freq() <= final_freq)
+                        Control.set_Control_Frequency(Control.get_Sine_Freq());
                     else
-                        control.set_Control_Frequency(final_freq);
+                        Control.set_Control_Frequency(final_freq);
                 }
             }
             else
             {
-                double freq_change = control.get_Free_Freq_Change() * add_time;
-                double final_freq = control.get_Control_Frequency() - freq_change;
-                control.set_Control_Frequency(final_freq > 0 ? final_freq : 0);
+                double FreqChange = Control.get_Free_Freq_Change() * TimeDelta;
+                double FinalFrequency = Control.get_Control_Frequency() - FreqChange;
+                Control.set_Control_Frequency(FinalFrequency > 0 ? FinalFrequency : 0);
             }
 
-            control.Add_Generation_Current_Time(add_time);
+            Control.Add_Generation_Current_Time(TimeDelta);
 
-            if (target == null) return false;
+            if (Target == null) return false;
             return true;
         }
     }

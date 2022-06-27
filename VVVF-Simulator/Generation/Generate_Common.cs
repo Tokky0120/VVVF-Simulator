@@ -21,7 +21,6 @@ namespace VVVF_Simulator.Generation
         /// <returns></returns>
         public static bool Check_For_Freq_Change(VVVF_Values control,Yaml_Mascon_Data_Compiled ymdc, Yaml_Mascon_Data ymd, double add_time)
         {
-
             return Yaml_Mascon_Control.Check_For_Freq_Change(control, ymdc, ymd, add_time);
         }
 
