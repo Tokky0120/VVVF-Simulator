@@ -15,13 +15,13 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
         public class Yaml_Mascon_Data
         {
 
-            public List<Yaml_Mascon_Point_Data> points = new List<Yaml_Mascon_Point_Data>();
+            public List<Yaml_Mascon_Data_Point> points = new List<Yaml_Mascon_Data_Point>();
 
             public Yaml_Mascon_Data Clone()
             {
                 Yaml_Mascon_Data ymd = (Yaml_Mascon_Data)MemberwiseClone();
 
-                List<Yaml_Mascon_Point_Data> clone_points = new List<Yaml_Mascon_Point_Data>();
+                List<Yaml_Mascon_Data_Point> clone_points = new List<Yaml_Mascon_Data_Point>();
                 for(int i = 0; i < points.Count; i++)
                 {
                     clone_points.Add(points[i].Clone());
@@ -37,14 +37,19 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                 double totalDuration = 0;
                 for (int i = 0; i < points.Count; i++)
                 {
-                    Yaml_Mascon_Point_Data point = points[i];
+                    Yaml_Mascon_Data_Point point = points[i];
                     totalDuration += point.duration > 0 ? point.duration : 0;
                 }
 
                 return totalDuration / sampleTime;
             }
 
-            public class Yaml_Mascon_Point_Data {
+            public Yaml_Mascon_Data_Compiled GetCompiled()
+            {
+                return new Yaml_Mascon_Data_Compiled(this);
+            }
+
+            public class Yaml_Mascon_Data_Point {
 
                 public int order { get; set; } = 0;
                 public double rate { get; set; } = 0; //Hz / s
@@ -53,12 +58,62 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                 public bool mascon_on { get; set; } = true;
 
 
-                public Yaml_Mascon_Point_Data Clone()
+                public Yaml_Mascon_Data_Point Clone()
                 {
-                    return (Yaml_Mascon_Point_Data)MemberwiseClone();
+                    return (Yaml_Mascon_Data_Point)MemberwiseClone();
                 }
             }
 
+        }
+
+        public class Yaml_Mascon_Data_Compiled
+        {
+            public List<Yaml_Mascon_Data_Compiled_Point> Yaml_Mascon_Data_Compiled_Points { get; set; } = new List<Yaml_Mascon_Data_Compiled_Point>();
+
+            public Yaml_Mascon_Data_Compiled(Yaml_Mascon_Data ymd)
+            {
+                Yaml_Mascon_Data _ymd = ymd.Clone();
+                _ymd.points.Sort((a, b) => a.order - b.order);
+
+                double currentTime = 0;
+                double currentFrequency = 0;
+                for(int i = 0; i < _ymd.points.Count; i++)
+                {
+                    Yaml_Mascon_Data_Point yaml_Mascon_Data_Point = _ymd.points[i];
+                    if(yaml_Mascon_Data_Point.duration == -1)
+                    {
+                        currentFrequency = yaml_Mascon_Data_Point.rate;
+                        continue;
+                    }
+
+                    double deltaTime = yaml_Mascon_Data_Point.duration;
+                    double deltaFrequency = deltaTime * yaml_Mascon_Data_Point.rate * (yaml_Mascon_Data_Point.brake ? -1 : 1);
+                    Yaml_Mascon_Data_Compiled_Point yaml_Mascon_Data_Compiled_Point = new()
+                    {
+                        StartTime = currentTime,
+                        EndTime = currentTime + deltaTime,
+                        StartFrequency = currentFrequency,
+                        EndFrequency = currentFrequency + deltaFrequency
+                    };
+                    Yaml_Mascon_Data_Compiled_Points.Add(yaml_Mascon_Data_Compiled_Point);
+
+                    currentTime += deltaTime;
+                    currentFrequency += deltaFrequency;
+                }
+            }
+
+            public class Yaml_Mascon_Data_Compiled_Point
+            {
+                public double StartTime { get; set; } = 0;
+                public double EndTime { get; set; } = 0;
+                public double StartFrequency { get; set; } = 0;
+                public double EndFrequency { get; set; } = 0;
+
+                public Yaml_Mascon_Data_Compiled_Point Clone()
+                {
+                    return (Yaml_Mascon_Data_Compiled_Point)MemberwiseClone();
+                }
+            }
         }
 
         public class Yaml_Mascon_Manage
@@ -68,7 +123,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             {
                 points = new()
                 {
-                    new Yaml_Mascon_Point_Data()
+                    new Yaml_Mascon_Data_Point()
                     {
                         rate = 5,
                         duration = 20,
@@ -76,7 +131,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                         mascon_on = true,
                         order = 0,
                     },
-                    new Yaml_Mascon_Point_Data()
+                    new Yaml_Mascon_Data_Point()
                     {
                         rate = 0,
                         duration = 4,
@@ -84,7 +139,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                         mascon_on = false,
                         order = 1,
                     },
-                    new Yaml_Mascon_Point_Data()
+                    new Yaml_Mascon_Data_Point()
                     {
                         rate = 5,
                         duration = 20,

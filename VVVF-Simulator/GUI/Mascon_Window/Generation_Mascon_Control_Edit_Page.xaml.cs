@@ -21,10 +21,10 @@ namespace VVVF_Simulator.GUI.Mascon_Window
     /// </summary>
     public partial class Generation_Mascon_Control_Edit_Page : Page
     {
-        private Yaml_Mascon_Point_Data data;
+        private Yaml_Mascon_Data_Point data;
         private bool no_update = true;
         private Generation_Mascon_Control_Window main_viewer;
-        public Generation_Mascon_Control_Edit_Page(Generation_Mascon_Control_Window main,Yaml_Mascon_Point_Data ympd)
+        public Generation_Mascon_Control_Edit_Page(Generation_Mascon_Control_Window main,Yaml_Mascon_Data_Point ympd)
         {
             InitializeComponent();
 

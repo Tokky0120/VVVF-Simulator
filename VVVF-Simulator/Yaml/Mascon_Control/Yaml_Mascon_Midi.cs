@@ -71,14 +71,14 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                     if (loadData.priority != j + 1) continue;
 
                     // set initial
-                    mascon_Data.points.Add(new Yaml_Mascon_Point_Data() { rate = 0, duration = -1, brake = false, mascon_on = true, order = 4 * i });
+                    mascon_Data.points.Add(new Yaml_Mascon_Data_Point() { rate = 0, duration = -1, brake = false, mascon_on = true, order = 4 * i });
                     // wait initial
-                    mascon_Data.points.Add(new Yaml_Mascon_Point_Data() { rate = 0, duration = initial_wait, brake = false, mascon_on = true, order = 4 * i + 1 });
+                    mascon_Data.points.Add(new Yaml_Mascon_Data_Point() { rate = 0, duration = initial_wait, brake = false, mascon_on = true, order = 4 * i + 1 });
                     // set play
                     double frequency = 440 * Math.Pow(2, (data.On.note - 69) / 12.0) / loadData.division;
-                    mascon_Data.points.Add(new Yaml_Mascon_Point_Data() { rate = frequency, duration = -1, brake = false, mascon_on = true, order = 4 * i + 2 });
+                    mascon_Data.points.Add(new Yaml_Mascon_Data_Point() { rate = frequency, duration = -1, brake = false, mascon_on = true, order = 4 * i + 2 });
                     // wait play
-                    mascon_Data.points.Add(new Yaml_Mascon_Point_Data() { rate = 0, duration = play_wait, brake = false, mascon_on = true, order = 4 * i + 3 });
+                    mascon_Data.points.Add(new Yaml_Mascon_Data_Point() { rate = 0, duration = play_wait, brake = false, mascon_on = true, order = 4 * i + 3 });
 
                     total_time += play_wait;
                     total_time += initial_wait;

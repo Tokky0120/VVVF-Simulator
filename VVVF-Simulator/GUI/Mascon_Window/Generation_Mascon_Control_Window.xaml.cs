@@ -24,10 +24,10 @@ namespace VVVF_Simulator.GUI.Mascon_Window
         // 2.Convertメソッドを実装
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not Yaml_Mascon_Point_Data)
+            if (value is not Yaml_Mascon_Data_Point)
                 return DependencyProperty.UnsetValue;
 
-            Yaml_Mascon_Point_Data val = (Yaml_Mascon_Point_Data)value;
+            Yaml_Mascon_Data_Point val = (Yaml_Mascon_Data_Point)value;
 
             return "Rate : " + String.Format("{0:F2}", val.rate) + " , Duration : " + String.Format("{0:F2}", val.duration) + " , Mascon : " + val.mascon_on.ToString() + " , Brake : " + val.brake;
         }
@@ -43,10 +43,10 @@ namespace VVVF_Simulator.GUI.Mascon_Window
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not Yaml_Mascon_Point_Data)
+            if (value is not Yaml_Mascon_Data_Point)
                 return DependencyProperty.UnsetValue;
 
-            Yaml_Mascon_Point_Data val = (Yaml_Mascon_Point_Data)value;
+            Yaml_Mascon_Data_Point val = (Yaml_Mascon_Data_Point)value;
 
             return val.order;
         }
@@ -155,7 +155,7 @@ namespace VVVF_Simulator.GUI.Mascon_Window
                 var selected_item = mascon_control_list.SelectedItem;
                 if (selected_item == null) return;
 
-                Yaml_Mascon_Point_Data data = (Yaml_Mascon_Point_Data)selected_item;
+                Yaml_Mascon_Data_Point data = (Yaml_Mascon_Data_Point)selected_item;
                 Yaml_Mascon_Manage.current_data.points.Add(data.Clone());
 
                 Refresh_ItemList();
@@ -167,7 +167,7 @@ namespace VVVF_Simulator.GUI.Mascon_Window
             var selected_item = mascon_control_list.SelectedItem;
             if (selected_item == null) return;
 
-            edit_view_frame.Navigate(new Generation_Mascon_Control_Edit_Page(this, (Yaml_Mascon_Point_Data)selected_item));
+            edit_view_frame.Navigate(new Generation_Mascon_Control_Edit_Page(this, (Yaml_Mascon_Data_Point)selected_item));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

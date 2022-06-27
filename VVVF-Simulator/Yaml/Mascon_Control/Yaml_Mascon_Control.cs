@@ -16,11 +16,11 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
         {
             double current_time = 0;
             double current_freq = initial;
-            List<Yaml_Mascon_Point_Data> select_source = ymd.points;
+            List<Yaml_Mascon_Data_Point> select_source = ymd.points;
 
             for (int i = 0; i < select_source.Count; i++)
             {
-                Yaml_Mascon_Point_Data ympd = select_source[i];
+                Yaml_Mascon_Data_Point ympd = select_source[i];
 
                 if (ympd.duration < 0)
                 {
@@ -48,18 +48,18 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
         {
 
             double current_time = control.Get_Generation_Current_Time();
-            List<Yaml_Mascon_Point_Data> select_source = ymd.points;
+            List<Yaml_Mascon_Data_Point> select_source = ymd.points;
 
-            Yaml_Mascon_Point_Data? target = null;
+            Yaml_Mascon_Data_Point? target = null;
             double time_temp = 0;
             double force_mascon_on_freq = -1;
             bool braking = false, mascon_on = false;
 
             for (int i = 0; i < select_source.Count; i++)
             {
-                Yaml_Mascon_Point_Data search = select_source[i];
-                Yaml_Mascon_Point_Data? next_search = i + 1 < select_source.Count ? select_source[i + 1] : null;
-                Yaml_Mascon_Point_Data? pre_search = i - 1 >= 0 ? select_source[i - 1] : null;
+                Yaml_Mascon_Data_Point search = select_source[i];
+                Yaml_Mascon_Data_Point? next_search = i + 1 < select_source.Count ? select_source[i + 1] : null;
+                Yaml_Mascon_Data_Point? pre_search = i - 1 >= 0 ? select_source[i - 1] : null;
 
                 time_temp += search.duration > 0 ? search.duration : 0;
 
