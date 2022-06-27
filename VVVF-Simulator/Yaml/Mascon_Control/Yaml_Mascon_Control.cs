@@ -5,77 +5,73 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
-using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze.Yaml_Mascon_Data;
+using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze.Yaml_Mascon_Data_Compiled;
+using Yaml_Mascon_Data = VVVF_Simulator.Yaml.VVVF_Sound.Yaml_VVVF_Sound_Data.Yaml_Mascon_Data;
 
 namespace VVVF_Simulator.Yaml.Mascon_Control
 {
     public class Yaml_Mascon_Control
     {
 
-        private static double Get_Freq_At(double time, double initial, Yaml_Mascon_Data ymd)
+        private static double Get_Freq_At(double time, double initial, Yaml_Mascon_Data_Compiled ymdc)
         {
-            double current_time = 0;
-            double current_freq = initial;
-            List<Yaml_Mascon_Data_Point> select_source = ymd.points;
+            List<Yaml_Mascon_Data_Compiled_Point> SelectSource = ymdc.Points;
 
-            for (int i = 0; i < select_source.Count; i++)
+            int pos = SelectSource.Count / 2;
+            int search = SelectSource.Count / 2;
+            while (true)
             {
-                Yaml_Mascon_Data_Point ympd = select_source[i];
+                search /= 2;
+                if (SelectSource[pos].StartTime < time)
+                    pos += search;
+                else if (SelectSource[pos].StartTime > time)
+                    pos -= search;
 
-                if (ympd.duration < 0)
-                {
-                    current_freq = ympd.rate;
-                    continue;
-                }
-                    
-
-                if(time >= current_time + ympd.duration)
-                    current_freq += ympd.duration * ympd.rate * (ympd.brake ? -1 : 1);
-                else
-                {
-                    current_freq += (time - current_time) * ympd.rate * (ympd.brake ? -1 : 1);
-                    return current_freq;
-                }
-
-                current_time += ympd.duration;
+                if (search == 1)
+                    break;
             }
 
-            return current_freq;
+            Yaml_Mascon_Data_Compiled_Point Selected = SelectSource[pos];
+            
+            bool time_f = Selected.StartTime <= time && time <= Selected.EndTime;
+
+            double A_Frequency = (Selected.EndFrequency - Selected.StartFrequency) / (Selected.EndTime - Selected.StartTime);
+            double Frequency = A_Frequency * (time - Selected.StartTime) + Selected.StartFrequency;
+
+            return Frequency + initial;
 
         }
 
-        public static bool Check_For_Freq_Change(VVVF_Values control, Yaml_Mascon_Data ymd, VVVF_Simulator.Yaml.VVVF_Sound.Yaml_VVVF_Sound_Data.Yaml_Mascon_Data ysd, double add_time)
+        public static bool Check_For_Freq_Change(VVVF_Values control, Yaml_Mascon_Data_Compiled ymdc, Yaml_Mascon_Data ysd, double add_time)
         {
 
             double current_time = control.Get_Generation_Current_Time();
-            List<Yaml_Mascon_Data_Point> select_source = ymd.points;
+            List<Yaml_Mascon_Data_Compiled_Point> select_source = ymdc.Points;
 
-            Yaml_Mascon_Data_Point? target = null;
+            Yaml_Mascon_Data_Compiled_Point? target = null;
             double time_temp = 0;
             double force_mascon_on_freq = -1;
             bool braking = false, mascon_on = false;
 
             for (int i = 0; i < select_source.Count; i++)
             {
-                Yaml_Mascon_Data_Point search = select_source[i];
-                Yaml_Mascon_Data_Point? next_search = i + 1 < select_source.Count ? select_source[i + 1] : null;
-                Yaml_Mascon_Data_Point? pre_search = i - 1 >= 0 ? select_source[i - 1] : null;
+                Yaml_Mascon_Data_Compiled_Point search = select_source[i];
+                Yaml_Mascon_Data_Compiled_Point? next_search = i + 1 < select_source.Count ? select_source[i + 1] : null;
+                Yaml_Mascon_Data_Compiled_Point? pre_search = i - 1 >= 0 ? select_source[i - 1] : null;
 
-                time_temp += search.duration > 0 ? search.duration : 0;
-
-                braking = search.brake;
-                mascon_on = search.mascon_on;
+                braking = !search.IsAccel();
+                mascon_on = search.IsMasconOn;
                 force_mascon_on_freq = -1;
 
-                if (!search.mascon_on && pre_search != null)
-                    braking = pre_search.brake;
+                if (!mascon_on && pre_search != null)
+                    braking = !pre_search.IsAccel();
 
-                if (next_search != null && control.is_Free_Running() && next_search.mascon_on)
+                if (next_search != null && control.is_Free_Running() && next_search.IsMasconOn)
                 {
                     
-                    double mascon_on_finish_freq = Get_Freq_At(time_temp, 0, ymd);
+                    double mascon_on_finish_freq = Get_Freq_At(time_temp, 0, ymdc);
                     double freq_per_sec,freq_go_to;
-                    if (next_search.brake)
+                    if (!next_search.IsAccel())
                     {
                         freq_per_sec = ysd.braking.on.freq_per_sec;
                         freq_go_to = ysd.braking.on.control_freq_go_to;
@@ -91,7 +87,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                     if (time_temp - need_time < control.Get_Generation_Current_Time())
                     {
                         mascon_on = true;
-                        braking = next_search.brake;
+                        braking = !next_search.IsAccel();
                         force_mascon_on_freq = mascon_on_finish_freq;
                     }
                 }
@@ -103,12 +99,12 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                 }
             }
 
-            double new_sine = Get_Freq_At(current_time, 0, ymd);
+            double new_sine = Get_Freq_At(current_time, 0, ymdc);
             if (new_sine < 0) new_sine = 0;
 
             control.set_Braking(braking);
             control.set_Mascon_Off(!mascon_on);
-            control.set_Free_Running(target != null && !target.mascon_on);
+            control.set_Free_Running(target != null && !target.IsMasconOn);
 
             if (!control.is_Free_Running())
             {

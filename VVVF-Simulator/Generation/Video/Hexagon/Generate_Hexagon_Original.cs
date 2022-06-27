@@ -157,7 +157,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
             control.reset_all_variables();
             control.set_Allowed_Random_Freq_Move(false);
 
-            Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.Sort().Clone();
+            Yaml_Mascon_Data_Compiled ymd = Yaml_Mascon_Manage.CurrentData.GetCompiled();
 
             Boolean draw_zero_vector_circle = circle;
 

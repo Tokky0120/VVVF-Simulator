@@ -66,7 +66,7 @@ namespace VVVF_Simulator.GUI.Mascon_Window
         {
             InitializeComponent();
 
-            mascon_control_list.ItemsSource = Yaml_Mascon_Manage.current_data.points;
+            mascon_control_list.ItemsSource = Yaml_Mascon_Manage.CurrentData.points;
 
 
         }
@@ -122,7 +122,7 @@ namespace VVVF_Simulator.GUI.Mascon_Window
                     load_midi_path = load_data.path;
                     Yaml_Mascon_Data? data = Yaml_Mascon_Midi.Convert(load_data);
                     if (data == null) return;
-                    Yaml_Mascon_Manage.current_data = data;
+                    Yaml_Mascon_Manage.CurrentData = data;
                     Refresh_ItemList();
                 }
                 catch(Exception ex)
@@ -134,7 +134,7 @@ namespace VVVF_Simulator.GUI.Mascon_Window
 
         public void Refresh_ItemList()
         {
-            mascon_control_list.ItemsSource = Yaml_Mascon_Manage.current_data.points;
+            mascon_control_list.ItemsSource = Yaml_Mascon_Manage.CurrentData.points;
             mascon_control_list.Items.Refresh();
         }
 
@@ -145,7 +145,7 @@ namespace VVVF_Simulator.GUI.Mascon_Window
 
             if (tag.Equals("sort"))
             {
-                Yaml_Mascon_Manage.current_data.points.Sort((a, b) => Math.Sign(a.order - b.order));
+                Yaml_Mascon_Manage.CurrentData.points.Sort((a, b) => Math.Sign(a.order - b.order));
                 Refresh_ItemList();
 
 
@@ -156,7 +156,7 @@ namespace VVVF_Simulator.GUI.Mascon_Window
                 if (selected_item == null) return;
 
                 Yaml_Mascon_Data_Point data = (Yaml_Mascon_Data_Point)selected_item;
-                Yaml_Mascon_Manage.current_data.points.Add(data.Clone());
+                Yaml_Mascon_Manage.CurrentData.points.Add(data.Clone());
 
                 Refresh_ItemList();
             }
@@ -177,17 +177,17 @@ namespace VVVF_Simulator.GUI.Mascon_Window
 
             if (tag.Equals("Add"))
             {
-                Yaml_Mascon_Manage.current_data.points.Add(new());
+                Yaml_Mascon_Manage.CurrentData.points.Add(new());
                 Refresh_ItemList();
             }else if (tag.Equals("Remove"))
             {
                 int selected = mascon_control_list.SelectedIndex;
                 if (selected < 0) return;
-                Yaml_Mascon_Manage.current_data.points.RemoveAt(selected);
+                Yaml_Mascon_Manage.CurrentData.points.RemoveAt(selected);
                 Refresh_ItemList();
             }else if (tag.Equals("Reset"))
             {
-                Yaml_Mascon_Manage.current_data = Yaml_Mascon_Manage.default_data.Clone();
+                Yaml_Mascon_Manage.CurrentData = Yaml_Mascon_Manage.DefaultData.Clone();
                 Refresh_ItemList();
             }
         }

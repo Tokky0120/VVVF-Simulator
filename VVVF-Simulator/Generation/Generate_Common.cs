@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using VVVF_Simulator.Yaml.Mascon_Control;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
+using Yaml_Mascon_Data = VVVF_Simulator.Yaml.VVVF_Sound.Yaml_VVVF_Sound_Data.Yaml_Mascon_Data;
 
 namespace VVVF_Simulator.Generation
 {
@@ -18,10 +19,10 @@ namespace VVVF_Simulator.Generation
         /// It will be updated everytime this function colled.
         /// </summary>
         /// <returns></returns>
-        public static bool Check_For_Freq_Change(VVVF_Values control,Yaml_Mascon_Data mypd, Yaml.VVVF_Sound.Yaml_VVVF_Sound_Data.Yaml_Mascon_Data ymd, double add_time)
+        public static bool Check_For_Freq_Change(VVVF_Values control,Yaml_Mascon_Data_Compiled ymdc, Yaml_Mascon_Data ymd, double add_time)
         {
 
-            return Yaml_Mascon_Control.Check_For_Freq_Change(control, mypd,ymd, add_time);
+            return Yaml_Mascon_Control.Check_For_Freq_Change(control, ymdc, ymd, add_time);
         }
 
 

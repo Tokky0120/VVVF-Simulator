@@ -52,7 +52,7 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
             control.reset_control_variables();
             control.reset_all_variables();
 
-            Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.Sort().Clone();
+            Yaml_Mascon_Data_Compiled ymdc = Yaml_Mascon_Manage.CurrentData.GetCompiled();
 
             int sound_block_count = 0;
 
@@ -77,7 +77,7 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
             int temp_bytes_count = 0;
 
             //TASK DATA PREPARE
-            progressData.Total = ymd.GetEstimatedSteps(1.0/sample_freq);
+            progressData.Total = ymdc.GetEstimatedSteps(1.0/sample_freq);
 
             while (true)
             {
@@ -95,7 +95,7 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
                 sound_block_count++;
                 progressData.Progress = sound_block_count;
 
-                bool flag_continue = Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / sample_freq);
+                bool flag_continue = Check_For_Freq_Change(control, ymdc, sound_data.mascon_data, 1.0 / sample_freq);
                 bool flag_cancel = progressData.Cancel;
 
                 if (flag_cancel || !flag_continue) break;

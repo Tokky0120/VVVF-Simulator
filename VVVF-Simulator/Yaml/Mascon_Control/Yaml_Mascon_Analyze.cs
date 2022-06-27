@@ -68,7 +68,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
 
         public class Yaml_Mascon_Data_Compiled
         {
-            public List<Yaml_Mascon_Data_Compiled_Point> Yaml_Mascon_Data_Compiled_Points { get; set; } = new List<Yaml_Mascon_Data_Compiled_Point>();
+            public List<Yaml_Mascon_Data_Compiled_Point> Points { get; set; } = new List<Yaml_Mascon_Data_Compiled_Point>();
 
             public Yaml_Mascon_Data_Compiled(Yaml_Mascon_Data ymd)
             {
@@ -93,13 +93,20 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                         StartTime = currentTime,
                         EndTime = currentTime + deltaTime,
                         StartFrequency = currentFrequency,
-                        EndFrequency = currentFrequency + deltaFrequency
+                        EndFrequency = currentFrequency + deltaFrequency,
+                        IsMasconOn = yaml_Mascon_Data_Point.mascon_on
                     };
-                    Yaml_Mascon_Data_Compiled_Points.Add(yaml_Mascon_Data_Compiled_Point);
+                    Points.Add(yaml_Mascon_Data_Compiled_Point);
 
                     currentTime += deltaTime;
                     currentFrequency += deltaFrequency;
                 }
+            }
+
+            public double GetEstimatedSteps(double sampleTime)
+            {
+                double totalTime = this.Points.Last().EndTime;
+                return totalTime / sampleTime;
             }
 
             public class Yaml_Mascon_Data_Compiled_Point
@@ -108,6 +115,12 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                 public double EndTime { get; set; } = 0;
                 public double StartFrequency { get; set; } = 0;
                 public double EndFrequency { get; set; } = 0;
+                public Boolean IsMasconOn { get; set; } = true;
+
+                public Boolean IsAccel()
+                {
+                    return EndFrequency - StartFrequency > 0;
+                }
 
                 public Yaml_Mascon_Data_Compiled_Point Clone()
                 {
@@ -119,7 +132,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
         public class Yaml_Mascon_Manage
         {
 
-            public static Yaml_Mascon_Data default_data = new()
+            public static Yaml_Mascon_Data DefaultData = new()
             {
                 points = new()
                 {
@@ -149,12 +162,12 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                     },
                 }
             };
-            public static Yaml_Mascon_Data current_data = default_data.Clone();
+            public static Yaml_Mascon_Data CurrentData = DefaultData.Clone();
 
             public static Yaml_Mascon_Data Sort()
             {
-                current_data.points.Sort((a, b) => Math.Sign(a.order - b.order));
-                return current_data;
+                CurrentData.points.Sort((a, b) => Math.Sign(a.order - b.order));
+                return CurrentData;
             }
             public static bool save_Yaml(String path)
             {
@@ -162,7 +175,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                 {
                     using TextWriter writer = File.CreateText(path);
                     var serializer = new Serializer();
-                    serializer.Serialize(writer, current_data);
+                    serializer.Serialize(writer, CurrentData);
                     writer.Close();
                     return true;
                 }
@@ -179,7 +192,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
                     var input = new StreamReader(path, Encoding.UTF8);
                     var deserializer = new Deserializer();
                     Yaml_Mascon_Data deserializeObject = deserializer.Deserialize<Yaml_Mascon_Data>(input);
-                    current_data = deserializeObject;
+                    CurrentData = deserializeObject;
                     input.Close();
                     return true;
                 }

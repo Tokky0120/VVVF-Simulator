@@ -277,7 +277,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
             control.reset_control_variables();
             control.reset_all_variables();
 
-            Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.Sort().Clone();
+            Yaml_Mascon_Data_Compiled ymd = Yaml_Mascon_Manage.CurrentData.GetCompiled();
 
             int fps = 60;
 

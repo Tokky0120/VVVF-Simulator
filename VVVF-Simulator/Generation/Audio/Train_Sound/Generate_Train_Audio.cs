@@ -138,7 +138,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             control.reset_control_variables();
             control.reset_all_variables();
 
-            Yaml_Mascon_Data ymd = Yaml_Mascon_Manage.Sort().Clone();
+            Yaml_Mascon_Data_Compiled ymdc = Yaml_Mascon_Manage.CurrentData.GetCompiled();
 
             int sample_freq = 200000;
 
@@ -155,7 +155,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             motor.SIM_SAMPLE_FREQ = sample_freq;
             motor_Param.TL = 0.0;
 
-            progressData.Total = ymd.GetEstimatedSteps(1.0 / sample_freq);
+            progressData.Total = ymdc.GetEstimatedSteps(1.0 / sample_freq);
 
             while (true)
             {
@@ -175,7 +175,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
 
                 progressData.Progress++;
 
-                bool flag_continue = Generate_Common.Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / sample_freq);
+                bool flag_continue = Check_For_Freq_Change(control, ymdc, sound_data.mascon_data, 1.0 / sample_freq);
                 bool flag_cancel = progressData.Cancel;
                 if (!flag_continue || flag_cancel) break;
             }
