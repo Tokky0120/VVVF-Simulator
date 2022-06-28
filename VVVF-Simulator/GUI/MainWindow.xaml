@@ -102,7 +102,7 @@
             </Grid>
         </Grid>
         <DockPanel LastChildFill="True">
-            <Menu DockPanel.Dock="Top" Background="#FFF8FAFF">
+            <Menu DockPanel.Dock="Top" >
                 <MenuItem Header="File">
                     <MenuItem Header="Save" Tag="Save" Click="File_Menu_Click"/>
                     <MenuItem Header="Save As" Tag="Save_As" Click="File_Menu_Click"/>
@@ -120,9 +120,14 @@
                 </MenuItem>
 
                 <MenuItem Header="Util">
-                    <MenuItem Header="Auto Voltage Set" Tag="AutoVoltage" Click="Util_Menu_Click"/>
-                    <MenuItem Header="FreeRun Amplitude Zero" Tag="FreeRunAmpZero" Click="Util_Menu_Click"/>
+                    <MenuItem Header="MIDI Conversion" Tag="MIDI" Click="Util_Menu_Click"/>
                 </MenuItem>
+
+                <MenuItem Header="Process">
+                    <MenuItem Header="Auto Voltage Set" Tag="AutoVoltage" Click="Process_Menu_Click"/>
+                    <MenuItem Header="FreeRun Amplitude Zero" Tag="FreeRunAmpZero" Click="Process_Menu_Click"/>
+                </MenuItem>
+
 
                 <MenuItem Header="RealTime">
                     <MenuItem Header="VVVF RealTime" Tag="VVVF_RealTime" Click="Generation_Menu_Click"/>

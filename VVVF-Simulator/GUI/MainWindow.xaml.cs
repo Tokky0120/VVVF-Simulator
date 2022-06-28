@@ -836,7 +836,7 @@ namespace VVVF_Simulator
             
         }
 
-        private void Util_Menu_Click(object sender, RoutedEventArgs e)
+        private void Process_Menu_Click(object sender, RoutedEventArgs e)
         {
             MenuItem button = (MenuItem)sender;
             Object? tag = button.Tag;
@@ -873,6 +873,18 @@ namespace VVVF_Simulator
             }
 
             
+        }
+
+        private void Util_Menu_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem button = (MenuItem)sender;
+            Object? tag = button.Tag;
+            if (tag == null) return;
+            String? tag_str = tag.ToString();
+            if (tag_str == null) return;
+
+           
+
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
