@@ -821,7 +821,7 @@ namespace VVVF_Simulator
             if (tag_str.Equals("AccelPattern"))
             {
                 view_data.blocking = true;
-                Generation_Mascon_Control_Window gmcw = new();
+                Mascon_Control_Main gmcw = new();
                 gmcw.ShowDialog();
                 view_data.blocking = false;
             }
@@ -829,7 +829,7 @@ namespace VVVF_Simulator
             {
                 view_data.blocking = true;
                 Yaml_TrainSound_Data _TrainSound_Data = Yaml_TrainSound_Data_Manage.current_data;
-                TrainAudio_Setting_Window tahw = new(_TrainSound_Data);
+                TrainAudio_Setting_Main tahw = new(_TrainSound_Data);
                 tahw.ShowDialog();
                 view_data.blocking = false;
             }

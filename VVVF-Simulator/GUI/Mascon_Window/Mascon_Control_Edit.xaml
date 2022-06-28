@@ -1,4 +1,4 @@
-﻿<Page x:Class="VVVF_Simulator.GUI.Mascon_Window.Generation_Mascon_Control_Edit_Page"
+﻿<Page x:Class="VVVF_Simulator.GUI.Mascon_Window.Mascon_Control_Edit"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 

@@ -1,4 +1,4 @@
-﻿<Window x:Class="VVVF_Simulator.GUI.Mascon_Window.Generation_Mascon_Control_Window"
+﻿<Window x:Class="VVVF_Simulator.GUI.Mascon_Window.Mascon_Control_Main"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"

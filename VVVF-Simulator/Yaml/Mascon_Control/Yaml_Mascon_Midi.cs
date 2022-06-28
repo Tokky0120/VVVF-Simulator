@@ -33,7 +33,7 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
             }
         }
 
-        public static Yaml_Mascon_Data? Convert(GUI.Mascon_Window.Generation_Mascon_Control_Midi.LoadData loadData)
+        public static Yaml_Mascon_Data? Convert(GUI.Mascon_Window.Mascon_Control_Midi.LoadData loadData)
         {
             //MIDIDataを変換
             MidiData midiData;

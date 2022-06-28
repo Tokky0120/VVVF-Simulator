@@ -60,9 +60,9 @@ namespace VVVF_Simulator.GUI.Mascon_Window
     /// <summary>
     /// Generation_Mascon_Control_Window.xaml の相互作用ロジック
     /// </summary>
-    public partial class Generation_Mascon_Control_Window : Window
+    public partial class Mascon_Control_Main : Window
     {
-        public Generation_Mascon_Control_Window()
+        public Mascon_Control_Main()
         {
             InitializeComponent();
 
@@ -114,7 +114,7 @@ namespace VVVF_Simulator.GUI.Mascon_Window
             }
             else if (tag.Equals("Midi"))
             {
-                Generation_Mascon_Control_Midi gmcm = new(Path.GetDirectoryName(load_midi_path));
+                Mascon_Control_Midi gmcm = new(Path.GetDirectoryName(load_midi_path));
                 gmcm.ShowDialog();
                 var load_data = gmcm.loadData;
                 try
@@ -167,7 +167,7 @@ namespace VVVF_Simulator.GUI.Mascon_Window
             var selected_item = mascon_control_list.SelectedItem;
             if (selected_item == null) return;
 
-            edit_view_frame.Navigate(new Generation_Mascon_Control_Edit_Page(this, (Yaml_Mascon_Data_Point)selected_item));
+            edit_view_frame.Navigate(new Mascon_Control_Edit(this, (Yaml_Mascon_Data_Point)selected_item));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

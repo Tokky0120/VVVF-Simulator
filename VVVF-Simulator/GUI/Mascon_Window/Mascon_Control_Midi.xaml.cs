@@ -18,12 +18,12 @@ namespace VVVF_Simulator.GUI.Mascon_Window
     /// <summary>
     /// Generation_Mascon_Control_Midi.xaml の相互作用ロジック
     /// </summary>
-    public partial class Generation_Mascon_Control_Midi : Window
+    public partial class Mascon_Control_Midi : Window
     {
 
         bool no_update = true;
         string initial_path;
-        public Generation_Mascon_Control_Midi(string? initial_path)
+        public Mascon_Control_Midi(string? initial_path)
         {
             InitializeComponent();
             no_update = false;

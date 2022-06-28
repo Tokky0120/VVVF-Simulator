@@ -19,12 +19,12 @@ namespace VVVF_Simulator.GUI.Mascon_Window
     /// <summary>
     /// Generation_Mascon_Control_Edit_Page.xaml の相互作用ロジック
     /// </summary>
-    public partial class Generation_Mascon_Control_Edit_Page : Page
+    public partial class Mascon_Control_Edit : Page
     {
         private Yaml_Mascon_Data_Point data;
         private bool no_update = true;
-        private Generation_Mascon_Control_Window main_viewer;
-        public Generation_Mascon_Control_Edit_Page(Generation_Mascon_Control_Window main,Yaml_Mascon_Data_Point ympd)
+        private Mascon_Control_Main main_viewer;
+        public Mascon_Control_Edit(Mascon_Control_Main main,Yaml_Mascon_Data_Point ympd)
         {
             InitializeComponent();
 

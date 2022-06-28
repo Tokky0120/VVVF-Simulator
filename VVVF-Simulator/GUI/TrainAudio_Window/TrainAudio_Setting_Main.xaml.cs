@@ -18,10 +18,10 @@ namespace VVVF_Simulator.GUI.TrainAudio_Window
     /// <summary>
     /// TrainAudio_Harmonic_Window.xaml の相互作用ロジック
     /// </summary>
-    public partial class TrainAudio_Setting_Window : Window
+    public partial class TrainAudio_Setting_Main : Window
     {
         private Yaml_TrainSound_Data train_Harmonic_Data;
-        public TrainAudio_Setting_Window(Yaml_TrainSound_Data thd)
+        public TrainAudio_Setting_Main(Yaml_TrainSound_Data thd)
         {
             train_Harmonic_Data = thd;
             InitializeComponent();
