@@ -1,0 +1,109 @@
+﻿<Window x:Class="VVVF_Simulator.GUI.Simulator.RealTime.Setting_Window.RealTime_Basic_Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VVVF_Simulator.GUI.Simulator.RealTime"
+        mc:Ignorable="d"
+        Title="RealTime Generation Settings" Height="420" Width="800" ResizeMode="NoResize" Closing="Window_Closing">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Background="#FFEF8354">
+                <Label Content="Audio Buff Size" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="White" Margin="0,32,0,0"/>
+                <Label Content="Recommend : 40000" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="18" Foreground="#FFFFCA8A" Margin="0,68,0,0"/>
+            </Grid>
+            <TextBox x:Name="audio_buff_box" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="40000" VerticalAlignment="Center" Width="389" Height="48" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="audio_buff_box_TextChanged"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Background="#FFEF8354">
+                <Label Content="Control Status" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="White"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="245*"/>
+                    <ColumnDefinition Width="326*"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox x:Name="show_control_stat" Tag="Control" Content="Show Control" HorizontalAlignment="Center" VerticalAlignment="Center" Height="41" Width="208" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontFamily="M PLUS 2" Checked="box_Checked" Unchecked="box_Checked" Margin="0,0,0,0"/>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Design" HorizontalAlignment="Left" Margin="21,0,0,0" VerticalAlignment="Center" Grid.RowSpan="2"/>
+                    <ComboBox x:Name="control_design_selector" HorizontalAlignment="Stretch" VerticalAlignment="Center" SelectionChanged="selector_SelectionChanged" Tag="ControlDesign" Margin="119,0,10,0" Grid.RowSpan="2"/>
+                </Grid>
+            </Grid>
+
+
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Background="#FFEF8354">
+                <Label Content="Voltage Hexagon" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="White"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="245*"/>
+                    <ColumnDefinition Width="326*"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox x:Name="show_hexagon" Tag="Hexagon" Content="Show Hexagon" HorizontalAlignment="Center" VerticalAlignment="Center" Height="41" Width="208" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontFamily="M PLUS 2" Checked="box_Checked" Unchecked="box_Checked" Margin="0,0,0,0"/>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Design" HorizontalAlignment="Left" Margin="21,0,0,0" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="hexagon_design_selector" HorizontalAlignment="Stretch" VerticalAlignment="Center" SelectionChanged="selector_SelectionChanged" Tag="HexagonDesign" Margin="119,0,10,0"/>
+                    <CheckBox x:Name="show_hexagon_zero_vector_check" Content="Show zero vector" Tag="HexagonZero" Checked="box_Checked" Unchecked="box_Checked" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Height="30" Width="187" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                </Grid>
+            </Grid>
+
+
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Background="#FFEF8354">
+                <Label Content="Others" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="White"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <CheckBox x:Name="show_waveform_box" Tag="WaveForm" Content="Show WaveForm" HorizontalAlignment="Center" VerticalAlignment="Center" Height="41" Width="208" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontFamily="M PLUS 2" Checked="box_Checked" Unchecked="box_Checked" Grid.Column="0" Grid.RowSpan="1"/>
+                <CheckBox x:Name="realtime_edit_box" Tag="Edit" Content="RealTime Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Height="41" Width="208" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontFamily="M PLUS 2" Checked="box_Checked" Unchecked="box_Checked" Grid.Column="1" Grid.RowSpan="1"/>
+                <CheckBox x:Name="show_fft_box" Tag="FFT" Content="Show FFT" HorizontalAlignment="Center" VerticalAlignment="Center" Height="41" Width="208" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontFamily="M PLUS 2" Checked="box_Checked" Unchecked="box_Checked" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="1"/>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Window>

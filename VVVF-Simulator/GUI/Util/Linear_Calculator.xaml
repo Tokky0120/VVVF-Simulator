@@ -1,0 +1,30 @@
+﻿<Window x:Class="VVVF_Simulator.GUI.Util.Linear_Calculator"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VVVF_Simulator.GUI.Util"
+        mc:Ignorable="d"
+        Title="Linear Calculator" Height="352" Width="800" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <TextBox x:Name="a_textbox" HorizontalAlignment="Left" Margin="39,0,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Center" Width="190" FontSize="20" Tag="A" TextChanged="TextBox_TextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="x_textbox" HorizontalAlignment="Left" Margin="272,0,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Center" Width="190" FontSize="20" Tag="X" TextChanged="TextBox_TextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="b_textbox" HorizontalAlignment="Left" Margin="555,0,0,0" TextWrapping="Wrap" Text="3" VerticalAlignment="Center" Width="190" FontSize="20" Tag="B" TextChanged="TextBox_TextChanged" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Label Content="x" HorizontalAlignment="Left" Margin="243,0,0,0" VerticalAlignment="Center"/>
+            <Label Content="+" HorizontalAlignment="Left" Margin="500,0,0,0" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <TextBox x:Name="ans_textbox" HorizontalAlignment="Center" TextWrapping="Wrap" Text="ans" VerticalAlignment="Center" Width="218" FontSize="22" Height="46" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True"/>
+            <Button x:Name="copy_button" Content="Copy" HorizontalAlignment="Left" Margin="535,0,0,0" VerticalAlignment="Center" Height="31" Width="92" Background="#FFD3EAD4" FontFamily="M PLUS 2" FontWeight="Bold" BorderBrush="#FF25CA3E" Click="copy_button_Click"/>
+        </Grid>
+
+
+
+
+    </Grid>
+</Window>

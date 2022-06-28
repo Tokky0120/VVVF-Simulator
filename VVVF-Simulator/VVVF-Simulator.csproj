@@ -117,7 +117,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="GUI\MIDI_Convert_Window\" />
+    <Folder Include="GUI\MIDIConvert_Window\" />
   </ItemGroup>
 
 </Project>

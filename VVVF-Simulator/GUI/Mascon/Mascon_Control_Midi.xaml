@@ -1,0 +1,47 @@
+﻿<Window x:Class="VVVF_Simulator.GUI.Mascon.Mascon_Control_Midi"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VVVF_Simulator.GUI.Mascon"
+        mc:Ignorable="d"
+        Title="Load Midi" Height="200" Width="400" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="6*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid Background="#FF86AEFF">
+            <Label Content="Path" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="M PLUS 2 Medium" FontWeight="Bold" Foreground="White" FontSize="14"/>
+        </Grid>
+        <Grid Background="#FF86AEFF" Grid.Row="1">
+            <Label Content="Track" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="M PLUS 2 Medium" FontWeight="Bold" Foreground="White" FontSize="14"/>
+        </Grid>
+        <Grid Background="#FF86AEFF" Grid.Row="2">
+            <Label Content="Priority" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="M PLUS 2 Medium" FontWeight="Bold" Foreground="White" FontSize="14"/>
+        </Grid>
+        <Grid Background="#FF86AEFF" Grid.Row="3">
+            <Label Content="Division" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="M PLUS 2 Medium" FontWeight="Bold" Foreground="White" FontSize="14"/>
+        </Grid>
+        
+        <Grid Grid.Column="1" Background="White" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="Select_Path_Button" Content="Select" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="M PLUS 2" FontWeight="Bold" Margin="10,10,10,10" Click="Select_Path_Button_Click"/>
+            <TextBlock x:Name="Path_Label" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,10,10,10" TextWrapping="Wrap" Text="Select Path" VerticalAlignment="Center" FontFamily="M PLUS 2" FontWeight="Bold"/>
+        </Grid>
+        <TextBox x:Name="Track_TextBox" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="16" TextChanged="TextBox_TextChanged" Tag="Track"/>
+        <TextBox x:Name="Priority_TextBox" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Text="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="16" TextChanged="TextBox_TextChanged" Tag="Priority"/>
+        <TextBox x:Name="Division_TextBox" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Text="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="16" TextChanged="TextBox_TextChanged" Tag="Division"/>
+
+    </Grid>
+</Window>
