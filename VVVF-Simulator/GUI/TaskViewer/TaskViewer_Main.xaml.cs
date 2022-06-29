@@ -1,19 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using static VVVF_Simulator.MainWindow;
 
 namespace VVVF_Simulator.GUI.TaskViewer
 {
@@ -22,14 +12,11 @@ namespace VVVF_Simulator.GUI.TaskViewer
     /// </summary>
     public partial class TaskViewer_Main : Window
     {
-
-        MainWindow mainWindow;
-        public TaskViewer_Main(MainWindow mainWindow)
+        public TaskViewer_Main()
         {
             InitializeComponent();
-            this.mainWindow = mainWindow;
 
-            DataContext = mainWindow.taskProgresses;
+            DataContext = MainWindow.taskProgresses;
 
             runUpdateTask();
         }
@@ -69,10 +56,10 @@ namespace VVVF_Simulator.GUI.TaskViewer
             Object tag = btn.Tag;
             if (tag == null) return;
 
-            List<TaskProgressData> taskProgresses = mainWindow.taskProgresses;
+            List<MainWindow.TaskProgressData> taskProgresses = MainWindow.taskProgresses;
             for (int i = 0; i < taskProgresses.Count; i++)
             {
-                TaskProgressData data = taskProgresses[i];
+                MainWindow.TaskProgressData data = taskProgresses[i];
                 if (data.Task.Id.ToString().Equals(tag.ToString()))
                 {
                     data.progressData.Cancel = true;

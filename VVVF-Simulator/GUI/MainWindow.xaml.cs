@@ -370,7 +370,7 @@ namespace VVVF_Simulator
             }
         }
 
-        public List<TaskProgressData> taskProgresses = new();
+        public static List<TaskProgressData> taskProgresses = new();
 
         private static GenerationBasicParameter GetGenerationBasicParameter()
         {
@@ -806,7 +806,7 @@ namespace VVVF_Simulator
             }
             else if (tag_str.Equals("TaskProgressView"))
             {
-                TaskViewer_Main tvm = new(this);
+                TaskViewer_Main tvm = new();
                 tvm.Show();
             }
         }
