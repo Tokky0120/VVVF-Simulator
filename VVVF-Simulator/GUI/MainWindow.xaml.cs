@@ -884,7 +884,11 @@ namespace VVVF_Simulator
             String? tag_str = tag.ToString();
             if (tag_str == null) return;
 
-           
+            if(tag_str.Equals("MIDI"))
+            {
+                GUI.MIDIConvert.MIDIConvert_Main mIDIConvert_Main = new GUI.MIDIConvert.MIDIConvert_Main();
+                mIDIConvert_Main.Show();
+            }
 
         }
 

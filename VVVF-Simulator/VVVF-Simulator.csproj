@@ -13,6 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="GUI\Images\MIDIConvert\B_Folder_Opend.png" />
+    <None Remove="GUI\Images\MIDIConvert\B_MIDI_Document.png" />
+    <None Remove="GUI\Images\MIDIConvert\B_Start.png" />
     <None Remove="GUI\Images\TrainAudio_Settings\filter_normal.png" />
     <None Remove="GUI\Images\TrainAudio_Settings\filter_over.png" />
     <None Remove="GUI\Images\TrainAudio_Settings\gear_normal.png" />
@@ -26,9 +29,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="GUI\Images\MIDIConvert\B_Start.png" />
     <Resource Include="GUI\Images\VVVF_Settings\2-level.png" />
     <Resource Include="GUI\Images\VVVF_Settings\3-level.png" />
     <Content Include="vvvf-simulator.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="GUI\Images\MIDIConvert\B_Folder_Opend.png" />
+    <Resource Include="GUI\Images\MIDIConvert\B_MIDI_Document.png" />
   </ItemGroup>
 
   <ItemGroup>

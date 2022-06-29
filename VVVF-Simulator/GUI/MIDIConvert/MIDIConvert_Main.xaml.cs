@@ -1,13 +1,16 @@
-﻿using NextMidi.Data;
+﻿using Microsoft.Win32;
+using NextMidi.Data;
 using NextMidi.Data.Track;
 using NextMidi.Filing.Midi;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using VVVF_Simulator.Yaml.VVVF_Sound;
 using static VVVF_Simulator.Generation.Generate_Common;
+using Button = System.Windows.Controls.Button;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace VVVF_Simulator.GUI.MIDIConvert
@@ -36,19 +39,13 @@ namespace VVVF_Simulator.GUI.MIDIConvert
                 return false;
             }
 
-            String? folder_path = Path.GetDirectoryName(output_path);
-            if(folder_path == null)
-            {
-                MessageBox.Show("Selected Path is invalid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-            String file_name = Path.GetFileNameWithoutExtension(output_path);
+            String file_path = output_path.Replace(Path.GetExtension(output_path) , "");
 
             TrackCollection tracks = midiData.Tracks;
 
             for(int i = 0; i < tracks.Count; i++)
             {
-                int priority = 0;
+                int priority = 1;
                 while (true)
                 {
                     Mascon.Mascon_Control_Midi.LoadData loadData = new()
@@ -68,18 +65,19 @@ namespace VVVF_Simulator.GUI.MIDIConvert
                         new GenerationBasicParameter.ProgressData()
                     );
 
-                    String task_description = "Generation of MIDI Sound part " + i + " of " + priority;
+                    String task_description = "Generation of MIDI(" + Path.GetFileNameWithoutExtension(midi_path) + ") Sound part " + i + " of " + priority;
+                    String export_path = Path.GetFullPath(file_path + "_" + i.ToString() + "_" + priority.ToString() + Path.GetExtension(output_path));
 
                     Task task = Task.Run(() =>
                     {
                         try
                         {
-                            String export_path = folder_path + Path.PathSeparator + file_name + i + "-" + priority + ".wav";
                             Generation.Audio.VVVF_Sound.Generate_VVVF_Audio.Export_VVVF_Sound(generationBasicParameter, export_path, false, sample_freq);
+                            System.Media.SystemSounds.Beep.Play();
                         }
-                        catch
+                        catch(Exception ex)
                         {
-                            MessageBox.Show("Error on " + task_description, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Error on " + task_description + "\r\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     });
 
@@ -88,9 +86,56 @@ namespace VVVF_Simulator.GUI.MIDIConvert
 
                     priority++;
                 }
+                
             }
 
             return true;
+        }
+
+        private string? midi_path;
+        private bool midi_selected = false;
+        private string? export_path;
+        private bool export_selected = false;
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button? btn = (Button)sender;
+            if (btn == null) return;
+            String? tag = btn.Tag.ToString();
+            if(tag == null) return;
+
+            if (tag.Equals("Browse"))
+            {
+                var dialog = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "Midi (*.mid)|*.mid|All (*.*)|*.*",
+                };
+                if(dialog.ShowDialog() == false) return;
+                String path = dialog.FileName;
+                if (path.Length == 0) return;
+
+                midi_path = path;
+                midi_selected = true;
+            }
+            else if (tag.Equals("Select"))
+            {
+                var dialog = new Microsoft.Win32.SaveFileDialog { Filter = "wav (*.wav)|*.wav" };
+                if (dialog.ShowDialog() == false) return;
+
+                String path = dialog.FileName;
+                if(path.Length == 0) return;
+
+                export_path = path;
+                export_selected = true;
+                
+            }else if (tag.Equals("Convert"))
+            {
+                if(midi_path == null || export_path == null) return;
+                Conversion((string)midi_path.Clone(), (string)export_path.Clone(), 192000);
+                System.Media.SystemSounds.Beep.Play();
+                Close();
+            }
+
+            BtnConvert.IsEnabled = export_selected && midi_selected;
         }
     }
 }

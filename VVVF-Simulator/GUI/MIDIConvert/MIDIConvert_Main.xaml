@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VVVF_Simulator.GUI.MIDIConvert"
         mc:Ignorable="d"
-        Title="MIDIConvert_Main" Height="450" Width="800">
-    <Grid>
-        
+        Title="MIDI Conversion" Height="450" Width="200" ResizeMode="CanMinimize">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Image Margin="0,0,0,45" Source="/GUI/Images/MIDIConvert/B_MIDI_Document.png" Stretch="Fill" Width="50" Height="50" HorizontalAlignment="Center" Grid.Row="1"/>
+        <Image Margin="0,0,0,45" Source="/GUI/Images/MIDIConvert/B_Folder_Opend.png" Stretch="Fill" Width="50" Height="50" Grid.Row="2" HorizontalAlignment="Center"/>
+        <Image Margin="0,0,0,45" Source="/GUI/Images/MIDIConvert/B_Start.png" Stretch="Fill" Width="50" Height="50" HorizontalAlignment="Center" Grid.Row="3"/>
+        <Button Name="BtnBrowse" Content="Browse" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#FF006CFD" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="White" Background="#FF47484E" Height="41" Width="136" Margin="0,80,0,0" Click="Button_Click" Tag="Browse" Grid.Row="1"/>
+        <Button Name="BtnSelect" Content="Select" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#FF006CFD" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="White" Background="#FF47484E" Height="41" Width="136" Margin="0,80,0,0" Click="Button_Click" Tag="Select" Grid.Row="2"/>
+        <Button Name="BtnConvert" Content="Convert" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#FF006CFD" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="White" Background="#FF47484E" Height="41" Width="136" Margin="0,80,0,0" Click="Button_Click" Tag="Convert" Grid.Row="3" IsEnabled="False"/>
     </Grid>
 </Window>
