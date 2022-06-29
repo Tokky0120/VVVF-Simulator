@@ -29,7 +29,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
         {
 
             double pwm_sound_val;
-            Control_Values cv = new Control_Values
+            Control_Values cv = new()
             {
                 brake = control.is_Braking(),
                 mascon_on = !control.is_Mascon_Off(),
@@ -144,18 +144,19 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
 
             int sample_freq = 200000;
 
-            BufferedWaveProvider wave_provider = new BufferedWaveProvider(new WaveFormat(sample_freq, 8, 1));
+            BufferedWaveProvider wave_provider = new(new WaveFormat(sample_freq, 8, 1));
             wave_provider.BufferLength = 20000;
 
-            Equalizer equalizer = new Equalizer(wave_provider.ToSampleProvider(), train_Sound_Data.Get_NFilters());
+            Equalizer equalizer = new(wave_provider.ToSampleProvider(), train_Sound_Data.Get_NFilters());
             IWaveProvider equal_wave_provider = equalizer.ToWaveProvider();
-            WaveFileWriter writer = new WaveFileWriter(resize ? temp : output_path, equal_wave_provider.WaveFormat);
+            WaveFileWriter writer = new(resize ? temp : output_path, equal_wave_provider.WaveFormat);
 
-            var motor = new Motor_Data();
-            motor.motor_Specification = train_Sound_Data.Motor_Specification.Clone();
-            var motor_Param = motor.motor_Param;
-            motor.SIM_SAMPLE_FREQ = sample_freq;
-            motor_Param.TL = 0.0;
+            Motor_Data motor = new()
+            {
+                motor_Specification = train_Sound_Data.Motor_Specification.Clone(),
+                SIM_SAMPLE_FREQ = sample_freq,
+            };
+            motor.motor_Param.TL = 0.0;
 
             progressData.Total = masconData.GetEstimatedSteps(1.0 / sample_freq);
 

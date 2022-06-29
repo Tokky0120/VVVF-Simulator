@@ -245,11 +245,11 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
 
             public class Yaml_Async_Parameter
             {
-                private Yaml_Async_Parameter_Random _random_data = new Yaml_Async_Parameter_Random();
+                private Yaml_Async_Parameter_Random _random_data = new();
                 public Yaml_Async_Parameter_Random random_data { get { return _random_data; } set { if (value != null) _random_data = value; } }
 
-                public Yaml_Async_Parameter_Carrier_Freq carrier_wave_data { get; set; } = new Yaml_Async_Parameter_Carrier_Freq();
-                public Yaml_Async_Parameter_Dipolar dipoar_data { get; set; } = new Yaml_Async_Parameter_Dipolar();
+                public Yaml_Async_Parameter_Carrier_Freq carrier_wave_data { get; set; } = new();
+                public Yaml_Async_Parameter_Dipolar dipoar_data { get; set; } = new();
 
                 public override string ToString()
                 {
@@ -358,11 +358,11 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
 
                     public class Yaml_Async_Parameter_Carrier_Freq_Vibrato
                     {
-                        public Yaml_Async_Parameter_Vibrato_Value highest { get; set; } = new Yaml_Async_Parameter_Vibrato_Value();
-                        public Yaml_Async_Parameter_Vibrato_Value lowest { get; set; } = new Yaml_Async_Parameter_Vibrato_Value();
+                        public Yaml_Async_Parameter_Vibrato_Value highest { get; set; } = new();
+                        public Yaml_Async_Parameter_Vibrato_Value lowest { get; set; } = new();
 
 
-                        private Yaml_Async_Parameter_Vibrato_Value _interval = new Yaml_Async_Parameter_Vibrato_Value();
+                        private Yaml_Async_Parameter_Vibrato_Value _interval = new();
                         public Yaml_Async_Parameter_Vibrato_Value interval { get { return _interval; } set { if (value != null) _interval = value; } }
                        
                         public bool continuous { get; set; } = true;
@@ -455,7 +455,7 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
 
                         public Yaml_Async_Parameter_Carrier_Freq_Table Clone()
                         {
-                            Yaml_Async_Parameter_Carrier_Freq_Table clone = new Yaml_Async_Parameter_Carrier_Freq_Table();
+                            Yaml_Async_Parameter_Carrier_Freq_Table clone = new();
                             for(int i = 0; i < carrier_freq_table.Count; i++)
                             {
                                 clone.carrier_freq_table.Add(carrier_freq_table[i].Clone());

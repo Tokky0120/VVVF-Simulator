@@ -125,7 +125,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
                 solve_control.set_Allowed_Random_Freq_Move(false);
                 solve_control.set_Sine_Time(0);
                 solve_control.set_Saw_Time(0);
-                Control_Values cv = new Control_Values
+                Control_Values cv = new()
                 {
                     brake = solve_control.is_Braking(),
                     mascon_on = !solve_control.is_Mascon_Off(),
@@ -152,7 +152,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
                 vvvf_control.set_Allowed_Random_Freq_Move(false);
                 vvvf_control.set_Sine_Time(0);
                 vvvf_control.set_Saw_Time(0);
-                Control_Values cv = new Control_Values
+                Control_Values cv = new()
                 {
                     brake = vvvf_control.is_Braking(),
                     mascon_on = !vvvf_control.is_Mascon_Off(),
@@ -293,13 +293,13 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
             // PROGRESS INITIALIZE
             progressData.Total = masconData.GetEstimatedSteps(1.0 / fps) + 120;
 
-            Pre_Voltage_Data pre_voltage_data = new Pre_Voltage_Data(false, 0);
+            Pre_Voltage_Data pre_voltage_data = new(false, 0);
 
             bool START_FRAMES = true;
             if (START_FRAMES)
             {
 
-                Control_Values cv = new Control_Values
+                Control_Values cv = new()
                 {
                     brake = true,
                     mascon_on = true,
@@ -307,7 +307,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
                     wave_stat = 0
                 };
                 PWM_Calculate_Values calculated_Values = Yaml_VVVF_Wave.calculate_Yaml(control, cv, vvvfData);
-                Wave_Values value = calculate_values(control, calculated_Values, 0);
+                _ = calculate_values(control, calculated_Values, 0);
                 Bitmap final_image = Get_Control_Original2_Image(control, false, vvvfData, pre_voltage_data, true);
 
                 Add_Image_Frames(final_image, 60, vr);
@@ -351,7 +351,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
             if (END_FRAMES)
             {
 
-                Control_Values cv = new Control_Values
+                Control_Values cv = new()
                 {
                     brake = true,
                     mascon_on = true,
@@ -359,7 +359,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
                     wave_stat = 0
                 };
                 PWM_Calculate_Values calculated_Values = Yaml_VVVF_Wave.calculate_Yaml(control, cv, vvvfData);
-                Wave_Values value = calculate_values(control, calculated_Values, 0);
+                _ = calculate_values(control, calculated_Values, 0);
                 Bitmap final_image = Get_Control_Original2_Image(control, false, vvvfData, pre_voltage_data, true);
                 Add_Image_Frames(final_image, 60, vr);
 

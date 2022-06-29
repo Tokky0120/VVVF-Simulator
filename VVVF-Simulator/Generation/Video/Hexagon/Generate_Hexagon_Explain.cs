@@ -99,7 +99,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
             double[] x_min_max = new double[] { 50000, 0 };
             double[] hexagon_coordinate = new double[] { 100, 500 };
 
-            Control_Values cv = new Control_Values
+            Control_Values cv = new()
             {
                 brake = control.is_Braking(),
                 mascon_on = !control.is_Mascon_Off(),
@@ -171,7 +171,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
             bool only_wave_show = true;
             if (only_wave_show)
             {
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 whole_image.Save(ms, ImageFormat.Png);
                 byte[] img = ms.GetBuffer();
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
@@ -186,7 +186,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
                 }
             }
 
-            Font text_font = new Font(
+            Font text_font = new(
                 new FontFamily("Fugaz One"),
                 40,
                 FontStyle.Bold,
@@ -262,7 +262,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
 
                 if (i % 10 == 0 || i + 1 == hex_div)
                 {
-                    Bitmap resized_hexagon = new Bitmap(450, 450);
+                    Bitmap resized_hexagon = new(450, 450);
                     Graphics resized_hexagon_g = Graphics.FromImage(resized_hexagon);
                     resized_hexagon_g.FillRectangle(new SolidBrush(Color.White), 0, 0, 450, 450);
                     resized_hexagon_g.DrawImage(new Bitmap(hexagon_image, 450, 450), 0, 0);
@@ -271,7 +271,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
 
                     whole_g.DrawImage(resized_hexagon, 820, 25);
 
-                    MemoryStream ms = new MemoryStream();
+                    MemoryStream ms = new();
                     whole_image.Save(ms, ImageFormat.Png);
                     byte[] img = ms.GetBuffer();
                     Mat mat = OpenCvSharp.Mat.FromImageData(img);
@@ -303,7 +303,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
             Boolean END_WAIT = true;
             if (END_WAIT)
             {
-                MemoryStream free_ms = new MemoryStream();
+                MemoryStream free_ms = new();
                 whole_image.Save(free_ms, ImageFormat.Png);
                 byte[] free_img = free_ms.GetBuffer();
                 Mat free_mat = OpenCvSharp.Mat.FromImageData(free_img);

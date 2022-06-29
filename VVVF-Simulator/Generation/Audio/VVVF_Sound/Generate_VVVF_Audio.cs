@@ -21,7 +21,7 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
         // -------- VVVF SOUND -------------
         public static byte Get_VVVF_Sound(VVVF_Values control, Yaml_VVVF_Sound_Data sound_data)
         {
-            Control_Values cv = new Control_Values
+            Control_Values cv = new()
             {
                 brake = control.is_Braking(),
                 mascon_on = !control.is_Mascon_Off(),
@@ -59,7 +59,7 @@ namespace VVVF_Simulator.Generation.Audio.VVVF_Sound
 
             int sound_block_count = 0;
 
-            BinaryWriter writer = new BinaryWriter(new FileStream(resize ? temp : output_path, FileMode.Create));
+            BinaryWriter writer = new(new FileStream(resize ? temp : output_path, FileMode.Create));
 
             //WAV FORMAT DATA
             writer.Write(0x46464952); // RIFF

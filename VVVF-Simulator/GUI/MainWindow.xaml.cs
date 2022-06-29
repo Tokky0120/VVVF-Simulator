@@ -32,7 +32,7 @@ namespace VVVF_Simulator
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ViewData view_data = new ViewData();
+        private ViewData view_data = new();
         public class ViewData : ViewModelBase
         {
             private bool _blocking = false;
@@ -370,7 +370,7 @@ namespace VVVF_Simulator
             }
         }
 
-        public List<TaskProgressData> taskProgresses = new List<TaskProgressData>();
+        public List<TaskProgressData> taskProgresses = new();
 
         private static GenerationBasicParameter GetGenerationBasicParameter()
         {
@@ -700,7 +700,7 @@ namespace VVVF_Simulator
                     var dialog = new SaveFileDialog { Filter = "mp4 (*.mp4)|*.mp4" };
                     if (dialog.ShowDialog() == false) return true;
 
-                    Double_Ask_Form double_Ask_Dialog = new Double_Ask_Form("Enter the frequency.");
+                    Double_Ask_Form double_Ask_Dialog = new("Enter the frequency.");
                     double_Ask_Dialog.ShowDialog();
 
                     GenerationBasicParameter generationBasicParameter = GetGenerationBasicParameter();
@@ -770,7 +770,7 @@ namespace VVVF_Simulator
                     var dialog = new SaveFileDialog { Filter = "png (*.png)|*.png" };
                     if (dialog.ShowDialog() == false) return true;
 
-                    Double_Ask_Form double_Ask_Dialog = new Double_Ask_Form("Enter the frequency.");
+                    Double_Ask_Form double_Ask_Dialog = new("Enter the frequency.");
                     double_Ask_Dialog.ShowDialog();
 
                     Task task = Task.Run(() => {
@@ -801,7 +801,7 @@ namespace VVVF_Simulator
 
             if (tag_str.Equals("LCalc"))
             {
-                Linear_Calculator lc = new Linear_Calculator();
+                Linear_Calculator lc = new();
                 lc.Show();
             }
             else if (tag_str.Equals("TaskProgressView"))

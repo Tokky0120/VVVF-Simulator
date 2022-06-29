@@ -34,7 +34,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
 
             int calculate_div = 10;
 
-            VideoWriter vr = new VideoWriter(fileName, OpenCvSharp.FourCC.H264, fps, new OpenCvSharp.Size(image_width, image_height));
+            VideoWriter vr = new(fileName, OpenCvSharp.FourCC.H264, fps, new OpenCvSharp.Size(image_width, image_height));
 
 
             if (!vr.IsOpened())
@@ -51,7 +51,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 Bitmap image = new(image_width, image_height);
                 Graphics g = Graphics.FromImage(image);
                 g.FillRectangle(new SolidBrush(Color.White), 0, 0, image_width, image_height);
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 image.Save(ms, ImageFormat.Png);
                 byte[] img = ms.GetBuffer();
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
@@ -92,7 +92,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
 
                     for (int j = 0; j < 2; j++)
                     {
-                        Control_Values cv = new Control_Values
+                        Control_Values cv = new()
                         {
                             brake = control.is_Braking(),
                             mascon_on = !control.is_Mascon_Off(),
@@ -140,7 +140,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 }
 
 
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 image.Save(ms, ImageFormat.Png);
                 byte[] img = ms.GetBuffer();
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
@@ -166,7 +166,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 Bitmap image = new(image_width, image_height);
                 Graphics g = Graphics.FromImage(image);
                 g.FillRectangle(new SolidBrush(Color.White), 0, 0, image_width, image_height);
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 image.Save(ms, ImageFormat.Png);
                 byte[] img = ms.GetBuffer();
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);

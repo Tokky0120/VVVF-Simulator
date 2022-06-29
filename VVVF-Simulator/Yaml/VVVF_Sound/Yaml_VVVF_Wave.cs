@@ -22,7 +22,7 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
 		private static double yaml_amplitude_calculate(Yaml_Control_Data_Amplitude amp_data, double x)
 		{
 			var amp_param = amp_data.parameter;
-			Amplitude_Argument aa = new Amplitude_Argument(amp_param,x);
+			Amplitude_Argument aa = new(amp_param,x);
 			double amp = get_Amplitude(amp_data.mode, aa);
 			if (amp_param.cut_off_amp > amp) amp = 0;
 			if (amp_param.max_amp != -1 && amp_param.max_amp < amp) amp = amp_param.max_amp;
@@ -75,8 +75,8 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
 			if (!(enable_free_run_condition || enable_normal_condition)) return false;
 
 			bool over_from = ysd.from <= (compare_with_sine ? control.get_Sine_Freq() : cv.wave_stat);
-			bool is_sine_from = ysd.rotate_sine_from == -1 ? true : ysd.rotate_sine_from <= control.get_Sine_Freq();
-			bool is_sine_below = ysd.rotate_sine_below == -1 ? true : ysd.rotate_sine_below > control.get_Sine_Freq();
+			bool is_sine_from = ysd.rotate_sine_from == -1 || ysd.rotate_sine_from <= control.get_Sine_Freq();
+			bool is_sine_below = ysd.rotate_sine_below == -1 || ysd.rotate_sine_below > control.get_Sine_Freq();
 
 			if (!is_sine_from) return false;
 			if (!is_sine_below) return false;
@@ -290,7 +290,7 @@ namespace VVVF_Simulator.Yaml.VVVF_Sound
 					start_amp = yaml_amplitude_calculate(solve_data.amplitude_control.default_data, control.get_Sine_Freq());
 
 
-				Amplitude_Argument aa = new Amplitude_Argument()
+				Amplitude_Argument aa = new()
 				{
 					min_freq = free_run_amp_param.start_freq,
 					min_amp = start_amp,

@@ -15,13 +15,13 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
         public class Yaml_Mascon_Data
         {
 
-            public List<Yaml_Mascon_Data_Point> points = new List<Yaml_Mascon_Data_Point>();
+            public List<Yaml_Mascon_Data_Point> points = new();
 
             public Yaml_Mascon_Data Clone()
             {
                 Yaml_Mascon_Data ymd = (Yaml_Mascon_Data)MemberwiseClone();
 
-                List<Yaml_Mascon_Data_Point> clone_points = new List<Yaml_Mascon_Data_Point>();
+                List<Yaml_Mascon_Data_Point> clone_points = new();
                 for(int i = 0; i < points.Count; i++)
                 {
                     clone_points.Add(points[i].Clone());

@@ -108,7 +108,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
             int wave_height = 100;
             int calculate_div = 30;
 
-            VideoWriter vr = new VideoWriter(fileName, OpenCvSharp.FourCC.H264, fps, new OpenCvSharp.Size(image_width, image_height));
+            VideoWriter vr = new(fileName, OpenCvSharp.FourCC.H264, fps, new OpenCvSharp.Size(image_width, image_height));
 
 
             if (!vr.IsOpened())
@@ -125,7 +125,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 Bitmap image = new(image_width, image_height);
                 Graphics g = Graphics.FromImage(image);
                 g.FillRectangle(new SolidBrush(Color.White), 0, 0, image_width, image_height);
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 image.Save(ms, ImageFormat.Png);
                 byte[] img = ms.GetBuffer();
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
@@ -147,7 +147,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 control.set_Sine_Time(0);
                 control.set_Saw_Time(0);
 
-                Control_Values cv = new Control_Values
+                Control_Values cv = new()
                 {
                     brake = control.is_Braking(),
                     mascon_on = !control.is_Mascon_Off(),
@@ -159,7 +159,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 Bitmap image = Get_WaveForm_Image(control, calculated_Values, image_width, image_height, wave_height, calculate_div, 2, 100);
 
 
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 image.Save(ms, ImageFormat.Png);
                 byte[] img = ms.GetBuffer();
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
@@ -167,8 +167,8 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 mat.Dispose();
                 ms.Dispose();
 
-                MemoryStream resized_ms = new MemoryStream();
-                Bitmap resized = new Bitmap(image, image_width / 2, image_height / 2);
+                MemoryStream resized_ms = new();
+                Bitmap resized = new(image, image_width / 2, image_height / 2);
                 resized.Save(resized_ms, ImageFormat.Png);
                 byte[] resized_img = resized_ms.GetBuffer();
                 Mat resized_mat = OpenCvSharp.Mat.FromImageData(resized_img);
@@ -192,7 +192,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 Bitmap image = new(image_width, image_height);
                 Graphics g = Graphics.FromImage(image);
                 g.FillRectangle(new SolidBrush(Color.White), 0, 0, image_width, image_height);
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 image.Save(ms, ImageFormat.Png);
                 byte[] img = ms.GetBuffer();
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
@@ -230,7 +230,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
             int wave_height = 100;
             int calculate_div = 10;
 
-            VideoWriter vr = new VideoWriter(fileName, OpenCvSharp.FourCC.H264, fps, new OpenCvSharp.Size(image_width, image_height));
+            VideoWriter vr = new(fileName, OpenCvSharp.FourCC.H264, fps, new OpenCvSharp.Size(image_width, image_height));
 
 
             if (!vr.IsOpened())
@@ -248,7 +248,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 Graphics g = Graphics.FromImage(image);
                 g.FillRectangle(new SolidBrush(Color.White), 0, 0, image_width, image_height);
                 g.DrawLine(new Pen(Color.Gray), 0, image_height / 2, image_width, image_height / 2);
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 image.Save(ms, ImageFormat.Png);
                 byte[] img = ms.GetBuffer();
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
@@ -271,7 +271,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 control.set_Sine_Time(0);
                 control.set_Saw_Time(0);
 
-                Control_Values cv = new Control_Values
+                Control_Values cv = new()
                 {
                     brake = control.is_Braking(),
                     mascon_on = !control.is_Mascon_Off(),
@@ -282,7 +282,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
 
                 Bitmap image = Get_WaveForm_Image(control, calculated_Values, image_width, image_height, wave_height, calculate_div, 1, 0);
 
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 image.Save(ms, ImageFormat.Png);
                 byte[] img = ms.GetBuffer();
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
@@ -308,7 +308,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 Graphics g = Graphics.FromImage(image);
                 g.FillRectangle(new SolidBrush(Color.White), 0, 0, image_width, image_height);
                 g.DrawLine(new Pen(Color.Gray), 0, image_height / 2, image_width, image_height / 2);
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 image.Save(ms, ImageFormat.Png);
                 byte[] img = ms.GetBuffer();
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);

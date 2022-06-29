@@ -31,7 +31,7 @@ namespace VVVF_Simulator.Generation
             Bitmap image = new(image_width, image_height);
             Graphics g = Graphics.FromImage(image);
             g.FillRectangle(new SolidBrush(Color.White), 0, 0, image_width, image_height);
-            MemoryStream ms = new MemoryStream();
+            MemoryStream ms = new();
             image.Save(ms, ImageFormat.Png);
             byte[] img = ms.GetBuffer();
             Mat mat = OpenCvSharp.Mat.FromImageData(img);
@@ -42,7 +42,7 @@ namespace VVVF_Simulator.Generation
 
         public static void Add_Image_Frames(Bitmap image, int frames, VideoWriter vr)
         {
-            MemoryStream ms = new MemoryStream();
+            MemoryStream ms = new();
             image.Save(ms, ImageFormat.Png);
             byte[] img = ms.GetBuffer();
             Mat mat = OpenCvSharp.Mat.FromImageData(img);

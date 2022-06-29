@@ -42,7 +42,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
                 if (control.get_Video_Dipolar() != -1)
                 {
                     names[count] = String.Format("Dipolar : " + control.get_Video_Dipolar().ToString("F0")).PadLeft(6);
-                    count++;
+                    //count++;
                 }
                 return names;
 
@@ -303,7 +303,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
 
             while (loop)
             {
-                Control_Values cv = new Control_Values
+                Control_Values cv = new()
                 {
                     brake = control.is_Braking(),
                     mascon_on = !control.is_Mascon_Off(),
@@ -311,7 +311,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
                     wave_stat = control.get_Control_Frequency()
                 };
                 PWM_Calculate_Values calculated_Values = Yaml_VVVF_Wave.calculate_Yaml(control, cv, vvvfData);
-                Wave_Values value = calculate_values(control, calculated_Values, 0);
+                _ = calculate_values(control, calculated_Values, 0);
 
                 control.set_Sine_Time(0);
                 control.set_Saw_Time(0);

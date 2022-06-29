@@ -42,7 +42,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
                 return empty_image;
             }
 
-            Control_Values cv = new Control_Values
+            Control_Values cv = new()
             {
                 brake = control.is_Braking(),
                 mascon_on = !control.is_Mascon_Off(),
@@ -67,7 +67,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
 
             List<int> points_x = new() { 100 };
             List<int> points_y = new() { 500 };
-            Wave_Values pre_wave_Values = new Wave_Values();
+            Wave_Values pre_wave_Values = new();
 
             for (int i = 0; i < hex_div; i++)
             {
@@ -126,8 +126,8 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
             {
                 for (int i = 0; i < points_x.Count - 1; i++)
                 {
-                    Point start = new Point(points_x[i], points_y[i]);
-                    Point end = new Point(points_x[i + 1], points_y[i + 1]);
+                    Point start = new(points_x[i], points_y[i]);
+                    Point end = new(points_x[i + 1], points_y[i + 1]);
                     hexagon_g.DrawLine(new Pen(Color.Black, line_width), start, end);
                 }
             }
@@ -172,7 +172,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
 
             int hex_div_seed = 10000;
 
-            VideoWriter vr = new VideoWriter(fileName, OpenCvSharp.FourCC.H264, fps, new OpenCvSharp.Size(image_width, image_height));
+            VideoWriter vr = new(fileName, OpenCvSharp.FourCC.H264, fps, new OpenCvSharp.Size(image_width, image_height));
 
 
             if (!vr.IsOpened())
@@ -216,7 +216,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
                 Bitmap final_image = Get_Hexagon_Original_Image(control, vvvfData, image_width, image_height, hex_div_seed, 2, draw_zero_vector_circle, true);
 
 
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 final_image.Save(ms, ImageFormat.Png);
                 final_image.Dispose();
                 byte[] img = ms.GetBuffer();
@@ -240,7 +240,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
                 Bitmap image = new(image_width, image_height);
                 Graphics g = Graphics.FromImage(image);
                 g.FillRectangle(new SolidBrush(Color.White), 0, 0, image_width, image_height);
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 image.Save(ms, ImageFormat.Png);
                 byte[] img = ms.GetBuffer();
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
@@ -286,7 +286,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
             int hex_div_seed = 10000;
             Bitmap final_image = Get_Hexagon_Original_Image(control, sound_data, image_width, image_height, hex_div_seed, 2, draw_zero_vector_circle, true);
 
-            MemoryStream ms = new MemoryStream();
+            MemoryStream ms = new();
             final_image.Save(ms, ImageFormat.Png);
             byte[] img = ms.GetBuffer();
             Mat mat = Mat.FromImageData(img);

@@ -43,7 +43,7 @@ namespace VVVF_Simulator.Generation.Video.FFT
 
         public static float[] FFT_WaveForm(VVVF_Values control, Yaml_VVVF_Sound_Data sound_Data)
         {
-            Control_Values cv = new Control_Values
+            Control_Values cv = new()
             {
                 brake = control.is_Braking(),
                 mascon_on = !control.is_Mascon_Off(),
@@ -74,15 +74,15 @@ namespace VVVF_Simulator.Generation.Video.FFT
         {
             float[] points = FFT_WaveForm(control, sound_Data);
 
-            Bitmap image = new Bitmap(1000, 1000);
+            Bitmap image = new(1000, 1000);
             Graphics g = Graphics.FromImage(image);
 
             g.FillRectangle(new SolidBrush(Color.White),0,0, 1000, 1000);
 
             for (int i = 0; i < 2000 - 1; i++)
             {
-                PointF start = new PointF((float)(i / 2.0), 1000 - points[i] * 6000);
-                PointF end = new PointF((float)((i + 1) / 2.0), 1000 - points[i + 1] * 6000);
+                PointF start = new((float)(i / 2.0), 1000 - points[i] * 6000);
+                PointF end = new((float)((i + 1) / 2.0), 1000 - points[i + 1] * 6000);
                 g.DrawLine(new Pen(Color.Black, 2), start, end);
             }
 
@@ -109,7 +109,7 @@ namespace VVVF_Simulator.Generation.Video.FFT
             int image_width = 1000;
             int image_height = 1000;
 
-            VideoWriter vr = new VideoWriter(fileName, OpenCvSharp.FourCC.H264, fps, new OpenCvSharp.Size(image_width, image_height));
+            VideoWriter vr = new(fileName, OpenCvSharp.FourCC.H264, fps, new OpenCvSharp.Size(image_width, image_height));
 
 
             if (!vr.IsOpened())
@@ -137,7 +137,7 @@ namespace VVVF_Simulator.Generation.Video.FFT
                 Bitmap image = Get_FFT_Image(control, vvvfData);
 
 
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 image.Save(ms, ImageFormat.Png);
                 byte[] img = ms.GetBuffer();
                 Mat mat = OpenCvSharp.Mat.FromImageData(img);
@@ -145,8 +145,8 @@ namespace VVVF_Simulator.Generation.Video.FFT
                 mat.Dispose();
                 ms.Dispose();
 
-                MemoryStream resized_ms = new MemoryStream();
-                Bitmap resized = new Bitmap(image, image_width / 2, image_height / 2);
+                MemoryStream resized_ms = new();
+                Bitmap resized = new(image, image_width / 2, image_height / 2);
                 resized.Save(resized_ms, ImageFormat.Png);
                 byte[] resized_img = resized_ms.GetBuffer();
                 Mat resized_mat = OpenCvSharp.Mat.FromImageData(resized_img);
@@ -188,7 +188,7 @@ namespace VVVF_Simulator.Generation.Video.FFT
 
             Bitmap image = Get_FFT_Image(control, sound_data);
 
-            MemoryStream ms = new MemoryStream();
+            MemoryStream ms = new();
             image.Save(ms, ImageFormat.Png);
             byte[] img = ms.GetBuffer();
             Mat mat = Mat.FromImageData(img);
