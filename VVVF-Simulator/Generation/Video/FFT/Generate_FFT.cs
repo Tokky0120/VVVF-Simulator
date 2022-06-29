@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VVVF_Simulator.Yaml.VVVF_Sound;
 using static VVVF_Simulator.Generation.Generate_Common;
+using static VVVF_Simulator.Generation.Generate_Common.GenerationBasicParameter;
 using static VVVF_Simulator.MainWindow;
 using static VVVF_Simulator.VVVF_Structs;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
@@ -91,15 +92,17 @@ namespace VVVF_Simulator.Generation.Video.FFT
 
         }
 
-        public static void Generate_FFT_Video(ProgressData progressData, String fileName, Yaml_VVVF_Sound_Data sound_data)
+        public static void Generate_FFT_Video(GenerationBasicParameter generationBasicParameter, String fileName)
         {
+            Yaml_VVVF_Sound_Data vvvfData = generationBasicParameter.vvvfData;
+            Yaml_Mascon_Data_Compiled masconData = generationBasicParameter.masconData;
+            ProgressData progressData = generationBasicParameter.progressData;
+
             VVVF_Values control = new();
             control.reset_control_variables();
             control.reset_all_variables();
 
             control.set_Allowed_Random_Freq_Move(false);
-
-            Yaml_Mascon_Data_Compiled ymd = Yaml_Mascon_Manage.CurrentData.GetCompiled();
 
             int fps = 60;
 
@@ -115,7 +118,7 @@ namespace VVVF_Simulator.Generation.Video.FFT
             }
 
             // Progress Initialize
-            progressData.Total = ymd.GetEstimatedSteps(1.0 / fps) + 120;
+            progressData.Total = masconData.GetEstimatedSteps(1.0 / fps) + 120;
 
             Boolean START_WAIT = true;
             if (START_WAIT)
@@ -131,7 +134,7 @@ namespace VVVF_Simulator.Generation.Video.FFT
                 control.set_Sine_Time(0);
                 control.set_Saw_Time(0);
 
-                Bitmap image = Get_FFT_Image(control, sound_data);
+                Bitmap image = Get_FFT_Image(control, vvvfData);
 
 
                 MemoryStream ms = new MemoryStream();
@@ -154,7 +157,7 @@ namespace VVVF_Simulator.Generation.Video.FFT
 
                 image.Dispose();
 
-                loop = Generate_Common.Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / fps);
+                loop = Generate_Common.Check_For_Freq_Change(control, masconData, vvvfData.mascon_data, 1.0 / fps);
                 if (progressData.Cancel) loop = false;
 
                 // PROGRESS CHANGE

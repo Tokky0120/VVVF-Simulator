@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using VVVF_Simulator.Yaml.VVVF_Sound;
 using static VVVF_Simulator.Generation.Audio.Train_Sound.Generate_Train_Audio_Filter.NAudio_Filter;
 using static VVVF_Simulator.Generation.Generate_Common;
+using static VVVF_Simulator.Generation.Generate_Common.GenerationBasicParameter;
 using static VVVF_Simulator.Generation.Motor.Generate_Motor_Core;
 using static VVVF_Simulator.MainWindow;
 using static VVVF_Simulator.My_Math;
@@ -127,8 +128,11 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
         }
 
 
-        public static void Export_Train_Sound(ProgressData progressData, String output_path, Boolean resize, Yaml_VVVF_Sound_Data sound_data, Yaml_TrainSound_Data train_Sound_Data)
+        public static void Export_Train_Sound(GenerationBasicParameter generationBasicParameter, String output_path, Boolean resize, Yaml_TrainSound_Data train_Sound_Data)
         {
+            Yaml_VVVF_Sound_Data vvvfData = generationBasicParameter.vvvfData;
+            Yaml_Mascon_Data_Compiled masconData = generationBasicParameter.masconData;
+            ProgressData progressData = generationBasicParameter.progressData;
 
             DateTime dt = DateTime.Now;
             String gen_time = dt.ToString("yyyy-MM-dd_HH-mm-ss");
@@ -137,8 +141,6 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             VVVF_Values control = new();
             control.reset_control_variables();
             control.reset_all_variables();
-
-            Yaml_Mascon_Data_Compiled ymdc = Yaml_Mascon_Manage.CurrentData.GetCompiled();
 
             int sample_freq = 200000;
 
@@ -155,14 +157,14 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
             motor.SIM_SAMPLE_FREQ = sample_freq;
             motor_Param.TL = 0.0;
 
-            progressData.Total = ymdc.GetEstimatedSteps(1.0 / sample_freq);
+            progressData.Total = masconData.GetEstimatedSteps(1.0 / sample_freq);
 
             while (true)
             {
                 control.add_Sine_Time(1.00 / sample_freq);
                 control.add_Saw_Time(1.00 / sample_freq);
 
-                byte sound_byte = Get_Train_Sound(control, sound_data, motor , train_Sound_Data);
+                byte sound_byte = Get_Train_Sound(control, vvvfData, motor , train_Sound_Data);
 
                 wave_provider.AddSamples(new byte[] { sound_byte }, 0, 1);
 
@@ -175,7 +177,7 @@ namespace VVVF_Simulator.Generation.Audio.Train_Sound
 
                 progressData.Progress++;
 
-                bool flag_continue = Check_For_Freq_Change(control, ymdc, sound_data.mascon_data, 1.0 / sample_freq);
+                bool flag_continue = Check_For_Freq_Change(control, masconData, vvvfData.mascon_data, 1.0 / sample_freq);
                 bool flag_cancel = progressData.Cancel;
                 if (!flag_continue || flag_cancel) break;
             }

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using VVVF_Simulator.Yaml.Mascon_Control;
+using VVVF_Simulator.Yaml.VVVF_Sound;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
 using Yaml_Mascon_Data = VVVF_Simulator.Yaml.VVVF_Sound.Yaml_VVVF_Sound_Data.Yaml_Mascon_Data;
 
@@ -48,20 +49,36 @@ namespace VVVF_Simulator.Generation
             for (int i = 0; i < frames; i++) { vr.Write(mat); }
         }
 
-        public class ProgressData
-        {
-            public double Progress = 1;
-            public double Total = 1;
+        
 
-            public double RelativeProgress
+        public class GenerationBasicParameter
+        {
+            public Yaml_Mascon_Data_Compiled masconData { get; set; }
+            public Yaml_VVVF_Sound_Data vvvfData { get; set; }
+            public ProgressData progressData { get; set; }
+
+            public GenerationBasicParameter(Yaml_Mascon_Data_Compiled yaml_Mascon_Data_Compiled, Yaml_VVVF_Sound_Data yaml_VVVF_Sound_Data, ProgressData progressData)
             {
-                get
+                this.masconData = yaml_Mascon_Data_Compiled;
+                this.vvvfData = yaml_VVVF_Sound_Data;
+                this.progressData = progressData;
+            }
+            public class ProgressData
+            {
+                public double Progress = 1;
+                public double Total = 1;
+
+                public double RelativeProgress
                 {
-                    return Progress / Total * 100;
+                    get
+                    {
+                        return Progress / Total * 100;
+                    }
                 }
+
+                public bool Cancel = false;
             }
 
-            public bool Cancel = false;
         }
 
 

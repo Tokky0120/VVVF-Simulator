@@ -13,6 +13,7 @@ using static VVVF_Simulator.VVVF_Structs;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
 using static VVVF_Simulator.VVVF_Structs.Pulse_Mode;
 using static VVVF_Simulator.MainWindow;
+using static VVVF_Simulator.Generation.Generate_Common.GenerationBasicParameter;
 
 namespace VVVF_Simulator.Generation.Video.Control_Info
 {
@@ -271,13 +272,15 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
             return image;
         }
 
-        public static void Generate_Control_Original_Video(ProgressData progressData, String output_path, Yaml_VVVF_Sound_Data sound_data)
+        public static void Generate_Control_Original_Video(GenerationBasicParameter generationBasicParameter, String output_path)
         {
+            Yaml_VVVF_Sound_Data vvvfData = generationBasicParameter.vvvfData;
+            Yaml_Mascon_Data_Compiled masconData = generationBasicParameter.masconData;
+            ProgressData progressData = generationBasicParameter.progressData;
+
             VVVF_Values control = new();
             control.reset_control_variables();
             control.reset_all_variables();
-
-            Yaml_Mascon_Data_Compiled ymd = Yaml_Mascon_Manage.CurrentData.GetCompiled();
 
             int fps = 60;
 
@@ -296,7 +299,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
             bool loop = true, video_finished, final_show = false, first_show = true;
             int freeze_count = 0;
 
-            progressData.Total = ymd.GetEstimatedSteps(1.0 / fps) + 120;
+            progressData.Total = masconData.GetEstimatedSteps(1.0 / fps) + 120;
 
             while (loop)
             {
@@ -307,7 +310,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
                     free_run = control.is_Free_Running(),
                     wave_stat = control.get_Control_Frequency()
                 };
-                PWM_Calculate_Values calculated_Values = Yaml_VVVF_Wave.calculate_Yaml(control, cv, sound_data);
+                PWM_Calculate_Values calculated_Values = Yaml_VVVF_Wave.calculate_Yaml(control, cv, vvvfData);
                 Wave_Values value = calculate_values(control, calculated_Values, 0);
 
                 control.set_Sine_Time(0);
@@ -338,7 +341,7 @@ namespace VVVF_Simulator.Generation.Video.Control_Info
                     continue;
                 }
 
-                video_finished = !Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / fps);
+                video_finished = !Check_For_Freq_Change(control, masconData, vvvfData.mascon_data, 1.0 / fps);
                 if (video_finished)
                 {
                     final_show = true;

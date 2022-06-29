@@ -11,7 +11,6 @@ using VVVF_Simulator.GUI.Util;
 using System.ComponentModel;
 using System.Media;
 using System.Threading.Tasks;
-using VVVF_Simulator.GUI.Util;
 using VVVF_Simulator.GUI.Mascon;
 using VVVF_Simulator.GUI.Simulator.RealTime;
 using VVVF_Simulator.GUI.Simulator.RealTime.Display;
@@ -21,8 +20,10 @@ using static VVVF_Simulator.Generation.Audio.Generate_RealTime_Common;
 using VVVF_Simulator.GUI.TrainAudio;
 using static VVVF_Simulator.Yaml.TrainAudio_Setting.Yaml_TrainSound_Analyze;
 using VVVF_Simulator.GUI.TaskViewer;
-using static VVVF_Simulator.Generation.Generate_Common;
 using System.Windows.Media;
+using static VVVF_Simulator.Generation.Generate_Common.GenerationBasicParameter;
+using static VVVF_Simulator.Generation.Generate_Common;
+using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
 
 namespace VVVF_Simulator
 {
@@ -320,9 +321,7 @@ namespace VVVF_Simulator
 
             view_data.blocking = true;
 
-            Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-            
-            bool unblock = solve_Command(command, clone);
+            bool unblock = solve_Command(command);
 
             if (!unblock) return;
             view_data.blocking = false;
@@ -373,7 +372,17 @@ namespace VVVF_Simulator
 
         public List<TaskProgressData> taskProgresses = new List<TaskProgressData>();
 
-        private Boolean solve_Command(String[] command, Yaml_VVVF_Sound_Data data)
+        private static GenerationBasicParameter GetGenerationBasicParameter()
+        {
+            GenerationBasicParameter generationBasicParameter = new(
+                Yaml_Mascon_Manage.CurrentData.GetCompiled(),
+                Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data),
+                new ProgressData()
+            );
+
+            return generationBasicParameter;
+        }
+        private Boolean solve_Command(String[] command)
         {
 
             if (command[0].Equals("VVVF"))
@@ -387,13 +396,12 @@ namespace VVVF_Simulator
                     int sample_freq = new int[] { 1000000 * 5, 192000, 192000 }[dialog.FilterIndex - 1];
                     bool resize = new bool[] {false,false,true}[dialog.FilterIndex - 1];
 
-                    ProgressData progressData = new();
+                    GenerationBasicParameter generationBasicParameter = GetGenerationBasicParameter();
 
                     Task task = Task.Run(() => {
                         try
                         {
-                            Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            Generation.Audio.VVVF_Sound.Generate_VVVF_Audio.Export_VVVF_Sound(progressData, dialog.FileName, resize, sample_freq,clone);
+                            Generation.Audio.VVVF_Sound.Generate_VVVF_Audio.Export_VVVF_Sound(generationBasicParameter, dialog.FileName, resize, sample_freq);
                         }
                         catch (Exception e)
                         {
@@ -402,7 +410,7 @@ namespace VVVF_Simulator
                         SystemSounds.Beep.Play();
                     });
 
-                    TaskProgressData taskProgressData = new(task, progressData, "VVVF sound generation of " + GetLoadedYamlName());
+                    TaskProgressData taskProgressData = new(task, generationBasicParameter.progressData, "VVVF sound generation of " + GetLoadedYamlName());
                     taskProgresses.Add(taskProgressData);
                 }
                
@@ -492,16 +500,15 @@ namespace VVVF_Simulator
                     var dialog = new SaveFileDialog { Filter = "High Resolution|*.wav|Down Sampled|*.wav" };
                     if (dialog.ShowDialog() == false) return true;
 
-                    ProgressData progressData = new();
+                    GenerationBasicParameter generationBasicParameter = GetGenerationBasicParameter();
 
                     Task task = Task.Run(() => {
                         try
                         {
                             bool resize = dialog.FilterIndex == 2;
 
-                            Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
                             Yaml_TrainSound_Data trainSound_Data_clone = Yaml_TrainSound_Data_Manage.current_data.Clone();
-                            Generation.Audio.Train_Sound.Generate_Train_Audio.Export_Train_Sound(progressData, dialog.FileName, resize, clone, trainSound_Data_clone);
+                            Generation.Audio.Train_Sound.Generate_Train_Audio.Export_Train_Sound(generationBasicParameter, dialog.FileName, resize, trainSound_Data_clone);
                         }
                         catch (Exception e)
                         {
@@ -510,7 +517,7 @@ namespace VVVF_Simulator
                         SystemSounds.Beep.Play();
                     });
 
-                    TaskProgressData taskProgressData = new(task, progressData, "Train sound generation of " + GetLoadedYamlName());
+                    TaskProgressData taskProgressData = new(task, generationBasicParameter.progressData, "Train sound generation of " + GetLoadedYamlName());
                     taskProgresses.Add(taskProgressData);
                 }
                 else if (command[1].Equals("RealTime"))
@@ -596,13 +603,12 @@ namespace VVVF_Simulator
                 if (dialog.ShowDialog() == false) return true;
                 if (command[1].Equals("Original"))
                 {
-                    ProgressData progressData = new();
+                    GenerationBasicParameter generationBasicParameter = GetGenerationBasicParameter();
 
                     Task task = Task.Run(() => {
                         try
                         {
-                            Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            Generation.Video.Control_Info.Generate_Control_Original.Generate_Control_Original_Video(progressData, dialog.FileName, clone);
+                            Generation.Video.Control_Info.Generate_Control_Original.Generate_Control_Original_Video(generationBasicParameter, dialog.FileName);
                         }
                         catch (Exception e)
                         {
@@ -611,19 +617,18 @@ namespace VVVF_Simulator
                         SystemSounds.Beep.Play();
                     });
 
-                    TaskProgressData taskProgressData = new(task, progressData, "Control video(O1) generation of " + GetLoadedYamlName());
+                    TaskProgressData taskProgressData = new(task, generationBasicParameter.progressData, "Control video(O1) generation of " + GetLoadedYamlName());
                     taskProgresses.Add(taskProgressData);
                 }
 
                 else if (command[1].Equals("Original2"))
                 {
-                    ProgressData progressData = new();
+                    GenerationBasicParameter generationBasicParameter = GetGenerationBasicParameter();
 
                     Task task = Task.Run(() => {
                         try
                         {
-                            Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            Generation.Video.Control_Info.Generate_Control_Original2.Generate_Control_Original2_Video(progressData, dialog.FileName, clone);
+                            Generation.Video.Control_Info.Generate_Control_Original2.Generate_Control_Original2_Video(generationBasicParameter, dialog.FileName);
                         }
                         catch (Exception e)
                         {
@@ -632,7 +637,7 @@ namespace VVVF_Simulator
                         SystemSounds.Beep.Play();
                     });
 
-                    TaskProgressData taskProgressData = new(task, progressData, "Control video(O2) generation of " + GetLoadedYamlName());
+                    TaskProgressData taskProgressData = new(task, generationBasicParameter.progressData, "Control video(O2) generation of " + GetLoadedYamlName());
                     taskProgresses.Add(taskProgressData);
                 }
 
@@ -643,17 +648,16 @@ namespace VVVF_Simulator
                 var dialog = new SaveFileDialog { Filter = "mp4 (*.mp4)|*.mp4" };
                 if (dialog.ShowDialog() == false) return true;
 
-                ProgressData progressData = new();
+                GenerationBasicParameter generationBasicParameter = GetGenerationBasicParameter();
                 Task task = Task.Run(() => {
                     try
                     {
-                        Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
                         if (command[1].Equals("Original"))
-                            Generation.Video.WaveForm.Generate_WaveForm_UV.Generate_UV_2(progressData, dialog.FileName, clone);
+                            Generation.Video.WaveForm.Generate_WaveForm_UV.Generate_UV_2(generationBasicParameter, dialog.FileName);
                         else if (command[1].Equals("Spaced"))
-                            Generation.Video.WaveForm.Generate_WaveForm_UV.Generate_UV_1(progressData, dialog.FileName, clone);
+                            Generation.Video.WaveForm.Generate_WaveForm_UV.Generate_UV_1(generationBasicParameter, dialog.FileName);
                         else if (command[1].Equals("UVW"))
-                            Generation.Video.WaveForm.Generate_WaveForm_UVW.generate_wave_UVW(progressData, dialog.FileName, clone);
+                            Generation.Video.WaveForm.Generate_WaveForm_UVW.generate_wave_UVW(generationBasicParameter, dialog.FileName);
                     }
                     catch (Exception e)
                     {
@@ -662,7 +666,7 @@ namespace VVVF_Simulator
                     SystemSounds.Beep.Play();
                 });
 
-                TaskProgressData taskProgressData = new(task, progressData, "Waveform video(" + command[1] + ") generation of " + GetLoadedYamlName());
+                TaskProgressData taskProgressData = new(task, generationBasicParameter.progressData, "Waveform video(" + command[1] + ") generation of " + GetLoadedYamlName());
                 taskProgresses.Add(taskProgressData);
             }
             else if (command[0].Equals("Hexagon"))
@@ -675,12 +679,11 @@ namespace VVVF_Simulator
                     var dialog = new SaveFileDialog { Filter = "mp4 (*.mp4)|*.mp4" };
                     if (dialog.ShowDialog() == false) return true;
 
-                    ProgressData progressData = new();
+                    GenerationBasicParameter generationBasicParameter = GetGenerationBasicParameter();
                     Task task = Task.Run(() => {
                         try
                         {
-                            Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            Generation.Video.Hexagon.Generate_Hexagon_Original.Generate_Hexagon_Original_Video(progressData, dialog.FileName, clone, circle);
+                            Generation.Video.Hexagon.Generate_Hexagon_Original.Generate_Hexagon_Original_Video(generationBasicParameter, dialog.FileName, circle);
                         }
                         catch (Exception e)
                         {
@@ -689,7 +692,7 @@ namespace VVVF_Simulator
                         SystemSounds.Beep.Play();
                     });
 
-                    TaskProgressData taskProgressData = new(task, progressData, "Hexagon video(Original) generation of " + GetLoadedYamlName());
+                    TaskProgressData taskProgressData = new(task, generationBasicParameter.progressData, "Hexagon video(Original) generation of " + GetLoadedYamlName());
                     taskProgresses.Add(taskProgressData);
                 }
                 else if (command[1].Equals("Explain"))
@@ -700,12 +703,11 @@ namespace VVVF_Simulator
                     Double_Ask_Form double_Ask_Dialog = new Double_Ask_Form("Enter the frequency.");
                     double_Ask_Dialog.ShowDialog();
 
-                    ProgressData progressData = new();
+                    GenerationBasicParameter generationBasicParameter = GetGenerationBasicParameter();
                     Task task = Task.Run(() => {
                         try
                         {
-                            Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            Generation.Video.Hexagon.Generate_Hexagon_Explain.generate_wave_hexagon_explain(progressData, dialog.FileName, clone, circle, Generation_Params.Double_Values[0]);
+                            Generation.Video.Hexagon.Generate_Hexagon_Explain.generate_wave_hexagon_explain(generationBasicParameter, dialog.FileName, circle, Generation_Params.Double_Values[0]);
                         }
                         catch (Exception e)
                         {
@@ -714,7 +716,7 @@ namespace VVVF_Simulator
                         SystemSounds.Beep.Play();
                     });
 
-                    TaskProgressData taskProgressData = new(task, progressData, "Hexagon video(Explain) generation of " + GetLoadedYamlName());
+                    TaskProgressData taskProgressData = new(task, generationBasicParameter.progressData, "Hexagon video(Explain) generation of " + GetLoadedYamlName());
                     taskProgresses.Add(taskProgressData);
                 }
                 else if (command[1].Equals("OriginalImage"))
@@ -722,7 +724,7 @@ namespace VVVF_Simulator
                     var dialog = new SaveFileDialog { Filter = "png (*.png)|*.png" };
                     if (dialog.ShowDialog() == false) return true;
 
-                    Double_Ask_Form double_Ask_Dialog = new Double_Ask_Form("Enter the frequency.");
+                    Double_Ask_Form double_Ask_Dialog = new ("Enter the frequency.");
                     double_Ask_Dialog.ShowDialog();
 
                     Task task = Task.Run(() => {
@@ -747,12 +749,11 @@ namespace VVVF_Simulator
                     var dialog = new SaveFileDialog { Filter = "mp4 (*.mp4)|*.mp4" };
                     if (dialog.ShowDialog() == false) return true;
 
-                    ProgressData progressData = new();
+                    GenerationBasicParameter generationBasicParameter = GetGenerationBasicParameter();
                     Task task = Task.Run(() => {
                         try
                         {
-                            Yaml_VVVF_Sound_Data clone = Yaml_VVVF_Manage.DeepClone(Yaml_VVVF_Manage.current_data);
-                            Generation.Video.FFT.Generate_FFT.Generate_FFT_Video(progressData, dialog.FileName, clone);
+                            Generation.Video.FFT.Generate_FFT.Generate_FFT_Video(generationBasicParameter, dialog.FileName);
                         }
                         catch (Exception e)
                         {
@@ -761,7 +762,7 @@ namespace VVVF_Simulator
                         SystemSounds.Beep.Play();
                     });
 
-                    TaskProgressData taskProgressData = new(task, progressData, "FFT video generation of " + GetLoadedYamlName());
+                    TaskProgressData taskProgressData = new(task, generationBasicParameter.progressData, "FFT video generation of " + GetLoadedYamlName());
                     taskProgresses.Add(taskProgressData);
                 }
                 else if (command[1].Equals("Image"))

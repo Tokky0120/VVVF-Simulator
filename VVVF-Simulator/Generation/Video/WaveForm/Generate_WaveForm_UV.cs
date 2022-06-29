@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VVVF_Simulator.Yaml.VVVF_Sound;
 using static VVVF_Simulator.Generation.Generate_Common;
+using static VVVF_Simulator.Generation.Generate_Common.GenerationBasicParameter;
 using static VVVF_Simulator.MainWindow;
 using static VVVF_Simulator.VVVF_Calculate;
 using static VVVF_Simulator.VVVF_Structs;
@@ -87,15 +88,17 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
             g.Dispose();
             return image;
         }
-        public static void Generate_UV_1(ProgressData progressData, String fileName, Yaml_VVVF_Sound_Data sound_data)
+        public static void Generate_UV_1(GenerationBasicParameter generationBasicParameter, String fileName)
         {
+            Yaml_VVVF_Sound_Data vvvfData = generationBasicParameter.vvvfData;
+            Yaml_Mascon_Data_Compiled masconData = generationBasicParameter.masconData;
+            ProgressData progressData = generationBasicParameter.progressData;
+
             VVVF_Values control = new();
             control.reset_control_variables();
             control.reset_all_variables();
 
             control.set_Allowed_Random_Freq_Move(false);
-
-            Yaml_Mascon_Data_Compiled ymd = Yaml_Mascon_Manage.CurrentData.GetCompiled();
 
             int fps = 60;
 
@@ -114,7 +117,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
             }
 
             // Progress Initialize
-            progressData.Total = ymd.GetEstimatedSteps(1.0 / fps) + 120;
+            progressData.Total = masconData.GetEstimatedSteps(1.0 / fps) + 120;
 
             Boolean START_WAIT = true;
             if (START_WAIT)
@@ -151,7 +154,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                     free_run = control.is_Free_Running(),
                     wave_stat = control.get_Control_Frequency()
                 };
-                PWM_Calculate_Values calculated_Values = Yaml_VVVF_Wave.calculate_Yaml(control, cv, sound_data);
+                PWM_Calculate_Values calculated_Values = Yaml_VVVF_Wave.calculate_Yaml(control, cv, vvvfData);
 
                 Bitmap image = Get_WaveForm_Image(control, calculated_Values, image_width, image_height, wave_height, calculate_div, 2, 100);
 
@@ -176,7 +179,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
 
                 image.Dispose();
 
-                loop = Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / fps);
+                loop = Check_For_Freq_Change(control, masconData, vvvfData.mascon_data, 1.0 / fps);
                 if (progressData.Cancel) loop = false;
 
                 // PROGRESS CHANGE
@@ -208,14 +211,16 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
             vr.Dispose();
         }
 
-        public static void Generate_UV_2(ProgressData progressData, String fileName, Yaml_VVVF_Sound_Data sound_data)
+        public static void Generate_UV_2(GenerationBasicParameter generationBasicParameter, String fileName)
         {
+            Yaml_VVVF_Sound_Data vvvfData = generationBasicParameter.vvvfData;
+            Yaml_Mascon_Data_Compiled masconData = generationBasicParameter.masconData;
+            ProgressData progressData = generationBasicParameter.progressData;
+
             VVVF_Values control = new();
             control.reset_control_variables();
             control.reset_all_variables();
             control.set_Allowed_Random_Freq_Move(false);
-
-            Yaml_Mascon_Data_Compiled ymd = Yaml_Mascon_Manage.CurrentData.GetCompiled();
 
             int fps = 60;
 
@@ -234,7 +239,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
             }
 
             // Progress Initialize
-            progressData.Total = ymd.GetEstimatedSteps(1.0 / fps) + 120;
+            progressData.Total = masconData.GetEstimatedSteps(1.0 / fps) + 120;
 
             Boolean START_WAIT = true;
             if (START_WAIT)
@@ -273,7 +278,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                     free_run = control.is_Free_Running(),
                     wave_stat = control.get_Control_Frequency()
                 };
-                PWM_Calculate_Values calculated_Values = Yaml_VVVF_Wave.calculate_Yaml(control, cv, sound_data);
+                PWM_Calculate_Values calculated_Values = Yaml_VVVF_Wave.calculate_Yaml(control, cv, vvvfData);
 
                 Bitmap image = Get_WaveForm_Image(control, calculated_Values, image_width, image_height, wave_height, calculate_div, 1, 0);
 
@@ -288,7 +293,7 @@ namespace VVVF_Simulator.Generation.Video.WaveForm
                 vr.Write(mat);
 
                 image.Dispose();
-                loop = Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / fps);
+                loop = Check_For_Freq_Change(control, masconData, vvvfData.mascon_data, 1.0 / fps);
                 if(progressData.Cancel) loop = false;
 
                 // PROGRESS CHANGE

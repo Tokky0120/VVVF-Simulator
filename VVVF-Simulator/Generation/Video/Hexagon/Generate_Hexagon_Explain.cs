@@ -12,13 +12,17 @@ using System.Collections.Generic;
 using Point = System.Drawing.Point;
 using static VVVF_Simulator.VVVF_Structs;
 using static VVVF_Simulator.MainWindow;
+using static VVVF_Simulator.Generation.Generate_Common.GenerationBasicParameter;
 
 namespace VVVF_Simulator.Generation.Video.Hexagon
 {
     public class Generate_Hexagon_Explain
     {
-        public static bool generate_wave_hexagon_explain(ProgressData progressData, String output_path, Yaml_VVVF_Sound_Data sound_data, bool circle, double d)
+        public static bool generate_wave_hexagon_explain(GenerationBasicParameter generationBasicParameter, String output_path, bool circle, double d)
         {
+            Yaml_VVVF_Sound_Data vvvfData = generationBasicParameter.vvvfData;
+            ProgressData progressData = generationBasicParameter.progressData;
+
             VVVF_Values control = new();
             control.reset_control_variables();
             control.reset_all_variables();
@@ -102,7 +106,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
                 free_run = control.is_Free_Running(),
                 wave_stat = control.get_Control_Frequency()
             };
-            PWM_Calculate_Values calculated_Values = Yaml_VVVF_Wave.calculate_Yaml(control, cv, sound_data);
+            PWM_Calculate_Values calculated_Values = Yaml_VVVF_Wave.calculate_Yaml(control, cv, vvvfData);
 
             for (int i = 0; i < hex_div; i++)
             {
@@ -135,8 +139,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
             {
                 for (int ix = 0; ix < 3; ix++)
                 {
-                    int curr_val = 0;
-                    int next_val = 0;
+                    int curr_val, next_val;
                     if (ix == 0)
                     {
                         curr_val = points_U[i * jump_add];

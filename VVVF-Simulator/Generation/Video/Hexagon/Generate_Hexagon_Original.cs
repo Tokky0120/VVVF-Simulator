@@ -13,6 +13,7 @@ using Point = System.Drawing.Point;
 using static VVVF_Simulator.VVVF_Structs;
 using static VVVF_Simulator.Yaml.Mascon_Control.Yaml_Mascon_Analyze;
 using static VVVF_Simulator.MainWindow;
+using static VVVF_Simulator.Generation.Generate_Common.GenerationBasicParameter;
 
 namespace VVVF_Simulator.Generation.Video.Hexagon
 {
@@ -150,14 +151,16 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
             return final_image;
         }
 
-        public static void Generate_Hexagon_Original_Video(ProgressData progressData, String fileName, Yaml_VVVF_Sound_Data sound_data, bool circle)
+        public static void Generate_Hexagon_Original_Video(GenerationBasicParameter generationBasicParameter, String fileName, bool circle)
         {
+            Yaml_VVVF_Sound_Data vvvfData = generationBasicParameter.vvvfData;
+            Yaml_Mascon_Data_Compiled masconData = generationBasicParameter.masconData;
+            ProgressData progressData = generationBasicParameter.progressData;
+
             VVVF_Values control = new();
             control.reset_control_variables();
             control.reset_all_variables();
             control.set_Allowed_Random_Freq_Move(false);
-
-            Yaml_Mascon_Data_Compiled ymd = Yaml_Mascon_Manage.CurrentData.GetCompiled();
 
             Boolean draw_zero_vector_circle = circle;
 
@@ -178,7 +181,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
             }
 
             // Progress Initialize
-            progressData.Total = ymd.GetEstimatedSteps(1.0 / fps) + 120;
+            progressData.Total = masconData.GetEstimatedSteps(1.0 / fps) + 120;
 
             Boolean START_WAIT = true;
             if (START_WAIT)
@@ -210,7 +213,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
                 control.set_Sine_Time(0);
                 control.set_Saw_Time(0);
 
-                Bitmap final_image = Get_Hexagon_Original_Image(control, sound_data, image_width, image_height, hex_div_seed, 2, draw_zero_vector_circle, true);
+                Bitmap final_image = Get_Hexagon_Original_Image(control, vvvfData, image_width, image_height, hex_div_seed, 2, draw_zero_vector_circle, true);
 
 
                 MemoryStream ms = new MemoryStream();
@@ -224,7 +227,7 @@ namespace VVVF_Simulator.Generation.Video.Hexagon
 
                 vr.Write(mat);
 
-                loop = Check_For_Freq_Change(control, ymd, sound_data.mascon_data, 1.0 / fps);
+                loop = Check_For_Freq_Change(control, masconData, vvvfData.mascon_data, 1.0 / fps);
                 if (progressData.Cancel) loop = false;
 
                 // PROGRESS CHANGE
