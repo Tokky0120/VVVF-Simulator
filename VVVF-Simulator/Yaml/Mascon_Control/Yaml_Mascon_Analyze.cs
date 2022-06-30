@@ -88,6 +88,9 @@ namespace VVVF_Simulator.Yaml.Mascon_Control
 
                     double deltaTime = yaml_Mascon_Data_Point.duration;
                     double deltaFrequency = deltaTime * yaml_Mascon_Data_Point.rate * (yaml_Mascon_Data_Point.brake ? -1 : 1);
+
+                    if (deltaTime == 0) continue;
+
                     Yaml_Mascon_Data_Compiled_Point yaml_Mascon_Data_Compiled_Point = new()
                     {
                         StartTime = currentTime,
