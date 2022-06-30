@@ -13,8 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="GUI\Images\Enable_Button\B_Disabled.png" />
+    <None Remove="GUI\Images\Enable_Button\B_Enabled.png" />
     <None Remove="GUI\Images\MIDIConvert\B_Folder_Opend.png" />
     <None Remove="GUI\Images\MIDIConvert\B_MIDI_Document.png" />
+    <None Remove="GUI\Images\MIDIConvert\B_MultiTask.png" />
+    <None Remove="GUI\Images\MIDIConvert\B_Spanner.png" />
     <None Remove="GUI\Images\MIDIConvert\B_Start.png" />
     <None Remove="GUI\Images\TrainAudio_Settings\filter_normal.png" />
     <None Remove="GUI\Images\TrainAudio_Settings\filter_over.png" />
@@ -29,6 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="GUI\Images\Enable_Button\B_Disabled.png" />
+    <Resource Include="GUI\Images\Enable_Button\B_Enabled.png" />
+    <Resource Include="GUI\Images\MIDIConvert\B_MultiTask.png" />
+    <Resource Include="GUI\Images\MIDIConvert\B_Spanner.png" />
     <Resource Include="GUI\Images\MIDIConvert\B_Start.png" />
     <Resource Include="GUI\Images\VVVF_Settings\2-level.png" />
     <Resource Include="GUI\Images\VVVF_Settings\3-level.png" />

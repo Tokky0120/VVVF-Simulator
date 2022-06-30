@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="VVVF_Simulator.GUI.MyUserControl.EnableButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="1000">
+    <Grid>
+        <Image x:Name="StatImg" Source="/GUI/Images/Enable_Button/B_Disabled.png" Stretch="Fill" MouseUp="StatImg_MouseUp"/>
+
+    </Grid>
+</UserControl>

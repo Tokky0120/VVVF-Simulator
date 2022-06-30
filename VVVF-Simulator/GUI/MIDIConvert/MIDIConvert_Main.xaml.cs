@@ -25,7 +25,7 @@ namespace VVVF_Simulator.GUI.MIDIConvert
             InitializeComponent();
         }
 
-        public static bool Conversion(String midi_path, String output_path, int sample_freq)
+        public static bool Conversion(String midi_path, String output_path, Midi_Convert_Config midi_Convert_Config)
         {
             //MIDIDataを変換
             MidiData midiData;
@@ -72,7 +72,7 @@ namespace VVVF_Simulator.GUI.MIDIConvert
                     {
                         try
                         {
-                            Generation.Audio.VVVF_Sound.Generate_VVVF_Audio.Export_VVVF_Sound(generationBasicParameter, export_path, false, sample_freq);
+                            Generation.Audio.VVVF_Sound.Generate_VVVF_Audio.Export_VVVF_Sound(generationBasicParameter, export_path, false, midi_Convert_Config.SampleFrequency);
                             System.Media.SystemSounds.Beep.Play();
                         }
                         catch(Exception ex)
@@ -84,12 +84,21 @@ namespace VVVF_Simulator.GUI.MIDIConvert
                     MainWindow.TaskProgressData taskProgressData = new(task, generationBasicParameter.progressData, task_description);
                     MainWindow.taskProgresses.Add(taskProgressData);
 
+                    if(!midi_Convert_Config.MultiThread) task.Wait();
+
                     priority++;
                 }
                 
             }
 
             return true;
+        }
+
+        public Midi_Convert_Config config = new();
+        public class Midi_Convert_Config
+        {
+            public bool MultiThread { get; set; } = true;
+            public int SampleFrequency { get; set; } = 192000;
         }
 
         private string? midi_path;
@@ -127,10 +136,21 @@ namespace VVVF_Simulator.GUI.MIDIConvert
                 export_path = path;
                 export_selected = true;
                 
-            }else if (tag.Equals("Convert"))
+            }
+            else if (tag.Equals("Config"))
+            {
+                MIDIConvert_Config mIDIConvert_Config = new(config);
+                mIDIConvert_Config.ShowDialog();
+            }
+            else if (tag.Equals("Convert"))
             {
                 if(midi_path == null || export_path == null) return;
-                Conversion((string)midi_path.Clone(), (string)export_path.Clone(), 192000);
+
+                Action action = new(() => Conversion((string)midi_path.Clone(), (string)export_path.Clone(), config));
+
+                if (config.MultiThread) action();
+                else Task.Run(action);
+
                 System.Media.SystemSounds.Beep.Play();
                 Close();
             }
