@@ -113,7 +113,13 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <CheckBox x:Name="Shifted_Box" Content="Shifted" HorizontalAlignment="Center" VerticalAlignment="Top" Checked="enable_checked" Unchecked="enable_checked" Tag="Shifted" Visibility="{Binding Shifted_Visible, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,19,0,0"/>
-                                <Button x:Name="Open_Harmonic_Setting_Button" Content="Harmonic Setting" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="24" Width="133" Visibility="{Binding Harmonic_Visible, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Open_Harmonic_Setting_Button_Click" Grid.Column="2" Margin="0,15,0,0"/>
+                                <Button x:Name="Open_Harmonic_Setting_Button" Content="Harmonic Setting" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="24" Width="133" Visibility="{Binding Harmonic_Visible, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Open_Harmonic_Setting_Button_Click" Grid.Column="2" Margin="0,15,0,0" Background="White">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="12"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
                                 <ComboBox x:Name="Base_Wave_Selector" Grid.Column="1" Visibility="{Binding Base_Wave_Selector_Visible, Converter={StaticResource BooleanToVisibilityConverter}}" SelectionChanged="Selector_SelectionChanged" Margin="10,10,10,10" FontFamily="M PLUS 2" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="1" Tag="BaseWave"/>
                                 <CheckBox x:Name="Square_Box" Content="Square" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="enable_checked" Unchecked="enable_checked" Tag="Square" Visibility="{Binding Square_Visible, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="1"/>
                                 <ComboBox x:Name="Alt_Mode_Selector" Visibility="{Binding Alt_Mode_Selector_Visible, Converter={StaticResource BooleanToVisibilityConverter}}" SelectionChanged="Selector_SelectionChanged" Margin="10,10,10,10" FontFamily="M PLUS 2" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="1" Tag="AltMode"/>

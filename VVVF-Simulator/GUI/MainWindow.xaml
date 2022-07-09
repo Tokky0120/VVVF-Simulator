@@ -22,13 +22,29 @@
             </Grid.ColumnDefinitions>
             <Grid>
                 <TabControl x:Name="setting_tabs" Margin="10,10,10,10">
-
                     <TabItem Header="Settings">
                         <Grid Background="#FFFFFFFF">
-                            <StackPanel/>
-                            <Button x:Name="settings_level" Content="Level" HorizontalAlignment="Stretch" Margin="0,10,0,0" VerticalAlignment="Top" Height="28" FontFamily="M PLUS 2 Medium" FontSize="16" BorderBrush="#FF0012FF" Click="setting_button_Click"/>
-                            <Button x:Name="settings_minimum" Content="Minimum Frequency" HorizontalAlignment="Stretch" Margin="0,43,0,0" VerticalAlignment="Top" Height="28" FontFamily="M PLUS 2 Medium" FontSize="16" BorderBrush="#FF0012FF" Click="setting_button_Click"/>
-                            <Button x:Name="settings_mascon" Content="Mascon Off" HorizontalAlignment="Stretch" Margin="0,76,0,0" VerticalAlignment="Top" Height="28" FontFamily="M PLUS 2 Medium" FontSize="16" BorderBrush="#FF0010FF" Click="setting_button_Click"/>
+                            <Button x:Name="settings_level" Content="PWM Level" HorizontalAlignment="Stretch" Margin="10,10,10,0" VerticalAlignment="Top" Height="28" FontFamily="M PLUS 2 Medium" FontSize="16" BorderBrush="Black" Click="setting_button_Click" Background="White">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="14"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button x:Name="settings_minimum" Content="Minimum Frequency" HorizontalAlignment="Stretch" Margin="10,43,10,0" VerticalAlignment="Top" Height="28" FontFamily="M PLUS 2 Medium" FontSize="16" BorderBrush="Black" Click="setting_button_Click" Background="White">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="14"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button x:Name="settings_mascon" Content="Jerk Control" HorizontalAlignment="Stretch" Margin="10,76,10,0" VerticalAlignment="Top" Height="28" FontFamily="M PLUS 2 Medium" FontSize="16" BorderBrush="Black" Click="setting_button_Click" Background="White">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="14"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Accelerate">
@@ -39,11 +55,28 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.RowSpan="2"/>
                             <Grid Grid.RowSpan="2"/>
-                            <Button x:Name="accelerate_add" Tag="accelerate_add" Content="+" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="28" FontFamily="Arial Rounded MT Bold" FontSize="12" BorderBrush="#FF0012FF" Click="settings_edit_Click" Margin="15,0,0,0"/>
-                            <Button x:Name="accelerate_remove" Tag="accelerate_remove" Content="-" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="28" FontFamily="Arial Rounded MT Bold" BorderBrush="#FF0012FF" Click="settings_edit_Click" Grid.Row="1" Margin="60,0,0,0"/>
-                            <Button x:Name="accelerate_reset" Tag="accelerate_reset" Content="RESET" Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,15,0" VerticalAlignment="Center" Height="28" Width="66" FontFamily="M PLUS 2 Medium" FontSize="16" BorderBrush="#FF0010FF" Click="settings_edit_Click"/>
-                            <Border BorderBrush="#FF969696" BorderThickness="1" Grid.Row="1"/>
-                            <ListView x:Name="accelerate_settings" SelectionMode="Single" Loaded="settings_load" Tag="accelerate" SelectionChanged="settings_SelectionChanged" >
+                            <Button x:Name="accelerate_add" Tag="accelerate_add" Content="+" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="28" FontFamily="Arial Rounded MT Bold" FontSize="12" BorderBrush="Blue" Click="settings_edit_Click" Margin="15,0,0,0" Background="White" Foreground="Blue">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="14"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button x:Name="accelerate_remove" Tag="accelerate_remove" Content="-" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="28" FontFamily="Arial Rounded MT Bold" BorderBrush="Blue" Click="settings_edit_Click" Grid.Row="1" Margin="60,0,0,0" Background="White" Foreground="Blue">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="14"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button x:Name="accelerate_reset" Tag="accelerate_reset" Content="RESET" Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,15,0" VerticalAlignment="Center" Height="28" Width="66" FontFamily="M PLUS 2 Medium" FontSize="16" BorderBrush="Blue" Click="settings_edit_Click" Background="White" Foreground="Blue">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="14"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <ListView x:Name="accelerate_settings" SelectionMode="Single" Loaded="settings_load" Tag="accelerate" SelectionChanged="settings_SelectionChanged" BorderBrush="White" >
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel>
@@ -71,11 +104,28 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.RowSpan="2"/>
                             <Grid Grid.RowSpan="2"/>
-                            <Button x:Name="brake_add" Tag="brake_add" Content="+" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="28" FontFamily="Arial Rounded MT Bold" FontSize="12" BorderBrush="#FF0012FF" Click="settings_edit_Click" Margin="15,0,0,0"/>
-                            <Button x:Name="brake_remove" Tag="brake_remove" Content="-" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="28" FontFamily="Arial Rounded MT Bold" BorderBrush="#FF0012FF" Click="settings_edit_Click" Grid.Row="1" Margin="60,0,0,0"/>
-                            <Button x:Name="brake_reset" Tag="brake_reset" Content="RESET" Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,15,0" VerticalAlignment="Center" Height="28" Width="66" FontFamily="M PLUS 2 Medium" FontSize="16" BorderBrush="#FF0010FF" Click="settings_edit_Click"/>
-                            <Border BorderBrush="#FF969696" BorderThickness="1" Grid.Row="1"/>
-                            <ListView x:Name="brake_settings" SelectionMode="Single" Loaded="settings_load" Tag="brake" SelectionChanged="settings_SelectionChanged">
+                            <Button x:Name="brake_add" Tag="brake_add" Content="+" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="28" FontFamily="Arial Rounded MT Bold" FontSize="12" BorderBrush="Blue" Click="settings_edit_Click" Margin="15,0,0,0" Background="White" Foreground="#FF0000FD">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="14"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button x:Name="brake_remove" Tag="brake_remove" Content="-" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="28" FontFamily="Arial Rounded MT Bold" BorderBrush="Blue" Click="settings_edit_Click" Grid.Row="1" Margin="60,0,0,0" Background="White" Foreground="#FF0000FA">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="14"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button x:Name="brake_reset" Tag="brake_reset" Content="RESET" Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,15,0" VerticalAlignment="Center" Height="28" Width="66" FontFamily="M PLUS 2 Medium" FontSize="16" BorderBrush="Blue" Click="settings_edit_Click" Background="White" Foreground="Blue">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="14"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <ListView x:Name="brake_settings" SelectionMode="Single" Loaded="settings_load" Tag="brake" SelectionChanged="settings_SelectionChanged" BorderBrush="White">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel>
@@ -90,6 +140,11 @@
                                         <MenuItem Header="Copy" Click="MenuItem_Click" Tag="brake.copy"/>
                                     </ContextMenu>
                                 </ListView.ContextMenu>
+                                <ListView.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="0"/>
+                                    </Style>
+                                </ListView.Resources>
                             </ListView>
 
 
@@ -115,6 +170,7 @@
                 </MenuItem>
 
                 <MenuItem Header="Setting">
+                    
                     <MenuItem Header="Base Freq Pattern" Tag="AccelPattern" Click="Setting_Menu_Click"/>
                     <MenuItem Header="Train Sound Setting" Tag="TrainSoundSetting" Click="Setting_Menu_Click"/>
                 </MenuItem>

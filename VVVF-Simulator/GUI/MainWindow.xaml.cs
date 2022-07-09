@@ -76,7 +76,7 @@ namespace VVVF_Simulator
             else if(name.Equals("settings_minimum"))
                 setting_window.Navigate(new Uri("GUI/VVVF_Window/Settings/minimum_freq_setting.xaml", UriKind.Relative));
             else if(name.Equals("settings_mascon"))
-                setting_window.Navigate(new Uri("GUI/VVVF_Window/Settings/mascon_off_setting.xaml", UriKind.Relative));
+                setting_window.Navigate(new Uri("GUI/VVVF_Window/Settings/jerk_setting.xaml", UriKind.Relative));
         }
 
         private void settings_edit_Click(object sender, RoutedEventArgs e)

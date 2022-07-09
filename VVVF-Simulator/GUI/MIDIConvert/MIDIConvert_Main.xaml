@@ -1,12 +1,15 @@
-﻿<Window x:Class="VVVF_Simulator.GUI.MIDIConvert.MIDIConvert_Main"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VVVF_Simulator.GUI.MIDIConvert"
+        xmlns:MyUserControl="clr-namespace:VVVF_Simulator.GUI.MyUserControl"
+        x:Class="VVVF_Simulator.GUI.MIDIConvert.MIDIConvert_Main"
         mc:Ignorable="d"
         Title="MIDI Conversion" Height="600" Width="200" ResizeMode="CanMinimize">
-    <Grid Background="White">
+
+    
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="5*"/>
@@ -19,9 +22,36 @@
         <Image Margin="0,0,0,45" Source="/GUI/Images/MIDIConvert/B_Folder_Opend.png" Stretch="Fill" Width="50" Height="50" Grid.Row="2" HorizontalAlignment="Center"/>
         <Image Margin="0,0,0,45" Source="/GUI/Images/MIDIConvert/B_Spanner.png" Stretch="Fill" Width="50" Height="50" HorizontalAlignment="Center" Grid.Row="3"/>
         <Image Margin="0,0,0,45" Source="/GUI/Images/MIDIConvert/B_Start.png" Stretch="Fill" Width="50" Height="50" HorizontalAlignment="Center" Grid.Row="4"/>
-        <Button Name="BtnBrowse" Content="Browse" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#FF006CFD" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="White" Background="#FF47484E" Height="41" Width="136" Margin="0,80,0,0" Click="Button_Click" Tag="Browse" Grid.Row="1"/>
-        <Button Name="BtnSelect" Content="Select" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#FF006CFD" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="White" Background="#FF47484E" Height="41" Width="136" Margin="0,80,0,0" Click="Button_Click" Tag="Select" Grid.Row="2"/>
-        <Button Name="BtnConfig" Content="Config" HorizontalAlignment="Center" VerticalAlignment="Top" BorderBrush="#FF006CFD" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="White" Background="#FF47484E" Height="41" Width="136" Margin="0,86,0,0" Click="Button_Click" Tag="Config" Grid.Row="3"/>
-        <Button Name="BtnConvert" Content="Convert" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#FF006CFD" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="White" Background="#FF47484E" Height="41" Width="136" Margin="0,80,0,0" Click="Button_Click" Tag="Convert" Grid.Row="4" IsEnabled="False"/>
+
+        <Button x:Name="BtnBrowse" Content="Browse" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="Black" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="Black" Background="White" Height="41" Width="136" Margin="0,80,0,0" Click="Button_Click" Tag="Browse" Grid.Row="1">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="20"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button x:Name="BtnSelect" Content="Select" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="Black" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="Black" Background="White" Height="41" Width="136" Margin="0,80,0,0" Click="Button_Click" Tag="Select" Grid.Row="2">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="20"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button x:Name="BtnConfig" Content="Config" HorizontalAlignment="Center" VerticalAlignment="Top" BorderBrush="Black" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="Black" Background="White" Height="41" Width="136" Margin="0,86,0,0" Click="Button_Click" Tag="Config" Grid.Row="3">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="20"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button x:Name="BtnConvert" Content="Convert" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="Black" FontFamily="M PLUS 2" FontWeight="Bold" FontSize="22" Foreground="Black"  Height="41" Width="136" Margin="0,80,0,0" Click="Button_Click" Tag="Convert" Grid.Row="4" IsEnabled="False" Background="White">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="20"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
     </Grid>
+
 </Window>

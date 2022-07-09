@@ -23,9 +23,9 @@ namespace VVVF_Simulator.VVVF_Window.Settings
     /// <summary>
     /// mascon_off_setting.xaml の相互作用ロジック
     /// </summary>
-    public partial class mascon_off_setting : Page
+    public partial class jerk_setting : Page
     {
-        public mascon_off_setting()
+        public jerk_setting()
         {
             InitializeComponent();
             Yaml_VVVF_Sound_Data ysd = Yaml_VVVF_Manage.current_data;
