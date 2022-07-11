@@ -34,10 +34,12 @@ PC上で、VVVFの音を再現します。<br>
 ## リアルタイム音声生成
 いろいろ、リアルタイムで遊べます。<br>
 
+# VVVF音のサンプルファイル
+https://github.com/JOTAN-0655/VVVF-Simulator/releases/download/1.2.0.0/yaml.zip
+
 # 親プロジェクト
 このプログラムは、Raspberry pi zero vvvf から派生しました。
 https://github.com/JOTAN-0655/RPi-Zero-VVVF
-
 
 # 貢献者
 ・Thunderfeng<br>
