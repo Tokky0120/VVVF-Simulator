@@ -36,6 +36,8 @@ The file will be the`.avi` extension. <br>
 ## Realtime Audio Generation
 You can generate the audio in real time and control if the sound increases or decreases in frequency as well as the rate that the frequency increases or decreases. <br>
 
+# Sample VVVF Files
+https://github.com/JOTAN-0655/VVVF-Simulator/releases/download/1.2.0.0/yaml.zip
 
 # Parent Project
 This program was ported from RPi-Zero-VVVF
