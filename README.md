@@ -12,7 +12,6 @@ You are **free** to use the code in this program.<br>
 
 Please:<br>
 - Post the URL of this GitHub page<br>
-  If you can't post the URL of this page on your application, we wanna you to credit on the file which will be contained to application.
 
 Don’t:<br>
 - Release modified code without referencing this page.<br>
